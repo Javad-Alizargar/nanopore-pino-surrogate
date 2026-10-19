@@ -1,0 +1,128 @@
+"""Figure 4: Hypotheses H1 & H2 - generalization across the 4D parameter space."""
+
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.gridspec import GridSpec
+
+import common as K
+from operators.losses_and_metrics import sg_current_pA
+
+dat = K.load_dataset()
+T = K.T
+GRID = K.GRID
+
+splits = {"interp_test": dat["interp_idx"], "ood_geometry_voltage": dat["oodB"],
+          "ood_charge_salt": dat["oodA"]}
+split_color = {"interp_test": K.C["blue"], "ood_geometry_voltage": K.C["green"],
+               "ood_charge_salt": K.C["vermillion"]}
+
+# per-state errors, averaged over the 3 seeds of the primary model
+models = [K.load_model("deeponet", "reparam", s) for s in (42, 43, 44)]
+
+def per_state(idx):
+    rel = {k: [] for k in ["psi", "c_plus", "rho", "I"]}
+    ipred_all, iref_all = [], []
+    for m in models:
+        pred, ipred = K.predict_mu(m, dat["mu"][idx])
+        ref = dat["ref"]
+        for f in ["psi", "c_plus", "rho"]:
+            num = np.sqrt(((pred[f] - ref[f][idx]) ** 2 * K.AREA).sum((1, 2)))
+            den = np.sqrt((ref[f][idx] ** 2 * K.AREA).sum((1, 2)))
+            rel[f].append(num / np.maximum(den, 1e-30))
+        iref = ref["i_z"][idx]
+        numI = np.sqrt(((ipred - iref) ** 2).mean(1))
+        denI = np.sqrt((iref ** 2).mean(1))
+        rel["I"].append(numI / np.maximum(denI, 1e-30))
+        ipred_all.append(ipred.mean(1)); iref_all.append(iref.mean(1))
+    rel = {k: np.nanmean(np.array(v), 0) for k, v in rel.items()}
+    return rel, np.nanmean(ipred_all, 0), iref_all[0]
+
+errs, ipred_mean, iref_mean = {}, {}, {}
+for sp, idx in splits.items():
+    e, ip, ir = per_state(idx)
+    errs[sp] = e; ipred_mean[sp] = ip; iref_mean[sp] = ir
+lam = dat["lambda_D_over_R"]
+
+fig = plt.figure(figsize=(10.4, 6.2))
+gs = GridSpec(2, 2, figure=fig, hspace=0.42, wspace=0.28, width_ratios=[1.25, 1.0])
+
+# ---- Panel A: per-state rel-L2 distributions ---------------------------
+axA = fig.add_subplot(gs[:, 0])
+metrics = ["psi", "c_plus", "rho", "I"]
+mlabels = [r"$\psi$", r"$c_+$", r"$\rho$", r"$I(z)$"]
+pos = 0; ticks = []; tlabels = []
+for mi, (m, lab) in enumerate(zip(metrics, mlabels)):
+    for si, sp in enumerate(splits):
+        d = errs[sp][m]
+        bp = axA.boxplot([d], positions=[pos], widths=0.66, showfliers=False,
+                         patch_artist=True, medianprops=dict(color="k", lw=1.1),
+                         boxprops=dict(facecolor=split_color[sp], alpha=0.55,
+                                       edgecolor="0.3", lw=0.6),
+                         whiskerprops=dict(color="0.3", lw=0.6),
+                         capprops=dict(color="0.3", lw=0.6))
+        jitter = (np.random.RandomState(0 + mi * 7 + si).rand(len(d)) - 0.5) * 0.36
+        axA.scatter(pos + jitter, d, s=6, color=split_color[sp], alpha=0.6,
+                    edgecolor="none", zorder=3)
+        ticks.append(pos); tlabels.append(lab if si == 1 else "")
+        pos += 1
+    pos += 0.9
+axA.set_yscale("log")
+axA.set_xticks(ticks)
+axA.set_xticklabels([lab for lab in mlabels for _ in splits])
+axA.set_ylabel("per-state relative $L_2$ error")
+axA.set_title("H1/H2 per-state error distributions (DeepONet reparam, 3-seed)",
+              fontsize=9)
+handles = [plt.Line2D([], [], color=split_color[sp], lw=6, alpha=0.6, label=sp)
+           for sp in splits]
+axA.legend(handles=handles, frameon=False, fontsize=7, loc="upper left")
+K.panel_label(axA, "A")
+
+# ---- Panel B: error vs Debye ratio --------------------------------------
+axB = fig.add_subplot(gs[0, 1])
+allidx = np.concatenate([splits[sp] for sp in splits])
+label_map = {sp: split_color[sp] for sp in splits}
+for sp in splits:
+    idx = splits[sp]
+    axB.scatter(lam[idx], errs[sp]["rho"], s=16, facecolor=label_map[sp],
+                edgecolor="white", lw=0.3, label=f"$\\rho$ {sp}")
+    axB.scatter(lam[idx], errs[sp]["I"], s=16, marker="^", facecolor="none",
+                edgecolor=label_map[sp], lw=0.9)
+axB.set_yscale("log")
+axB.set_xlabel(r"Debye ratio  $\lambda_D/R$")
+axB.set_ylabel("per-state relative $L_2$ error")
+axB.set_title("error vs EDL overlap  (filled: $\\rho$, open\ntriangles: $I(z)$)",
+              fontsize=8.6)
+axB.legend(frameon=False, fontsize=6.2)
+K.panel_label(axB, "B")
+
+# ---- Panel C: parity of mean axial current ------------------------------
+axC = fig.add_subplot(gs[1, 1])
+ip = np.concatenate([ipred_mean[sp] for sp in splits])
+ir = np.concatenate([iref_mean[sp] for sp in splits])
+lo, hi = min(ir.min(), ip.min()) * 1.1, max(ir.max(), ip.max()) * 1.1
+axC.plot([lo, hi], [lo, hi], color="0.4", lw=0.9, ls="--", zorder=1)
+for sp in splits:
+    axC.scatter(iref_mean[sp], ipred_mean[sp], s=22, facecolor=label_map[sp],
+                edgecolor="white", lw=0.4, label=sp, zorder=3)
+axC.set_xlabel(r"SG/FV mean axial current  $\bar I$  (pA)")
+axC.set_ylabel(r"operator  $\bar I_\theta$  (pA)")
+r2 = 1 - np.sum((ip - ir) ** 2) / np.sum((ir - ir.mean()) ** 2)
+axC.set_title(f"current parity, 96 test states  ($R^2$={r2:.4f})", fontsize=8.8)
+axC.legend(frameon=False, fontsize=6.4, loc="upper left")
+axC.set_xlim(lo, hi); axC.set_ylim(lo, hi)
+# inset residuals
+axi = axC.inset_axes([0.60, 0.10, 0.37, 0.30])
+axi.axhline(0, color="0.5", lw=0.7)
+for sp in splits:
+    axi.scatter(iref_mean[sp], ipred_mean[sp] - iref_mean[sp], s=8,
+                facecolor=label_map[sp], edgecolor="none")
+axi.set_title("residual (pA)", fontsize=6); axi.tick_params(labelsize=5.5)
+K.panel_label(axC, "C")
+
+sdata = {"lam": lam, "metrics": np.array(metrics, dtype=object)}
+for sp in splits:
+    sdata[f"idx_{sp}"] = splits[sp]
+    for m in metrics:
+        sdata[f"err_{sp}_{m}"] = errs[sp][m]
+    sdata[f"ipred_{sp}"] = ipred_mean[sp]; sdata[f"iref_{sp}"] = iref_mean[sp]
+K.save_fig(fig, "fig4_h1_h2_interp_vs_ood_regimes", sdata)

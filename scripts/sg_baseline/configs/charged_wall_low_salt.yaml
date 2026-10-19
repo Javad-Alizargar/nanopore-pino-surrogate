@@ -1,0 +1,23 @@
+﻿geometry:
+  radius_nm: 5.0
+  length_nm: 30.0
+  nr: 21
+  nz: 61
+physics:
+  temperature_K: 298.15
+  bulk_concentration_mol_m3: 1.0
+  relative_permittivity: 78.5
+  diffusion_cation_m2_s: 1.96e-9
+  diffusion_anion_m2_s: 2.03e-9
+  applied_voltage_V: 0.01
+  fixed_charge_strength: -0.001
+solver:
+  max_gummel_iter: 300
+  tolerance: 1.0e-6
+  relaxation: 0.01
+pinn:
+  seed: 42
+  collocation_points: 1000
+  data_points: 200
+  epochs: 50
+
