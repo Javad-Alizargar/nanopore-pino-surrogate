@@ -1,0 +1,330 @@
+{
+  "n_states": 5,
+  "protocol": {
+    "biases_mV": [
+      -50.0,
+      -25.0,
+      0.0,
+      25.0,
+      50.0
+    ],
+    "noise_level": 0.01,
+    "candidates_per_state": 400,
+    "forward_evals_per_state": 2000,
+    "operator": "PI-DeepONet (reparam, seed 42, ONNX)"
+  },
+  "recovery": {
+    "median_relative_error_R": 0.0045737918517061785,
+    "median_relative_error_q_w": 1.1539643805520952,
+    "median_relative_error_sigma": 1.1462987489639653,
+    "R_recovered_within_2pct": true,
+    "q_w_identifiable": false
+  },
+  "cost": {
+    "operator_grid_wall_s": 0.6263285439927131,
+    "operator_grid_wall_s_per_state": 0.12526570879854262,
+    "operator_refine_wall_s": 0.6441677901893854,
+    "operator_refine_evals": 2152,
+    "sgfv_equivalent_wall_s": 2013.0,
+    "sgfv_equivalent_wall_s_per_state": 402.6,
+    "speedup_grid": 3213.968163046741,
+    "t_sgfv_median_s": 0.2013
+  },
+  "identifiability": {
+    "max_relative_current_change_across_q_box": 0.0009625039831069234,
+    "noise_level": 0.01,
+    "note": "Total conductance is nearly invariant to fixed surface charge for a symmetric electrolyte with near-equal ionic diffusivities; the q_w direction is flat at the 1% noise level, while R is well identified."
+  },
+  "states": [
+    {
+      "state_index": 175,
+      "V_app_mV": [
+        -50.0,
+        -25.0,
+        0.0,
+        25.0,
+        50.0
+      ],
+      "C0_mol_m3": 27.213728585126525,
+      "lambda_D_over_R": 0.30315368321629665,
+      "true": {
+        "q_w": -0.002058491843469394,
+        "sigma_mC_m2": -0.006043168652321324,
+        "R_nm": 6.082897873218143
+      },
+      "measured_pA": [
+        -79.70602017497117,
+        -39.66103166157653,
+        4.6529790309165825e-15,
+        39.46691958326368,
+        78.68116532143777
+      ],
+      "clean_pA": [
+        -79.00084142452876,
+        -39.50042052576122,
+        4.7284857437804846e-15,
+        39.50042052576133,
+        79.00084142452947
+      ],
+      "recovered": {
+        "q_w": -0.09815884117319931,
+        "sigma_mC_m2": -0.2880824441582064,
+        "R_nm": 6.0846936702736985
+      },
+      "relative_error": {
+        "q_w": 46.68483367306514,
+        "sigma": 46.67076028029551,
+        "R_nm": 0.0002952206486092563
+      },
+      "grid": {
+        "n_candidates": 400,
+        "n_forward_evals": 2000,
+        "operator_wall_s": 0.1426663340535015,
+        "best_cost": 6.33584739628618e-05
+      },
+      "refine": {
+        "n_forward_evals": 361,
+        "operator_wall_s": 0.10923720803111792,
+        "cost": 3.2696242311341375e-05
+      },
+      "identifiability": {
+        "q_w_flat_direction": true,
+        "q_w_1sigma_span": 0.09815884117319931,
+        "max_relative_current_change_across_q_box": 0.0018995120447014644,
+        "noise_level": 0.01
+      }
+    },
+    {
+      "state_index": 147,
+      "V_app_mV": [
+        -50.0,
+        -25.0,
+        0.0,
+        25.0,
+        50.0
+      ],
+      "C0_mol_m3": 93.30587951099923,
+      "lambda_D_over_R": 0.1439544181850523,
+      "true": {
+        "q_w": -0.03769944963288102,
+        "sigma_mC_m2": -0.0973135250671878,
+        "R_nm": 6.918116874280963
+      },
+      "measured_pA": [
+        -343.7746135583326,
+        -173.62175107339132,
+        -2.5114712141617094e-15,
+        174.92508741827757,
+        346.0659513898213
+      ],
+      "clean_pA": [
+        -350.34811585022715,
+        -175.1740537907917,
+        -2.5111451662239965e-15,
+        175.17405379070874,
+        350.3481158501352
+      ],
+      "recovered": {
+        "q_w": -0.07834777250971334,
+        "sigma_mC_m2": -0.20364074770213503,
+        "R_nm": 6.8704955070724
+      },
+      "relative_error": {
+        "q_w": 1.0782205913525942,
+        "sigma": 1.092625332003297,
+        "R_nm": 0.006883573676761876
+      },
+      "grid": {
+        "n_candidates": 400,
+        "n_forward_evals": 2000,
+        "operator_wall_s": 0.118470583925955,
+        "best_cost": 0.0006322622668173427
+      },
+      "refine": {
+        "n_forward_evals": 377,
+        "operator_wall_s": 0.11739820800721645,
+        "cost": 3.0077200665898344e-05
+      },
+      "identifiability": {
+        "q_w_flat_direction": true,
+        "q_w_1sigma_span": 0.09815884117319931,
+        "max_relative_current_change_across_q_box": 0.0004204779915973752,
+        "noise_level": 0.01
+      }
+    },
+    {
+      "state_index": 154,
+      "V_app_mV": [
+        -50.0,
+        -25.0,
+        0.0,
+        25.0,
+        50.0
+      ],
+      "C0_mol_m3": 51.102243329167074,
+      "lambda_D_over_R": 0.4002931476240915,
+      "true": {
+        "q_w": -0.03710601576396378,
+        "sigma_mC_m2": -0.197106594177967,
+        "R_nm": 3.3617797760771264
+      },
+      "measured_pA": [
+        -44.858963196740994,
+        -22.58492668499428,
+        5.337459755574469e-15,
+        23.104489968249844,
+        44.42001644285712
+      ],
+      "clean_pA": [
+        -45.305337227207104,
+        -22.65263462084532,
+        5.407412886820142e-15,
+        22.65263462084544,
+        45.30533722720657
+      ],
+      "recovered": {
+        "q_w": -0.09815884117319931,
+        "sigma_mC_m2": -0.5242366683336803,
+        "R_nm": 3.3437062501905825
+      },
+      "relative_error": {
+        "q_w": 1.6453619218403976,
+        "sigma": 1.6596607308852818,
+        "R_nm": 0.005376177825554635
+      },
+      "grid": {
+        "n_candidates": 400,
+        "n_forward_evals": 2000,
+        "operator_wall_s": 0.12470516702160239,
+        "best_cost": 0.000983960335696312
+      },
+      "refine": {
+        "n_forward_evals": 507,
+        "operator_wall_s": 0.15123162500094622,
+        "cost": 0.0001325528681796967
+      },
+      "identifiability": {
+        "q_w_flat_direction": true,
+        "q_w_1sigma_span": 0.09815884117319931,
+        "max_relative_current_change_across_q_box": 0.0009625039831069234,
+        "noise_level": 0.01
+      }
+    },
+    {
+      "state_index": 172,
+      "V_app_mV": [
+        -50.0,
+        -25.0,
+        0.0,
+        25.0,
+        50.0
+      ],
+      "C0_mol_m3": 103.9404908635709,
+      "lambda_D_over_R": 0.12968541334147304,
+      "true": {
+        "q_w": -0.04557124623761868,
+        "sigma_mC_m2": -0.11184925822440069,
+        "R_nm": 7.275852503383369
+      },
+      "measured_pA": [
+        -433.27591387428026,
+        -217.42238187457025,
+        -2.6762757817425647e-14,
+        215.45815817404343,
+        437.0293734994586
+      ],
+      "clean_pA": [
+        -431.68578758847906,
+        -215.84288909560337,
+        -2.6376047189135668e-14,
+        215.8428890956619,
+        431.68578758836486
+      ],
+      "recovered": {
+        "q_w": -0.09815884117319931,
+        "sigma_mC_m2": -0.2400619229995787,
+        "R_nm": 7.3018386363983705
+      },
+      "relative_error": {
+        "q_w": 1.1539643805520952,
+        "sigma": 1.1462987489639653,
+        "R_nm": 0.0035715585222374146
+      },
+      "grid": {
+        "n_candidates": 400,
+        "n_forward_evals": 2000,
+        "operator_wall_s": 0.11966054199729115,
+        "best_cost": 0.00010333838012144847
+      },
+      "refine": {
+        "n_forward_evals": 546,
+        "operator_wall_s": 0.15742120810318738,
+        "cost": 2.396264776719063e-05
+      },
+      "identifiability": {
+        "q_w_flat_direction": true,
+        "q_w_1sigma_span": 0.09815884117319931,
+        "max_relative_current_change_across_q_box": 0.0005207260355392523,
+        "noise_level": 0.01
+      }
+    },
+    {
+      "state_index": 161,
+      "V_app_mV": [
+        -50.0,
+        -25.0,
+        0.0,
+        25.0,
+        50.0
+      ],
+      "C0_mol_m3": 140.22852988730952,
+      "lambda_D_over_R": 0.20738099712600863,
+      "true": {
+        "q_w": -0.02875405961214829,
+        "sigma_mC_m2": -0.13108258828209013,
+        "R_nm": 3.917240625543196
+      },
+      "measured_pA": [
+        -171.55227200780232,
+        -85.29378940429064,
+        -3.022913538077964e-15,
+        86.09273999202998,
+        168.68810381545416
+      ],
+      "clean_pA": [
+        -168.8130703357949,
+        -84.40653061181094,
+        -3.0267850051193725e-15,
+        84.40653061183832,
+        168.81307033579182
+      ],
+      "recovered": {
+        "q_w": -0.009777549081749382,
+        "sigma_mC_m2": -0.04437046706505091,
+        "R_nm": 3.935157268797478
+      },
+      "relative_error": {
+        "q_w": 0.659959351353001,
+        "sigma": 0.6615075453837886,
+        "R_nm": 0.0045737918517061785
+      },
+      "grid": {
+        "n_candidates": 400,
+        "n_forward_evals": 2000,
+        "operator_wall_s": 0.12082591699436307,
+        "best_cost": 6.72970388438263e-05
+      },
+      "refine": {
+        "n_forward_evals": 361,
+        "operator_wall_s": 0.10887954104691744,
+        "cost": 6.616873440703294e-05
+      },
+      "identifiability": {
+        "q_w_flat_direction": true,
+        "q_w_1sigma_span": 0.09815884117319931,
+        "max_relative_current_change_across_q_box": 0.0011805128419742344,
+        "noise_level": 0.01
+      }
+    }
+  ]
+}
