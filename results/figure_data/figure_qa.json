@@ -1,0 +1,108 @@
+{
+  "stage": 5,
+  "figures": {
+    "fig1_workflow_and_architecture": {
+      "scientific": "A: geometry/BCs (R,L,V_app,C0,qw); B: 4D operating space with all 240 states by split; C: exact-reservoir and charge-balanced ansatz; D: DeepONet (36,880 params) vs FNO (460,488 params, 4-layer real-DFT).",
+      "communication": "Panels A-D each answer a distinct question (problem, coverage, hard constraints, backbones); no redundant panels.",
+      "render": "Panel labels A-D present exactly once; axis units on all labelled axes; no text overlap after spacing fix; Okabe-Ito colorblind-safe palette.",
+      "pdf_bytes": 62359,
+      "png_bytes": 509912,
+      "png_px": [
+        3596,
+        2418
+      ],
+      "pixel_dpi_assumed": 300,
+      "source_data": "results/figure_data/fig1_workflow_and_architecture_data.npz",
+      "all_axes_have_units": true,
+      "panel_letters": true,
+      "palette": "Okabe-Ito (colorblind-safe)"
+    },
+    "fig2_benchmark_and_field_reconstruction": {
+      "scientific": "Zero-shot DeepONet fields/errors on benchmark #0 computed against the SG/FV reference; I(z) compares SG/FV, DeepONet, 300-epoch FNO and the DA-PINN band.",
+      "communication": "A-C fields, D-E error maps, F current profile; consistent scales per row.",
+      "render": "Colorbars labelled; axis units (r/R, z/L, pA); legend inside panel F; spacing widened to avoid colorbar/label collisions.",
+      "pdf_bytes": 151958,
+      "png_bytes": 306346,
+      "png_px": [
+        3015,
+        1748
+      ],
+      "pixel_dpi_assumed": 300,
+      "source_data": "results/figure_data/fig2_benchmark_and_field_reconstruction_data.npz",
+      "all_axes_have_units": true,
+      "panel_letters": true,
+      "palette": "Okabe-Ito (colorblind-safe)"
+    },
+    "fig3_h3_charge_reparameterization_ablation": {
+      "scientific": "reparam vs direct_c net-charge error (3-seed mean\u00b1SD, interp), |q_w| quartile breakdown, weak-charge radial rho cross-section, and physics-loss ablation.",
+      "communication": "Shows the cancellation mechanism and both the accuracy and physics benefit.",
+      "render": "Log y on panels B and D; no clipped labels; ratio annotations legible.",
+      "pdf_bytes": 31583,
+      "png_bytes": 269638,
+      "png_px": [
+        2685,
+        1650
+      ],
+      "pixel_dpi_assumed": 300,
+      "source_data": "results/figure_data/fig3_h3_charge_reparameterization_ablation_data.npz",
+      "all_axes_have_units": true,
+      "panel_letters": true,
+      "palette": "Okabe-Ito (colorblind-safe)"
+    },
+    "fig4_h1_h2_interp_vs_ood_regimes": {
+      "scientific": "Per-state rel-L2 (3-seed averaged) for psi, c+, rho, I across interp/OOD splits; error vs lambda_D/R; current parity over all 96 test states with R^2.",
+      "communication": "Distributions + regime dependence + parity give H1/H2 from three angles.",
+      "render": "Log y where needed; strips overlaid on boxes; inset residual panel legible.",
+      "pdf_bytes": 51276,
+      "png_bytes": 390502,
+      "png_px": [
+        2644,
+        1703
+      ],
+      "pixel_dpi_assumed": 300,
+      "source_data": "results/figure_data/fig4_h1_h2_interp_vs_ood_regimes_data.npz",
+      "all_axes_have_units": true,
+      "panel_letters": true,
+      "palette": "Okabe-Ito (colorblind-safe)"
+    },
+    "fig5_parametric_physics_sweeps": {
+      "scientific": "Continuous operator I-V, screening, and radial rho curves benchmarked against on-the-fly SG/FV solves at identical parameters.",
+      "communication": "Demonstrates continuous parametric control, not just pointwise accuracy.",
+      "render": "Open-circle SG markers vs solid operator lines; units on all axes.",
+      "pdf_bytes": 35719,
+      "png_bytes": 297012,
+      "png_px": [
+        2832,
+        1065
+      ],
+      "pixel_dpi_assumed": 300,
+      "source_data": "results/figure_data/fig5_parametric_physics_sweeps_data.npz",
+      "all_axes_have_units": true,
+      "panel_letters": true,
+      "palette": "Okabe-Ito (colorblind-safe)"
+    },
+    "fig6_h4_timing_and_amortization_breakeven": {
+      "scientific": "Latency bars and cumulative-cost curves with N* break-even vs M1/Xeon SG-FV and the DA-PINN retrain, from results/statistics.json.",
+      "communication": "Latency + amortization + tool callout answer the cost question directly.",
+      "render": "Log axes labelled; break-even markers annotated without overlap after offset fix.",
+      "pdf_bytes": 30566,
+      "png_bytes": 253994,
+      "png_px": [
+        2928,
+        1151
+      ],
+      "pixel_dpi_assumed": 300,
+      "source_data": "results/figure_data/fig6_h4_timing_and_amortization_breakeven_data.npz",
+      "all_axes_have_units": true,
+      "panel_letters": true,
+      "palette": "Okabe-Ito (colorblind-safe)"
+    }
+  },
+  "qa_stages": [
+    "scientific",
+    "communication",
+    "render"
+  ],
+  "overlapping_text_check": "manual visual inspection of 300-DPI PNG at final size",
+  "note": "No paid vision model used; local render inspection only."
+}
