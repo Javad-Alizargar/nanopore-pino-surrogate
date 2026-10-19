@@ -1,12 +1,41 @@
 {
+  "updated_utc": "2026-10-19T02:26:00Z",
+  "authenticated_user": "Javad-Alizargar",
+  "token_valid_until_utc": "2026-11-06T04:41:30Z",
+  "pre_push_audit": "20/20 PASS",
   "public": {
     "repo": "Javad-Alizargar/nanopore-pino-surrogate",
-    "sha": "f201a931a05fbd448ae17cb757e002af3bf98c95",
-    "private": true,
+    "html_url": "https://github.com/Javad-Alizargar/nanopore-pino-surrogate",
+    "visibility": "public",
+    "main_sha": "af5695f50b073a331a60e46ac7a327c610e9ae9e",
+    "tag": {"name": "v1.0.0", "sha": "af5695f50b073a331a60e46ac7a327c610e9ae9e"},
+    "files": 138,
+    "bytes": 22473834,
     "pages": {
-      "html_url": "https://javad-alizargar.github.io/nanopore-pino-surrogate/",
-      "status": null,
-      "url": "https://javad-alizargar.github.io/nanopore-pino-surrogate/web_simulator/"
+      "enabled": true,
+      "source": {"branch": "main", "path": "/"},
+      "site_url": "https://javad-alizargar.github.io/nanopore-pino-surrogate/",
+      "build_status": "built",
+      "build_commit": "af5695f50b073a331a60e46ac7a327c610e9ae9e",
+      "simulator_url": "https://javad-alizargar.github.io/nanopore-pino-surrogate/web_simulator/",
+      "http_checks": {
+        "/": 200,
+        "/web_simulator/": 200,
+        "/web_simulator/app.js": 200,
+        "/web_simulator/models/deeponet_reparam_seed42.onnx": 200,
+        "/web_simulator/data/embedded_bundle.js": 200,
+        "/figures/fig1_workflow_and_architecture.png": 200,
+        "/results/tables/table1_dataset_and_solver_validation.csv": 200,
+        "/results/statistics.json": 200
+      }
     }
+  },
+  "private": {
+    "repo": "Javad-Alizargar/nanopore-pino-surrogate-private",
+    "html_url": "https://github.com/Javad-Alizargar/nanopore-pino-surrogate-private",
+    "visibility": "private",
+    "main_sha": "5ec0987a0ff8378c122839490e15cf5cc4f3b5e2",
+    "files": 795,
+    "bytes": 80124141
   }
 }

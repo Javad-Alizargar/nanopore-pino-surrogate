@@ -10,20 +10,21 @@ Ordered plan. Each item is reversible unless flagged. Paid calls must pass the b
 - [x] **Stage 5 (presentation deliverables)** — 300-epoch FNO verification check (`scripts/fno_extended_check.py`); figures 1–6 (`scripts/figures/`) with 3-stage QA; client-side browser simulator (`web_simulator/`) + Gradio app (`scripts/app_gradio.py`) with live SG/FV comparison; verification record `results/stage5_simulator_verification.json`.
 - [x] **Stage 5B (apps hardened + figure layout QA)** — dual-engine web simulator (`file://` + `http://`) with DOM harness 29/29; Gradio fixes + zero-dependency `scripts/serve_interactive.py` (8765) + `launch_apps.command`/`.sh`; **live HTTP verification** of both apps (`results/stage5b_live_server_verification.json`); figure layout verifier `scripts/figures/verify_figure_layout.py` (**0 issues**) + budgeted gpt-4o-mini vision QA ($0.0199). See `REPORT_FOR_CHATGPT_STAGE5B.md`.
 - [x] **Stage 6A (figure 1 + inverse demo + manuscripts)** — Figure 1 rebuilt as 2×2 panels A–D (geometry, operating space, constraints, backbones) with exact counts 36,880/460,488; all six figures regenerated, layout verifier **0 issues**, `figure_qa.json` refreshed; `scripts/run_inverse_recovery_demo.py` (R median rel. err **0.0045737918517061785**, q_w **1.1539643805520952** → not identifiable, 0.12526570879854262 s vs 402.6 s SG/FV); `manuscript/claim_evidence.csv` (28 claims), `manuscript/Manuscript.md` (234-word abstract, 5 highlights, 60 refs), `manuscript/Supplementary_Materials.md` (S1–S10). No paid calls. See `REPORT_FOR_CHATGPT.md`.
-- [x] **Stage 6B (review + export + packages)** — `scripts/run_independent_review.py` (OpenAI + DeepSeek, ~$0.079 / $0.15); 23 issues resolved in `reports/REVIEW_RESPONSE.md` (critical ansatz `s=2exp[clip(z(1−z)G_s,−15,15)]`; S3.1 dimensionless system; explicit loss; CPC metadata; caveats); `scripts/format_manuscript_numbers.py` (3–4 sig figs); `scripts/export_manuscript_docx.py` → both DOCX; `scripts/build_reproducibility_packages.py` → public 136 files/22.5 MB + private 791 files/80.2 MB; `scripts/audit_release_packages.py` → `reports/FINAL_AUDIT_REPORT.md` **20/20 PASS**. No push.
+- [x] **Stage 6B (review + export + packages)** — `scripts/run_independent_review.py` (OpenAI + DeepSeek, ~$0.079 / $0.15); 23 issues resolved in `reports/REVIEW_RESPONSE.md` (critical ansatz `s=2exp[clip(z(1−z)G_s,−15,15)]`; S3.1 dimensionless system; explicit loss; CPC metadata; caveats); `scripts/format_manuscript_numbers.py` (3–4 sig figs); `scripts/export_manuscript_docx.py` → both DOCX; `scripts/build_reproducibility_packages.py` → public 136 files/22.5 MB + private 790 files/80.2 MB; `scripts/audit_release_packages.py` → `reports/FINAL_AUDIT_REPORT.md` **20/20 PASS**. No push.
+- [x] **Stage 7 (dual deployment + cover letter)** — authorized by explicit user command (`AUTO_PRIVATE_GITHUB_PUSH: true`, `AUTO_PUBLIC_RELEASE: true`): pre-push audit re-confirmed **20/20 PASS**; `scripts/deploy_github_repos.py` created and pushed `Javad-Alizargar/nanopore-pino-surrogate` (**public**, tag `v1.0.0`) and `Javad-Alizargar/nanopore-pino-surrogate-private` (**private**, verified via API); GitHub Pages enabled from `main` `/` and verified live (simulator + assets HTTP 200); `scripts/export_cover_letter.py` → `manuscript/Cover_Letter_CPC_JCP.{md,docx}`; local project-root commit made. Token passed only via `GH_TOKEN` / transient credential helper (never in `.git/config`).
 
-## Next (Stage 7 — release, on explicit user command only)
-1. **Author review** of `manuscript/Manuscript_PINO_clean.docx` and `Supplementary_Materials_PINO.docx` (pagination, equation rendering, journal LaTeX template, CRediT/GenAI wording).
-2. **GitHub push** of `reproducibility/github/` to the private repo and `reproducibility/public_repo/` to the public repo, then enable GitHub Pages at `/web_simulator/`. Requires explicit user command; keep `AUTO_PRIVATE_GITHUB_PUSH=false` until then.
-3. **Zenodo deposit** of the exact released commit and insertion of the real DOI at acceptance (no fake DOI).
+## Next (post-Stage-7; project COMPLETE)
+1. **Author review** of `manuscript/Manuscript_PINO_clean.docx`, `Supplementary_Materials_PINO.docx`, and `manuscript/Cover_Letter_CPC_JCP.docx` (pagination, equation rendering, journal LaTeX template, CRediT/GenAI wording) before journal submission.
+2. **Submit** via the CPC / JCP editorial system using `Cover_Letter_CPC_JCP.docx`; cite the prior study `COMPHY-D-26-00857`.
+3. **Zenodo deposit** of the exact released public commit (`v1.0.0`) at acceptance and insertion of the real DOI (no fake DOI).
 4. Optional **human expert review** or a targeted follow-up AI pass on any single unresolved issue (keep the $0.50 final-review reserve).
-5. Re-run the verification chain before any release: `scripts/figures/verify_figure_layout.py` (0 issues) → `scripts/verify_simulators.py` → `scripts/verify_live_servers.py` → `scripts/audit_release_packages.py` (20/20).
+5. Re-run the verification chain before any future release: `scripts/figures/verify_figure_layout.py` (0 issues) → `scripts/verify_simulators.py` → `scripts/verify_live_servers.py` → `scripts/audit_release_packages.py` (20/20) → `scripts/deploy_github_repos.py` (idempotent re-push).
 
 ## Blocked / needs user decision
 - **Compute for a stronger FNO** — M1-only CPU; the 300-epoch check (D-034) shows the DeepONet gap is architectural, so no further FNO compute is planned unless reconsidered.
 - **Budget increase** — only if explicitly requested; current cap $5.00 (~$4.90 remaining).
-- **GitHub push / public release** — stays `false` until Stage 7 / explicit command.
-- **Human peer review** — cannot be performed by the controller; disclose AI-assisted review in the cover letter if required by the journal.
+- **Human peer review** — cannot be performed by the controller; the AI-assisted review is disclosed in the cover letter.
+- **Zenodo DOI** — deferred to acceptance; requires the author's Zenodo account.
 
 ## Exact restart steps
 ```
@@ -40,7 +41,10 @@ python3 orchestration/budget_ledger.py status       # check budget
 # stop live servers:                 .venv/bin/python scripts/verify_live_servers.py --stop
 # round manuscript numbers:          .venv/bin/python scripts/format_manuscript_numbers.py
 # rebuild DOCX:                      .venv/bin/python scripts/export_manuscript_docx.py
+# rebuild cover letter:              .venv/bin/python scripts/export_cover_letter.py
 # rebuild release packages:          .venv/bin/python scripts/build_reproducibility_packages.py
 # final audit (must be 20/20):       .venv/bin/python scripts/audit_release_packages.py
-# continue at first unchecked item above (Stage 7 release, on explicit command)
+# deploy both repos (idempotent):    .venv/bin/python scripts/deploy_github_repos.py
+# deploy one repo only:              .venv/bin/python scripts/deploy_github_repos.py --only public|private
+# project is COMPLETE; see reports/REPORT_FOR_CHATGPT.md for final URLs and SHAs
 ```

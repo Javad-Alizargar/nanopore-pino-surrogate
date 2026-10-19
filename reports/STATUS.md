@@ -1,8 +1,8 @@
 # STATUS
 
 Project: `nanopore_pino_surrogate`
-Updated: 2026-10-19 (Stage 6B — independent review, manuscript fixes, DOCX export, release packages)
-Completion state: **COMPLETE_WITH_LIMITATIONS** (all Stage 6B deliverables produced; review is AI-assisted, not expert peer review; DOCX validated structurally, not page-rendered)
+Updated: 2026-10-19 (Stage 7 — authorized dual GitHub deployment, GitHub Pages activation, cover letter export)
+Completion state: **COMPLETE** (all Stage 1–7 deliverables produced; review is AI-assisted, not expert peer review; DOCX validated structurally, not page-rendered; Zenodo DOI deferred to acceptance)
 
 ## Phase
 Stage 1 — Preflight, Capability & Accounting Bootstrap, Project Brief. **Done.**
@@ -13,37 +13,32 @@ Stage 5 — Presentation deliverables: 300-epoch FNO check, figures 1–6, inter
 Stage 5B — Harden both apps (live HTTP verification) + eliminate all figure text-overflow. **Done.**
 Stage 6A — Figure 1 restructure, inverse-recovery demo, claim map, manuscript + supplement drafts. **Done.**
 Stage 6B — Independent cross-provider review, manuscript fixes, DOCX export, release packages + audit. **Done.**
-Stage 7 — GitHub push / release on explicit command. **Not started** (`AUTO_PRIVATE_GITHUB_PUSH=false`).
+Stage 7 — Dual GitHub deployment, GitHub Pages live, cover letter, final handoff. **Done.**
 
-## Progress (Stage 6B)
-- [x] **6B.1 Independent review** — `scripts/run_independent_review.py` (OpenAI `gpt-4.1-mini` + DeepSeek `deepseek-v4-pro`, thinking disabled) → `results/independent_review.json`. Both recommend **minor revision**; 11 + 12 issues. Task spend ≈ **$0.079** of the $0.15 allowance.
-- [x] **6B.2 Review fixes** — every issue adjudicated against code/results in `reports/REVIEW_RESPONSE.md` and applied to `manuscript/Manuscript.md` + `manuscript/Supplementary_Materials.md`:
-  - critical: reservoir limit is `s=2·exp(clip(z(1−z)G_s,−15,15))`, `ρ=z(1−z)G_ρ` ⇒ `s→2`, `c±→C0` **exactly** (fixed in §2.3 and S3);
-  - added Supplement **S3.1 dimensionless PNP + SG flux**, exact dimensionless data/physics loss (S2), multi-scale trunk features `κ∈{1,3,10,30}`, full CPC metadata, DA-PINN/break-even caveats, absolute q_w errors, corrected Figure 5 description, wall-condition sign reconciliation;
-  - **number formatting** with `scripts/format_manuscript_numbers.py` (3–4 sig figs); exact values archived.
-- [x] **6B.2 Placeholders resolved** — MIT license; software name `nanopore-pino-surrogate`; repo `https://github.com/Javad-Alizargar/nanopore-pino-surrogate`; simulator `https://javad-alizargar.github.io/nanopore-pino-surrogate/web_simulator/`; no pending DOI marker (Zenodo deposit deferred to acceptance).
-- [x] **6B.2 DOCX export** — `scripts/export_manuscript_docx.py` → `manuscript/Manuscript_PINO_clean.docx` (6 tables, 6 embedded figures, 8 equation images) and `manuscript/Supplementary_Materials_PINO.docx` (7 tables, 10 equation images). No `$$` or LaTeX leakage.
-- [x] **6B.3 Reproducibility packages** — `scripts/build_reproducibility_packages.py`: `reproducibility/public_repo/` (136 files, 22.5 MB) and `reproducibility/github/` (791 files, 80.2 MB), each with SHA-256 `PACKAGE_MANIFEST.json`.
-- [x] **6B.3 Final audit** — `scripts/audit_release_packages.py` → `reports/FINAL_AUDIT_REPORT.md`: **20/20 PASS** (credentials, secret names, key patterns, abstract/highlights, citations, DOIs, placeholders, claim map, DOCX structure, package contents).
+## Progress (Stage 7)
+- [x] **7.1 Pre-push audit + capability check** — `scripts/audit_release_packages.py` re-confirmed **20/20 PASS**, zero secret hits. `gh api user` authenticated as `Javad-Alizargar` (token valid to 2026-11-06); both target repositories were absent and were created successfully, so the fine-grained token has repository-creation and push rights.
+- [x] **7.2 Public repository + Pages** — `scripts/build_reproducibility_packages.py` now writes `.nojekyll` at the package root and in `web_simulator/`. `scripts/deploy_github_repos.py` committed **138 files (22.5 MB)** to `Javad-Alizargar/nanopore-pino-surrogate` (confirmed `private: false`), pushed `main`, and tagged `v1.0.0`. GitHub Pages enabled from `main` `/`; build reached `built`; simulator and assets (HTML/CSS/JS, embedded bundle, model metadata, both ONNX models, a results CSV) all return **HTTP 200** at `https://javad-alizargar.github.io/nanopore-pino-surrogate/web_simulator/`.
+- [x] **7.3 Private archive** — `reproducibility/github/` verified to contain manuscript sources and both DOCX, figures, tables, scripts, reports, and manifests, with **zero** files from `apis/` or `.venv/`. Committed **795 files (80.1 MB)**, created and pushed `Javad-Alizargar/nanopore-pino-surrogate-private` (visibility confirmed `private: true` **before** pushing). A clean local commit was made in the project root; `git status --ignored` confirms `apis/`, `logs/`, `download/`, and `.venv/` remain untracked.
+- [x] **7.4 Cover letter** — `scripts/export_cover_letter.py` → `manuscript/Cover_Letter_CPC_JCP.md` and `manuscript/Cover_Letter_CPC_JCP.docx` (39 paragraphs, no LaTeX leakage), addressed to CPC/JCP, naming the prior fixed-state DA-PINN study (`COMPHY-D-26-00857`) and the five advances.
+- [x] **7.5 Handoff** — this file, `reports/DECISIONS.md` (D-051–D-056), `reports/NEXT_ACTIONS.md`, and `reports/REPORT_FOR_CHATGPT.md` updated. Final project state: **COMPLETE**.
 
-## Stage 6B key results
+## Stage 7 key results
 ```
-Independent review        : OpenAI gpt-4.1-mini (11 issues, minor revision) + DeepSeek v4-pro (12 issues, minor revision)
-Task review spend         : ~$0.079 / $0.15 allowance (project ledger ~$0.099 committed after review)
-Critical correction       : s = 2 exp[clip(z(1-z)G_s,-15,15)] ; s->2, rho->0, c±->C0 exactly
-Number formatting         : 247 values rounded to 3-4 sig figs; exact values archived
-DOCX                      : Manuscript 6 tables / 6 figures ; Supplement 7 tables ; 0 LaTeX leaks
-Public package            : 136 files, 22.5 MB (strict allowlist)
-Private package           : 791 files, 80.2 MB (full state; credentials + .venv excluded)
-Final audit               : 20/20 PASS ; no secrets, no placeholders, refs 1-60 all cited with DOIs
-GitHub push               : NOT performed (AUTO_PRIVATE_GITHUB_PUSH=false)
+Auth user                 : Javad-Alizargar (fine-grained token, valid to 2026-11-06)
+Pre-push audit            : 20/20 PASS (zero secret hits)
+Public repo               : Javad-Alizargar/nanopore-pino-surrogate (public) ; tag v1.0.0 ; 138 files, 22.5 MB
+Private repo              : Javad-Alizargar/nanopore-pino-surrogate-private (private) ; 795 files, 80.1 MB
+GitHub Pages              : https://javad-alizargar.github.io/nanopore-pino-surrogate/web_simulator/ (built; assets HTTP 200)
+Cover letter              : manuscript/Cover_Letter_CPC_JCP.docx (39 paragraphs, 0 LaTeX leaks)
+Token handling            : GH_TOKEN env + transient credential helper only; clean https remotes; no token in .git/config
+Final commit SHAs         : recorded in reports/REPORT_FOR_CHATGPT.md (written after the final push)
 ```
 
 ## Cost
 ```
 Ledger before Stage 6B   : $0.01989345 total ($4.98010655 remaining)
 Stage 6B committed       : ~$0.0993 total ledger after review (~$0.079 task spend; ~$0.024 wasted on empty DeepSeek reasoning)
-Stage 6B other stages    : $0.00 (manuscript edits, DOCX, packages, audit are local)
+Stage 7 committed        : $0.00 (deployment, Pages, cover letter, reports and commits are local/API only)
 Remaining                : ~$4.90 of the $5.00 cap
 ```
 
@@ -66,4 +61,5 @@ Inverse demo       : R median rel error 0.004574 ; q_w not identifiable (median 
 - Independent review was **AI-assisted** (two providers), not expert peer review.
 - The DOCX was validated structurally; no page-rendered proof was possible in this environment.
 - q_w identifiability is a physical limit of conductance-only inversion, disclosed in the manuscript.
-- No repository push, no release, and no DOI have been created.
+- A permanent **Zenodo DOI** has not been minted; deposit is deferred to acceptance.
+- The private archive history was force-pushed once (rebuilt after its `.git` was regenerated); the public `v1.0.0` tag is stable.

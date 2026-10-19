@@ -97,8 +97,9 @@ def create_or_verify(spec: dict, env: dict, push: bool) -> None:
     assert "@" not in url, "token must never appear in the remote URL"
 
 
-def push_branch(spec: dict, env: dict) -> None:
-    git([*CRED, "push", "-u", "origin", "main"], env, spec["dir"])
+def push_branch(spec: dict, env: dict, force: bool = False) -> None:
+    mid = ["push"] + (["--force"] if force else []) + ["-u", "origin", "main"]
+    git([*CRED, *mid], env, spec["dir"])
 
 
 def verify_private_flag(name: str, expected: bool, env: dict) -> bool:
@@ -125,6 +126,7 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--only", choices=["public", "private"])
     ap.add_argument("--no-push", action="store_true")
+    ap.add_argument("--force", action="store_true", help="force-push main (after a rebuilt history)")
     args = ap.parse_args()
     env = load_env()
     user = run(["gh", "api", "user", "--jq", ".login"], env, ROOT).stdout.strip()
@@ -140,7 +142,7 @@ def main() -> None:
         if not ok_private:
             sys.exit(f"visibility mismatch for {spec['name']}")
         if not args.no_push:
-            push_branch(spec, env)
+            push_branch(spec, env, force=args.force)
             if spec["tag"]:
                 git([*IDENTITY, "tag", "-f", spec["tag"]], env, spec["dir"])
                 git([*CRED, "push", "-f", "origin", spec["tag"]], env, spec["dir"])
