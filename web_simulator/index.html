@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Nanopore PNP Neural-Operator Simulator</title>
+<link rel="stylesheet" href="style.css" />
+<script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.20.1/dist/ort.min.js"></script>
+</head>
+<body>
+<header>
+  <h1>Nanopore PNP Neural-Operator Simulator</h1>
+  <p class="sub">
+    Parameter-conditioned surrogate for the axisymmetric Poisson&ndash;Nernst&ndash;Planck
+    problem over <b>&mu; = (V<sub>app</sub>, C<sub>0</sub>, q<sub>w</sub>, R)</b>.
+    Main architecture: <b>Multi-Scale Radial PI-DeepONet</b> (charge-balanced reparameterization);
+    Exact-Boundary FNO-2D shown as the spectral benchmark. All inference runs client-side via
+    <code>onnxruntime-web</code> &mdash; no server calls.
+  </p>
+</header>
+
+<div id="status" class="status">Loading model metadata and operators&hellip;</div>
+<div id="engineBadge" class="engine-badge">Engine: initialising&hellip;</div>
+
+<main>
+  <section class="panel controls">
+    <h2>Inputs</h2>
+
+    <label class="field">
+      <span>Surrogate model</span>
+      <select id="modelSelect">
+        <option value="deeponet" selected>PI-DeepONet (reparam) &mdash; primary</option>
+        <option value="fno">Exact-Boundary FNO-2D (reparam) &mdash; benchmark</option>
+      </select>
+    </label>
+
+    <div class="slider-row" data-key="V_app_mV">
+      <div class="slider-head"><span>V<sub>app</sub></span><output id="out_V">50.0 mV</output></div>
+      <input type="range" id="sl_V" min="-75" max="75" step="0.5" value="50" />
+    </div>
+
+    <div class="slider-row" data-key="C0">
+      <div class="slider-head"><span>C<sub>0</sub></span><output id="out_C0">100 mol/m&sup3;</output></div>
+      <input type="range" id="sl_C0" min="10" max="200" step="1" value="100" />
+    </div>
+
+    <div class="slider-row" data-key="q_w">
+      <div class="slider-head"><span>q<sub>w</sub> (dimensionless wall charge)</span><output id="out_q">-0.0100</output></div>
+      <input type="range" id="sl_q" min="-0.10" max="0" step="0.001" value="-0.01" />
+    </div>
+
+    <div class="slider-row" data-key="R_nm">
+      <div class="slider-head"><span>R (pore radius)</span><output id="out_R">5.0 nm</output></div>
+      <input type="range" id="sl_R" min="2" max="8" step="0.1" value="5" />
+    </div>
+
+    <div class="derived">
+      <div><span>Debye length &lambda;<sub>D</sub></span><output id="out_lam">—</output></div>
+      <div><span>&lambda;<sub>D</sub>/R</span><output id="out_lamR">—</output></div>
+      <div><span>Wall charge &sigma;</span><output id="out_sigma">—</output></div>
+    </div>
+
+    <div id="oodFlags" class="ood-flags"></div>
+
+    <h2>Verified SG/FV benchmark states</h2>
+    <p class="hint">
+      One-click presets solved with the float64 finite-volume Scharfetter&ndash;Gummel
+      reference solver. Toggle the comparison to overlay the operator error.
+    </p>
+    <div id="presets" class="presets"></div>
+    <label class="toggle">
+      <input type="checkbox" id="compareToggle" />
+      <span>Show error vs.&nbsp;SG/FV reference (selected preset)</span>
+    </label>
+
+    <h2>Live Python solver</h2>
+    <p class="hint">
+      If <code>scripts/serve_interactive.py</code> is running, solve the exact
+      float64 SG/FV reference in Python at the current parameters (~0.20&nbsp;s).
+    </p>
+    <button id="liveSolveBtn" class="primary">Run Live Python SG/FV Solver (0.20 s)</button>
+    <div id="liveStatus" class="hint"></div>
+  </section>
+
+  <section class="panel results">
+    <div class="readouts">
+      <div class="big"><span>Mean axial current</span><output id="out_I">—</output></div>
+      <div class="big"><span>Inference latency</span><output id="out_ms">—</output></div>
+      <div class="big"><span id="refLabel">SG/FV reference</span><output id="out_refI">—</output></div>
+    </div>
+
+    <div class="maps">
+      <figure><figcaption>&psi;(r,z) dimensionless potential</figcaption>
+        <canvas id="cv_psi" width="240" height="620"></canvas></figure>
+      <figure><figcaption>c<sub>+</sub>(r,z) / C<sub>0</sub></figcaption>
+        <canvas id="cv_cp" width="240" height="620"></canvas></figure>
+      <figure><figcaption>c<sub>&minus;</sub>(r,z) / C<sub>0</sub></figcaption>
+        <canvas id="cv_cm" width="240" height="620"></canvas></figure>
+      <figure><figcaption>&rho;(r,z) = c<sub>+</sub>&minus;c<sub>&minus;</sub></figcaption>
+        <canvas id="cv_rho" width="240" height="620"></canvas></figure>
+    </div>
+    <p class="axis-note">
+      Heatmaps: vertical axis = z/L (0 = reservoir, 1 = reservoir), horizontal axis =
+      r/R (0 = centre, 1 = charged wall). When comparison is on, the maps show the
+      operator&nbsp;&minus;&nbsp;SG/FV difference on a diverging scale.
+    </p>
+
+    <figure class="wide"><figcaption>Axial current profile I(z) in pA</figcaption>
+      <canvas id="cv_I" width="1000" height="260"></canvas></figure>
+
+    <p class="footer-note">
+      Source: SG/FV direct solves (float64, 21&times;61) and ONNX operators exported from
+      <code>results/models/</code>. Accuracy: DeepONet-reparam global relative L2 on
+      held-out in-distribution states &psi; 8.9&times;10<sup>&minus;4</sup>,
+      I 1.1&times;10<sup>&minus;3</sup>.
+    </p>
+  </section>
+</main>
+<script src="data/embedded_bundle.js"></script>
+<script src="engine_js.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

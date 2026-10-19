@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.0",
+  "catalog_verified_date": "2026-10-18",
+  "notes": "Only models listed here may be admitted by the budget ledger. Any model_id not present in this catalog, or present without a matching pricing entry, is denied admission (fail-closed).",
+  "providers": {
+    "deepseek": {
+      "display_name": "DeepSeek",
+      "endpoint": "https://api.deepseek.com/v1",
+      "auth": "bearer",
+      "openai_compatible": true,
+      "credential_ref": "apis/deepseek.txt",
+      "models": [
+        {
+          "model_id": "deepseek-flash",
+          "family": "DeepSeek-V4.1-Flash",
+          "role": "default_worker_model",
+          "capabilities": ["text", "json_output", "tool_calls", "thinking_mode"],
+          "context_tokens": 1000000,
+          "max_output_tokens": 384000,
+          "supports_cache": true,
+          "recommended_for": ["routine coding", "metadata organization", "constrained draft work"]
+        },
+        {
+          "model_id": "deepseek-v4-pro",
+          "family": "DeepSeek-V4-Pro",
+          "role": "fallback_hard_reasoning",
+          "capabilities": ["text", "json_output", "tool_calls", "thinking_mode"],
+          "context_tokens": 1000000,
+          "max_output_tokens": 384000,
+          "supports_cache": true,
+          "recommended_for": ["hard reasoning", "long-horizon coding"]
+        }
+      ]
+    },
+    "openai": {
+      "display_name": "OpenAI",
+      "endpoint": "https://api.openai.com/v1",
+      "auth": "bearer",
+      "openai_compatible": true,
+      "credential_ref": "apis/chatgpt.txt",
+      "models": [
+        {
+          "model_id": "gpt-4o-mini",
+          "family": "GPT-4o mini",
+          "role": "default_reviewer_model",
+          "capabilities": ["text", "vision", "tool_calls", "caching"],
+          "context_tokens": 128000,
+          "max_output_tokens": 16384,
+          "supports_cache": true,
+          "recommended_for": ["important design decisions", "difficult debugging", "independent review"]
+        },
+        {
+          "model_id": "gpt-4.1-mini",
+          "family": "GPT-4.1 mini",
+          "role": "alternate_reviewer_model",
+          "capabilities": ["text", "vision", "tool_calls", "caching"],
+          "context_tokens": 1000000,
+          "max_output_tokens": 32768,
+          "supports_cache": true,
+          "recommended_for": ["long-context review"]
+        }
+      ]
+    }
+  },
+  "routing_policy": {
+    "routine_tasks": "deepseek:deepseek-flash",
+    "design_and_review": "openai:gpt-4o-mini",
+    "independent_review_cross_provider": true,
+    "unpriced_model_action": "deny",
+    "auto_upgrade_to_expensive_model": false
+  }
+}

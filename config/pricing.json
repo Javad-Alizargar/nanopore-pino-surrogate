@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.0",
+  "currency": "USD",
+  "unit": "per_1M_tokens",
+  "pricing_verified_date": "2026-10-18",
+  "sources": {
+    "deepseek_official": "https://api-docs.deepseek.com/quick_start/pricing",
+    "deepseek_secondary": "https://deepseek.ai/pricing",
+    "openai_official": "https://developers.openai.com/api/docs/pricing",
+    "openai_secondary": "https://www.economize.cloud/resources/open-ai/pricing/gpt-4o-mini/"
+  },
+  "reservation_policy": {
+    "use_peak_rates": true,
+    "use_cache_miss_input_rate": true,
+    "note": "Reservations use the most expensive applicable tier (peak + uncached input) to guarantee the up-front upper bound is conservative. Reconciliation uses actual reported usage and the time-based tier.",
+    "unknown_usage_action": "retain_full_reservation_as_unresolved"
+  },
+  "deepseek": {
+    "peak_hours_utc": "01:00-04:00 and 06:00-10:00, Mon-Fri (excluding Chinese public holidays); all other hours off-peak",
+    "models": {
+      "deepseek-flash": {
+        "input_cache_miss": { "off_peak": 0.15, "peak": 0.30 },
+        "input_cache_hit":  { "off_peak": 0.003, "peak": 0.006 },
+        "output":           { "off_peak": 0.60, "peak": 1.20 },
+        "max_output_tokens": 384000,
+        "legacy_aliases_retired": ["deepseek-chat", "deepseek-reasoner"],
+        "retired_date": "2026-07-24"
+      },
+      "deepseek-v4-pro": {
+        "input_cache_miss": { "off_peak": 0.66, "peak": 1.32 },
+        "input_cache_hit":  { "off_peak": 0.022, "peak": 0.044 },
+        "output":           { "off_peak": 1.98, "peak": 3.96 },
+        "max_output_tokens": 384000
+      }
+    }
+  },
+  "openai": {
+    "models": {
+      "gpt-4o-mini": {
+        "input_standard": 0.15,
+        "input_cached": 0.075,
+        "output": 0.60,
+        "max_output_tokens": 16384,
+        "context_tokens": 128000
+      },
+      "gpt-4.1-mini": {
+        "input_standard": 0.40,
+        "input_cached": 0.10,
+        "output": 1.60,
+        "max_output_tokens": 32768,
+        "context_tokens": 1000000
+      }
+    }
+  },
+  "budget": {
+    "project_total_usd": 5.00,
+    "openai_subbudget_usd": 1.00,
+    "max_reserved_cost_per_request_usd": 0.25,
+    "final_review_and_handoff_reserve_usd": 0.50,
+    "warning_fraction": 0.70,
+    "stop_new_tasks_fraction": 0.85
+  },
+  "safety_margin": {
+    "token_estimate_multiplier": 1.15,
+    "note": "Input token counts are multiplied by this factor before reserving, to cover tokenizer drift, tool schemas, and attachments."
+  }
+}

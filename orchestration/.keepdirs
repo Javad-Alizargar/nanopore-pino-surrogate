@@ -1,0 +1,15 @@
+config
+instructions
+download
+data/processed
+literature/raw
+literature/cache
+scripts
+orchestration
+workers
+results
+manuscript
+reports
+logs
+reproducibility/github
+reproducibility/public_repo

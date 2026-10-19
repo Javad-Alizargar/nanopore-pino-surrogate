@@ -1,0 +1,1904 @@
+{
+  "schema_version": "1.0",
+  "generated_utc": "2026-10-18T09:26:47Z",
+  "retrieval_date": "2026-10-18",
+  "sources": [
+    "OpenAlex",
+    "NCBI E-utilities",
+    "Crossref",
+    "prior manuscript"
+  ],
+  "candidate_pool_size": 172,
+  "counts": {
+    "total": 60,
+    "by_origin": {
+      "prior_da_pinn": 34,
+      "topic_fno_pino": 8,
+      "topic_deeponet": 6,
+      "topic_constraints_conditioning": 6,
+      "topic_nanopore_edl_design": 6
+    },
+    "crossref_verified": 60
+  },
+  "entries": [
+    {
+      "title": "Characterization of individual polynucleotide molecules using a membrane\u2009channel",
+      "authors": [
+        "Kasianowicz, John\u2009J.",
+        "Brandin, Eric",
+        "Branton, Daniel",
+        "Deamer, David\u2009W."
+      ],
+      "year": 1996,
+      "journal": "Proceedings of the National Academy of Sciences",
+      "doi": "10.1073/pnas.93.24.13770",
+      "pmid": null,
+      "url": "https://doi.org/10.1073/pnas.93.24.13770",
+      "cited_by_count": null,
+      "abstract_available": null,
+      "topics": [
+        "prior_da_pinn"
+      ],
+      "origin": "prior_da_pinn",
+      "sources": [
+        "manuscript",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "raw_citation": "J. J. Kasianowicz, E. Brandin, D. Branton, D. W. Deamer, Characterization of individual polynucleotide molecules using a membrane\u2009channel, Proc. Natl. Acad. Sci. U.S.A. 93 (1996) 13770-13773..",
+      "id": "ref0001"
+    },
+    {
+      "title": "Solid-state nanopores",
+      "authors": [
+        "Dekker, Cees"
+      ],
+      "year": 2007,
+      "journal": "Nature Nanotechnology",
+      "doi": "10.1038/nnano.2007.27",
+      "pmid": null,
+      "url": "https://doi.org/10.1038/nnano.2007.27",
+      "cited_by_count": null,
+      "abstract_available": null,
+      "topics": [
+        "prior_da_pinn"
+      ],
+      "origin": "prior_da_pinn",
+      "sources": [
+        "manuscript",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "raw_citation": "C. Dekker, Solid-state nanopores, Nat. Nanotechnol. 2 (2007) 209-215..",
+      "id": "ref0002"
+    },
+    {
+      "title": "The potential and challenges of nanopore sequencing",
+      "authors": [
+        "Branton, Daniel",
+        "Deamer, David W",
+        "Marziali, Andre",
+        "Bayley, Hagan",
+        "Benner, Steven A",
+        "Butler, Thomas",
+        "Di Ventra, Massimiliano",
+        "Garaj, Slaven",
+        "Hibbs, Andrew",
+        "Huang, Xiaohua",
+        "Jovanovich, Stevan B",
+        "Krstic, Predrag S",
+        "Lindsay, Stuart",
+        "Ling, Xinsheng Sean",
+        "Mastrangelo, Carlos H",
+        "Meller, Amit",
+        "Oliver, John S",
+        "Pershin, Yuriy V",
+        "Ramsey, J Michael",
+        "Riehn, Robert",
+        "Soni, Gautam V",
+        "Tabard-Cossa, Vincent",
+        "Wanunu, Meni",
+        "Wiggin, Matthew",
+        "Schloss, Jeffery A"
+      ],
+      "year": 2008,
+      "journal": "Nature Biotechnology",
+      "doi": "10.1038/nbt.1495",
+      "pmid": null,
+      "url": "https://doi.org/10.1038/nbt.1495",
+      "cited_by_count": null,
+      "abstract_available": null,
+      "topics": [
+        "prior_da_pinn"
+      ],
+      "origin": "prior_da_pinn",
+      "sources": [
+        "manuscript",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "raw_citation": "D. Branton, D. W. Deamer, A. Marziali, H. Bayley, S. A. Benner, T. Butler, M. Di Ventra, S. Garaj, A. Hibbs, X. Huang, S. B. Jovanovich, P. S. Krstic, S. Lindsay, X. S. Ling, C. H. Mastrangelo, A. Meller, J. S. Oliver, Y. V. Pershin, J. M. Ramsey, R. Riehn, G. V. Soni, V. Tabard-Cossa, M. Wanunu, M. Wiggin, J. A. Schloss, The potential and challenges of nanopore sequencing, Nat. Biotechnol. 26 (2008) 1146-1153..",
+      "id": "ref0003"
+    },
+    {
+      "title": "Nanopore analytics: sensing of single molecules",
+      "authors": [
+        "Howorka, Stefan",
+        "Siwy, Zuzanna"
+      ],
+      "year": 2009,
+      "journal": "Chemical Society Reviews",
+      "doi": "10.1039/b813796j",
+      "pmid": null,
+      "url": "https://doi.org/10.1039/b813796j",
+      "cited_by_count": null,
+      "abstract_available": null,
+      "topics": [
+        "prior_da_pinn"
+      ],
+      "origin": "prior_da_pinn",
+      "sources": [
+        "manuscript",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "raw_citation": "S. Howorka, Z. Siwy, Nanopore analytics: sensing of single molecules, Chem. Soc. Rev. 38 (2009) 2360-2384..",
+      "id": "ref0004"
+    },
+    {
+      "title": "Nanopore sensors for nucleic acid analysis",
+      "authors": [
+        "Venkatesan, Bala Murali",
+        "Bashir, Rashid"
+      ],
+      "year": 2011,
+      "journal": "Nature Nanotechnology",
+      "doi": "10.1038/nnano.2011.129",
+      "pmid": null,
+      "url": "https://doi.org/10.1038/nnano.2011.129",
+      "cited_by_count": null,
+      "abstract_available": null,
+      "topics": [
+        "prior_da_pinn"
+      ],
+      "origin": "prior_da_pinn",
+      "sources": [
+        "manuscript",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "raw_citation": "B. M. Venkatesan, R. Bashir, Nanopore sensors for nucleic acid analysis, Nat. Nanotechnol. 6 (2011) 615-624..",
+      "id": "ref0005"
+    },
+    {
+      "title": "Nanopores: A journey towards DNA sequencing",
+      "authors": [
+        "Wanunu, Meni"
+      ],
+      "year": 2012,
+      "journal": "Physics of Life Reviews",
+      "doi": "10.1016/j.plrev.2012.05.010",
+      "pmid": null,
+      "url": "https://doi.org/10.1016/j.plrev.2012.05.010",
+      "cited_by_count": null,
+      "abstract_available": null,
+      "topics": [
+        "prior_da_pinn"
+      ],
+      "origin": "prior_da_pinn",
+      "sources": [
+        "manuscript",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "raw_citation": "M. Wanunu, Nanopores: A journey towards DNA sequencing, Phys. Life Rev. 9 (2012) 125-158..",
+      "id": "ref0006"
+    },
+    {
+      "title": "Surface-Charge-Governed Ion Transport in Nanofluidic Channels",
+      "authors": [
+        "Stein, Derek",
+        "Kruithof, Maarten",
+        "Dekker, Cees"
+      ],
+      "year": 2004,
+      "journal": "Physical Review Letters",
+      "doi": "10.1103/physrevlett.93.035901",
+      "pmid": null,
+      "url": "https://doi.org/10.1103/physrevlett.93.035901",
+      "cited_by_count": null,
+      "abstract_available": null,
+      "topics": [
+        "prior_da_pinn"
+      ],
+      "origin": "prior_da_pinn",
+      "sources": [
+        "manuscript",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "raw_citation": "D. Stein, M. Kruithof, C. Dekker, Surface-Charge-Governed Ion Transport in Nanofluidic Channels, Phys. Rev. Lett. 93 (2004) 035901..",
+      "id": "ref0007"
+    },
+    {
+      "title": "Transport phenomena in nanofluidics",
+      "authors": [
+        "Schoch, Reto B.",
+        "Han, Jongyoon",
+        "Renaud, Philippe"
+      ],
+      "year": 2008,
+      "journal": "Reviews of Modern Physics",
+      "doi": "10.1103/revmodphys.80.839",
+      "pmid": null,
+      "url": "https://doi.org/10.1103/revmodphys.80.839",
+      "cited_by_count": null,
+      "abstract_available": null,
+      "topics": [
+        "prior_da_pinn"
+      ],
+      "origin": "prior_da_pinn",
+      "sources": [
+        "manuscript",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "raw_citation": "R. B. Schoch, J. Han, P. Renaud, Transport phenomena in nanofluidics, Rev. Mod. Phys. 80 (2008) 839-883..",
+      "id": "ref0008"
+    },
+    {
+      "title": "Nanofluidics, from bulk to interfaces",
+      "authors": [
+        "Bocquet, Lyd\u00e9ric",
+        "Charlaix, Elisabeth"
+      ],
+      "year": 2010,
+      "journal": "Chem. Soc. Rev.",
+      "doi": "10.1039/b909366b",
+      "pmid": null,
+      "url": "https://doi.org/10.1039/b909366b",
+      "cited_by_count": null,
+      "abstract_available": null,
+      "topics": [
+        "prior_da_pinn"
+      ],
+      "origin": "prior_da_pinn",
+      "sources": [
+        "manuscript",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "raw_citation": "L. Bocquet, E. Charlaix, Nanofluidics, from bulk to interfaces, Chem. Soc. Rev. 39 (2010) 1073-1095..",
+      "id": "ref0009"
+    },
+    {
+      "title": "Ion transport in nanofluidic channels",
+      "authors": [
+        "Daiguji, Hirofumi"
+      ],
+      "year": 2010,
+      "journal": "Chem. Soc. Rev.",
+      "doi": "10.1039/b820556f",
+      "pmid": null,
+      "url": "https://doi.org/10.1039/b820556f",
+      "cited_by_count": null,
+      "abstract_available": null,
+      "topics": [
+        "prior_da_pinn"
+      ],
+      "origin": "prior_da_pinn",
+      "sources": [
+        "manuscript",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "raw_citation": "H. Daiguji, Ion transport in nanofluidic channels, Chem. Soc. Rev. 39 (2010) 901-911..",
+      "id": "ref0010"
+    },
+    {
+      "title": "Electrostatic Control of Ions and Molecules in Nanofluidic Transistors",
+      "authors": [
+        "Karnik, Rohit",
+        "Fan, Rong",
+        "Yue, Min",
+        "Li, Deyu",
+        "Yang, Peidong",
+        "Majumdar, Arun"
+      ],
+      "year": 2005,
+      "journal": "Nano Letters",
+      "doi": "10.1021/nl050493b",
+      "pmid": null,
+      "url": "https://doi.org/10.1021/nl050493b",
+      "cited_by_count": null,
+      "abstract_available": null,
+      "topics": [
+        "prior_da_pinn"
+      ],
+      "origin": "prior_da_pinn",
+      "sources": [
+        "manuscript",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "raw_citation": "R. Karnik, R. Fan, M. Yue, D. Li, P. Yang, A. Majumdar, Electrostatic Control of Ions and Molecules in Nanofluidic Transistors, Nano Lett. 5 (2005) 943-948..",
+      "id": "ref0011"
+    },
+    {
+      "title": "Transport mechanisms in nanopores and nanochannels: can we mimic nature?",
+      "authors": [
+        "Tagliazucchi, Mario",
+        "Szleifer, Igal"
+      ],
+      "year": 2015,
+      "journal": "Materials Today",
+      "doi": "10.1016/j.mattod.2014.10.020",
+      "pmid": null,
+      "url": "https://doi.org/10.1016/j.mattod.2014.10.020",
+      "cited_by_count": null,
+      "abstract_available": null,
+      "topics": [
+        "prior_da_pinn"
+      ],
+      "origin": "prior_da_pinn",
+      "sources": [
+        "manuscript",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "raw_citation": "M. Tagliazucchi, I. Szleifer, Transport mechanisms in nanopores and nanochannels: can we mimic nature?, Mater. Today 18 (2015) 131-142..",
+      "id": "ref0012"
+    },
+    {
+      "title": "Salt Dependence of Ion Transport and DNA Translocation through Solid-State Nanopores",
+      "authors": [
+        "Smeets, Ralph M. M.",
+        "Keyser, Ulrich F.",
+        "Krapf, Diego",
+        "Wu, Meng-Yue",
+        "Dekker, Nynke H.",
+        "Dekker, Cees"
+      ],
+      "year": 2005,
+      "journal": "Nano Letters",
+      "doi": "10.1021/nl052107w",
+      "pmid": null,
+      "url": "https://doi.org/10.1021/nl052107w",
+      "cited_by_count": null,
+      "abstract_available": null,
+      "topics": [
+        "prior_da_pinn"
+      ],
+      "origin": "prior_da_pinn",
+      "sources": [
+        "manuscript",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "raw_citation": "R. M. M. Smeets, U. F. Keyser, D. Krapf, M. Y. Wu, N. H. Dekker, C. Dekker, Salt Dependence of Ion Transport and DNA Translocation through Solid-State Nanopores, Nano Lett. 6 (2006) 89-95..",
+      "id": "ref0013"
+    },
+    {
+      "title": "Rectification in synthetic conical nanopores: A one-dimensional Poisson-Nernst-Planck model",
+      "authors": [
+        "Kosi\u0144ska, I. D.",
+        "Goychuk, I.",
+        "Kostur, M.",
+        "Schmid, G.",
+        "H\u00e4nggi, P."
+      ],
+      "year": 2008,
+      "journal": "Physical Review E",
+      "doi": "10.1103/physreve.77.031131",
+      "pmid": null,
+      "url": "https://doi.org/10.1103/physreve.77.031131",
+      "cited_by_count": null,
+      "abstract_available": null,
+      "topics": [
+        "prior_da_pinn"
+      ],
+      "origin": "prior_da_pinn",
+      "sources": [
+        "manuscript",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "raw_citation": "I. D. Kosi\u0144ska, I. Goychuk, M. Kostur, G. Schmid, P. H\u00e4nggi, Rectification in synthetic conical nanopores: A one-dimensional Poisson-Nernst-Planck model, Phys. Rev. E 77 (2008) 031131..",
+      "id": "ref0014"
+    },
+    {
+      "title": "Multiscale analysis of the effect of surface charge pattern on a nanopore\u2019s rectification and selectivity properties: From all-atom model to Poisson-Nernst-Planck",
+      "authors": [
+        "Valisk\u00f3, M\u00f3nika",
+        "Matejczyk, Bart\u0142omiej",
+        "Hat\u00f3, Zolt\u00e1n",
+        "Krist\u00f3f, Tam\u00e1s",
+        "M\u00e1dai, Eszter",
+        "Fertig, D\u00e1vid",
+        "Gillespie, Dirk",
+        "Boda, Dezs\u0151"
+      ],
+      "year": 2019,
+      "journal": "The Journal of Chemical Physics",
+      "doi": "10.1063/1.5091789",
+      "pmid": null,
+      "url": "https://doi.org/10.1063/1.5091789",
+      "cited_by_count": null,
+      "abstract_available": null,
+      "topics": [
+        "prior_da_pinn"
+      ],
+      "origin": "prior_da_pinn",
+      "sources": [
+        "manuscript",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "raw_citation": "M. Valisk\u00f3, B. Matejczyk, Z. Hat\u00f3, T. Krist\u00f3f, E. M\u00e1dai, D. Fertig, D. Gillespie, D. Boda, Multiscale analysis of the effect of surface charge pattern on a nanopore\u2019s rectification and selectivity properties: From all-atom model to Poisson-Nernst-Planck, J. Chem. Phys. 150 (2019) 144703..",
+      "id": "ref0015"
+    },
+    {
+      "title": "The Selective Transport of Ions in Charged Nanopore with Combined Multi-Physics Fields",
+      "authors": [
+        "Ma, Pengfei",
+        "Zheng, Jianxiang",
+        "Zhao, Danting",
+        "Zhang, Wenjie",
+        "Lu, Gonghao",
+        "Lin, Lingxin",
+        "Zhao, Zeyuan",
+        "Huang, Zijing",
+        "Cao, Liuxuan"
+      ],
+      "year": 2021,
+      "journal": "Materials",
+      "doi": "10.3390/ma14227012",
+      "pmid": null,
+      "url": "https://doi.org/10.3390/ma14227012",
+      "cited_by_count": null,
+      "abstract_available": null,
+      "topics": [
+        "prior_da_pinn"
+      ],
+      "origin": "prior_da_pinn",
+      "sources": [
+        "manuscript",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "raw_citation": "P. Ma, J. Zheng, D. Zhao, W. Zhang, G. Lu, L. Lin, Z. Zhao, Z. Huang, L. Cao, The Selective Transport of Ions in Charged Nanopore with Combined Multi-Physics Fields, Materials 14 (2021) 7012..",
+      "id": "ref0016"
+    },
+    {
+      "title": "Poisson\u2013Nernst\u2013Planck Theory Approach to the Calculation of Current Through Biological Ion Channels",
+      "authors": [
+        "Coalson, R.D.",
+        "Kurnikova, M.G."
+      ],
+      "year": 2005,
+      "journal": "IEEE Transactions on Nanobioscience",
+      "doi": "10.1109/tnb.2004.842495",
+      "pmid": null,
+      "url": "https://doi.org/10.1109/tnb.2004.842495",
+      "cited_by_count": null,
+      "abstract_available": null,
+      "topics": [
+        "prior_da_pinn"
+      ],
+      "origin": "prior_da_pinn",
+      "sources": [
+        "manuscript",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "raw_citation": "R. Coalson, M. Kurnikova, Poisson\u2013Nernst\u2013Planck Theory Approach to the Calculation of Current Through Biological Ion Channels, IEEE Trans. Nanobiosci. 4 (2005) 81-93..",
+      "id": "ref0017"
+    },
+    {
+      "title": "Poisson\u2013Nernst\u2013Planck Systems for Ion Channels with Permanent Charges",
+      "authors": [
+        "Eisenberg, Bob",
+        "Liu, Weishi"
+      ],
+      "year": 2007,
+      "journal": "SIAM Journal on Mathematical Analysis",
+      "doi": "10.1137/060657480",
+      "pmid": null,
+      "url": "https://doi.org/10.1137/060657480",
+      "cited_by_count": null,
+      "abstract_available": null,
+      "topics": [
+        "prior_da_pinn"
+      ],
+      "origin": "prior_da_pinn",
+      "sources": [
+        "manuscript",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "raw_citation": "B. Eisenberg, W. Liu, Poisson\u2013Nernst\u2013Planck Systems for Ion Channels with Permanent Charges, SIAM J. Math. Anal. 38 (2007) 1932-1966..",
+      "id": "ref0018"
+    },
+    {
+      "title": "Second-order Poisson\u2013Nernst\u2013Planck solver for ion transport",
+      "authors": [
+        "Zheng, Qiong",
+        "Chen, Duan",
+        "Wei, Guo-Wei"
+      ],
+      "year": 2011,
+      "journal": "Journal of Computational Physics",
+      "doi": "10.1016/j.jcp.2011.03.020",
+      "pmid": null,
+      "url": "https://doi.org/10.1016/j.jcp.2011.03.020",
+      "cited_by_count": null,
+      "abstract_available": null,
+      "topics": [
+        "prior_da_pinn"
+      ],
+      "origin": "prior_da_pinn",
+      "sources": [
+        "manuscript",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "raw_citation": "Q. Zheng, D. Chen, G. W. Wei, Second-order Poisson\u2013Nernst\u2013Planck solver for ion transport, J. Comput. Phys. 230 (2011) 5239-5262..",
+      "id": "ref0019"
+    },
+    {
+      "title": "Physics-informed neural networks: A deep learning framework for solving forward and inverse problems involving nonlinear partial differential equations",
+      "authors": [
+        "Raissi, M.",
+        "Perdikaris, P.",
+        "Karniadakis, G.E."
+      ],
+      "year": 2019,
+      "journal": "Journal of Computational Physics",
+      "doi": "10.1016/j.jcp.2018.10.045",
+      "pmid": null,
+      "url": "https://doi.org/10.1016/j.jcp.2018.10.045",
+      "cited_by_count": null,
+      "abstract_available": null,
+      "topics": [
+        "prior_da_pinn"
+      ],
+      "origin": "prior_da_pinn",
+      "sources": [
+        "manuscript",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "raw_citation": "M. Raissi, P. Perdikaris, G. Karniadakis, Physics-informed neural networks: A deep learning framework for solving forward and inverse problems involving nonlinear partial differential equations, J. Comput. Phys. 378 (2019) 686-707..",
+      "id": "ref0020"
+    },
+    {
+      "title": "Physics-informed machine learning",
+      "authors": [
+        "Karniadakis, George Em",
+        "Kevrekidis, Ioannis G.",
+        "Lu, Lu",
+        "Perdikaris, Paris",
+        "Wang, Sifan",
+        "Yang, Liu"
+      ],
+      "year": 2021,
+      "journal": "Nature Reviews Physics",
+      "doi": "10.1038/s42254-021-00314-5",
+      "pmid": null,
+      "url": "https://doi.org/10.1038/s42254-021-00314-5",
+      "cited_by_count": null,
+      "abstract_available": null,
+      "topics": [
+        "prior_da_pinn"
+      ],
+      "origin": "prior_da_pinn",
+      "sources": [
+        "manuscript",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "raw_citation": "G. E. Karniadakis, I. G. Kevrekidis, L. Lu, P. Perdikaris, S. Wang, L. Yang, Physics-informed machine learning, Nat. Rev. Phys. 3 (2021) 422-440..",
+      "id": "ref0021"
+    },
+    {
+      "title": "DeepXDE: A Deep Learning Library for Solving Differential Equations",
+      "authors": [
+        "Lu, Lu",
+        "Meng, Xuhui",
+        "Mao, Zhiping",
+        "Karniadakis, George Em"
+      ],
+      "year": 2021,
+      "journal": "SIAM Review",
+      "doi": "10.1137/19m1274067",
+      "pmid": null,
+      "url": "https://doi.org/10.1137/19m1274067",
+      "cited_by_count": null,
+      "abstract_available": null,
+      "topics": [
+        "prior_da_pinn"
+      ],
+      "origin": "prior_da_pinn",
+      "sources": [
+        "manuscript",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "raw_citation": "L. Lu, X. Meng, Z. Mao, G. E. Karniadakis, DeepXDE: A Deep Learning Library for Solving Differential Equations, SIAM Rev. 63 (2021) 208-228..",
+      "id": "ref0022"
+    },
+    {
+      "title": "Artificial neural networks for solving ordinary and partial differential equations",
+      "authors": [
+        "Lagaris, I.E.",
+        "Likas, A.",
+        "Fotiadis, D.I."
+      ],
+      "year": 1998,
+      "journal": "IEEE Transactions on Neural Networks",
+      "doi": "10.1109/72.712178",
+      "pmid": null,
+      "url": "https://doi.org/10.1109/72.712178",
+      "cited_by_count": null,
+      "abstract_available": null,
+      "topics": [
+        "prior_da_pinn"
+      ],
+      "origin": "prior_da_pinn",
+      "sources": [
+        "manuscript",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "raw_citation": "I. Lagaris, A. Likas, D. Fotiadis, Artificial neural networks for solving ordinary and partial differential equations, IEEE Trans. Neural Netw. 9 (1998) 987-1000..",
+      "id": "ref0023"
+    },
+    {
+      "title": "Exact imposition of boundary conditions with distance functions in physics-informed deep neural networks",
+      "authors": [
+        "Sukumar, N.",
+        "Srivastava, Ankit"
+      ],
+      "year": 2022,
+      "journal": "Computer Methods in Applied Mechanics and Engineering",
+      "doi": "10.1016/j.cma.2021.114333",
+      "pmid": null,
+      "url": "https://doi.org/10.1016/j.cma.2021.114333",
+      "cited_by_count": null,
+      "abstract_available": null,
+      "topics": [
+        "prior_da_pinn"
+      ],
+      "origin": "prior_da_pinn",
+      "sources": [
+        "manuscript",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "raw_citation": "N. Sukumar, A. Srivastava, Exact imposition of boundary conditions with distance functions in physics-informed deep neural networks, Comput. Methods Appl. Mech. Eng. 389 (2022) 114333..",
+      "id": "ref0024"
+    },
+    {
+      "title": "Understanding and Mitigating Gradient Flow Pathologies in Physics-Informed Neural Networks",
+      "authors": [
+        "Wang, Sifan",
+        "Teng, Yujun",
+        "Perdikaris, Paris"
+      ],
+      "year": 2021,
+      "journal": "SIAM Journal on Scientific Computing",
+      "doi": "10.1137/20m1318043",
+      "pmid": null,
+      "url": "https://doi.org/10.1137/20m1318043",
+      "cited_by_count": null,
+      "abstract_available": null,
+      "topics": [
+        "prior_da_pinn"
+      ],
+      "origin": "prior_da_pinn",
+      "sources": [
+        "manuscript",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "raw_citation": "S. Wang, Y. Teng, P. Perdikaris, Understanding and Mitigating Gradient Flow Pathologies in Physics-Informed Neural Networks, SIAM J. Sci. Comput. 43 (2021) A3055-A3081..",
+      "id": "ref0025"
+    },
+    {
+      "title": "Characterizing possible failure modes in physics-informed neural networks",
+      "authors": [],
+      "year": 2021,
+      "journal": "arXiv (Cornell University)",
+      "doi": "10.48550/arxiv.2109.01050",
+      "pmid": null,
+      "url": "https://doi.org/10.48550/arxiv.2109.01050",
+      "cited_by_count": null,
+      "abstract_available": null,
+      "topics": [
+        "prior_da_pinn"
+      ],
+      "origin": "prior_da_pinn",
+      "sources": [
+        "manuscript"
+      ],
+      "verification": {
+        "crossref": false,
+        "openalex": true,
+        "title_match": null
+      },
+      "retrieval_date": "2026-10-18",
+      "raw_citation": "A. S. Krishnapriyan, A. Gholami, S. Zhe, R. M. Kirby, M. W. Mahoney, Characterizing possible failure modes in physics-informed neural networks, Advances in Neural Information Processing Systems 34 (2021) 26548-26560..",
+      "id": "ref0026"
+    },
+    {
+      "title": "Extended Physics-Informed Neural Networks (XPINNs): A Generalized Space-Time Domain Decomposition Based Deep Learning Framework for Nonlinear Partial Differential Equations",
+      "authors": [
+        "D. Jagtap, Ameya",
+        "Em Karniadakis, George"
+      ],
+      "year": 2020,
+      "journal": "Communications in Computational Physics",
+      "doi": "10.4208/cicp.oa-2020-0164",
+      "pmid": null,
+      "url": "https://doi.org/10.4208/cicp.oa-2020-0164",
+      "cited_by_count": null,
+      "abstract_available": null,
+      "topics": [
+        "prior_da_pinn"
+      ],
+      "origin": "prior_da_pinn",
+      "sources": [
+        "manuscript",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "raw_citation": "A. D. Jagtap, G. Em Karniadakis, Extended Physics-Informed Neural Networks (XPINNs): A Generalized Space-Time Domain Decomposition Based Deep Learning Framework for Nonlinear Partial Differential Equations, Commun. Comput. Phys. 28 (2020) 2002-2041..",
+      "id": "ref0027"
+    },
+    {
+      "title": "Enriched physics-informed neural networks for dynamic Poisson-Nernst-Planck systems",
+      "authors": [
+        "Huang, Xujia",
+        "Wang, Fajie",
+        "Zhang, Benrong",
+        "Liu, Hanqing"
+      ],
+      "year": 2025,
+      "journal": "Mathematics and Computers in Simulation",
+      "doi": "10.1016/j.matcom.2025.04.037",
+      "pmid": null,
+      "url": "https://doi.org/10.1016/j.matcom.2025.04.037",
+      "cited_by_count": null,
+      "abstract_available": null,
+      "topics": [
+        "prior_da_pinn"
+      ],
+      "origin": "prior_da_pinn",
+      "sources": [
+        "manuscript",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "raw_citation": "X. Huang, F. Wang, B. Zhang, H. Liu, Enriched physics-informed neural networks for dynamic Poisson-Nernst-Planck systems, Math. Comput. Simul. 237 (2025) 231-246..",
+      "id": "ref0028"
+    },
+    {
+      "title": "Physics-informed neural networks for solving thermal response of charring materials",
+      "authors": [
+        "Zheng, Jinglai",
+        "Huang, Jie",
+        "Huang, Haiming"
+      ],
+      "year": 2025,
+      "journal": "Acta Astronautica",
+      "doi": "10.1016/j.actaastro.2025.07.010",
+      "pmid": null,
+      "url": "https://doi.org/10.1016/j.actaastro.2025.07.010",
+      "cited_by_count": null,
+      "abstract_available": null,
+      "topics": [
+        "prior_da_pinn"
+      ],
+      "origin": "prior_da_pinn",
+      "sources": [
+        "manuscript",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "raw_citation": "J. Zheng, J. Huang, H. Huang, Physics-informed neural networks for solving thermal response of charring materials, Acta Astronaut. 236 (2025) 213-227..",
+      "id": "ref0029"
+    },
+    {
+      "title": "CF-DeepONet: Deep operator neural networks for solving compressible flows",
+      "authors": [
+        "Zheng, Jinglai",
+        "Hu, Hanying",
+        "Huang, Jie",
+        "Zhao, Buyue",
+        "Huang, Haiming"
+      ],
+      "year": 2025,
+      "journal": "Aerospace Science and Technology",
+      "doi": "10.1016/j.ast.2025.110329",
+      "pmid": null,
+      "url": "https://doi.org/10.1016/j.ast.2025.110329",
+      "cited_by_count": null,
+      "abstract_available": null,
+      "topics": [
+        "prior_da_pinn"
+      ],
+      "origin": "prior_da_pinn",
+      "sources": [
+        "manuscript",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "raw_citation": "J. Zheng, H. Hu, J. Huang, B. Zhao, H. Huang, CF-DeepONet: Deep operator neural networks for solving compressible flows, Aerosp. Sci. Technol. 163 (2025) 110329..",
+      "id": "ref0030"
+    },
+    {
+      "title": "T-phPINN: Physics-informed neural networks for solving 2D non-Fourier heat conduction equations",
+      "authors": [
+        "Zheng, Jinglai",
+        "Li, Fan",
+        "Huang, Haiming"
+      ],
+      "year": 2024,
+      "journal": "International Journal of Heat and Mass Transfer",
+      "doi": "10.1016/j.ijheatmasstransfer.2024.126216",
+      "pmid": null,
+      "url": "https://doi.org/10.1016/j.ijheatmasstransfer.2024.126216",
+      "cited_by_count": null,
+      "abstract_available": null,
+      "topics": [
+        "prior_da_pinn"
+      ],
+      "origin": "prior_da_pinn",
+      "sources": [
+        "manuscript",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "raw_citation": "J. Zheng, F. Li, H. Huang, T-phPINN: Physics-informed neural networks for solving 2D non-Fourier heat conduction equations, Int. J. Heat Mass Transf. 235 (2024) 126216..",
+      "id": "ref0031"
+    },
+    {
+      "title": "Predicting lithium-ion battery health using attention mechanism with Kolmogorov-Arnold and physics-informed neural networks",
+      "authors": [
+        "Wei, Congxin",
+        "Pang, Haikuo",
+        "Huang, Teng",
+        "Quan, Zidong",
+        "Qian, Zhifeng"
+      ],
+      "year": 2026,
+      "journal": "Expert Systems with Applications",
+      "doi": "10.1016/j.eswa.2025.128969",
+      "pmid": null,
+      "url": "https://doi.org/10.1016/j.eswa.2025.128969",
+      "cited_by_count": null,
+      "abstract_available": null,
+      "topics": [
+        "prior_da_pinn"
+      ],
+      "origin": "prior_da_pinn",
+      "sources": [
+        "manuscript",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "raw_citation": "C. Wei, H. Pang, T. Huang, Z. Quan, Z. Qian, Predicting lithium-ion battery health using attention mechanism with Kolmogorov-Arnold and physics-informed neural networks, Expert Syst. Appl. 296 (2026) 128969..",
+      "id": "ref0032"
+    },
+    {
+      "title": "Large-signal analysis of a silicon Read diode oscillator",
+      "authors": [
+        "Scharfetter, D.L.",
+        "Gummel, H.K."
+      ],
+      "year": 1969,
+      "journal": "IEEE Transactions on Electron Devices",
+      "doi": "10.1109/t-ed.1969.16566",
+      "pmid": null,
+      "url": "https://doi.org/10.1109/t-ed.1969.16566",
+      "cited_by_count": null,
+      "abstract_available": null,
+      "topics": [
+        "prior_da_pinn"
+      ],
+      "origin": "prior_da_pinn",
+      "sources": [
+        "manuscript",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "raw_citation": "D. Scharfetter, H. Gummel, Large-signal analysis of a silicon Read diode oscillator, IEEE Trans. Electron Devices 16 (1969) 64-77..",
+      "id": "ref0033"
+    },
+    {
+      "title": "An analysis of the Scharfetter-Gummel box method for the stationary semiconductor device equations",
+      "authors": [
+        "Miller, J. J. H.",
+        "Wang, Song"
+      ],
+      "year": 1994,
+      "journal": "ESAIM: Mathematical Modelling and Numerical Analysis",
+      "doi": "10.1051/m2an/1994280201231",
+      "pmid": null,
+      "url": "https://doi.org/10.1051/m2an/1994280201231",
+      "cited_by_count": null,
+      "abstract_available": null,
+      "topics": [
+        "prior_da_pinn"
+      ],
+      "origin": "prior_da_pinn",
+      "sources": [
+        "manuscript",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "raw_citation": "J. J. H. Miller, S. Wang, An analysis of the Scharfetter-Gummel box method for the stationary semiconductor device equations, ESAIM: M2AN 28 (1994) 123-140..",
+      "id": "ref0034"
+    },
+    {
+      "title": "D-FNO: A decomposed Fourier neural operator for large-scale parametric partial differential equations",
+      "authors": [
+        "Kangjie Li",
+        "Wenjing Ye"
+      ],
+      "year": 2025,
+      "journal": "Computer Methods in Applied Mechanics and Engineering",
+      "doi": "10.1016/j.cma.2025.117732",
+      "pmid": null,
+      "url": "https://doi.org/10.1016/j.cma.2025.117732",
+      "cited_by_count": 21,
+      "abstract_available": false,
+      "topics": [
+        "fno_pino"
+      ],
+      "origin": "topic_fno_pino",
+      "sources": [
+        "openalex",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "id": "ref0035"
+    },
+    {
+      "title": "Physics-informed fourier neural operators: A machine learning method for parametric partial differential equations",
+      "authors": [],
+      "year": 2024,
+      "journal": "Journal of Nonlinear and Variational Analysis",
+      "doi": "10.23952/jnva.9.2025.1.04",
+      "pmid": null,
+      "url": "https://doi.org/10.23952/jnva.9.2025.1.04",
+      "cited_by_count": 4,
+      "abstract_available": true,
+      "topics": [
+        "fno_pino"
+      ],
+      "origin": "topic_fno_pino",
+      "sources": [
+        "openalex",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "id": "ref0036"
+    },
+    {
+      "title": "XFNO: Extended Fourier neural operator for solving parametric partial differential equations on general geometries",
+      "authors": [
+        "Hailong Sheng",
+        "Yulin Xie",
+        "Chao Yang"
+      ],
+      "year": 2025,
+      "journal": "Computer Physics Communications",
+      "doi": "10.1016/j.cpc.2025.109774",
+      "pmid": null,
+      "url": "https://doi.org/10.1016/j.cpc.2025.109774",
+      "cited_by_count": 5,
+      "abstract_available": false,
+      "topics": [
+        "fno_pino"
+      ],
+      "origin": "topic_fno_pino",
+      "sources": [
+        "openalex",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "id": "ref0037"
+    },
+    {
+      "title": "Physics-Informed Neural Operator for Learning Partial Differential Equations",
+      "authors": [
+        "Zongyi Li",
+        "Hongkai Zheng",
+        "Nikola Kovachki",
+        "David Jin",
+        "Haoxuan Chen",
+        "Burigede Liu",
+        "Kamyar Azizzadenesheli",
+        "Animashree Anandkumar"
+      ],
+      "year": 2024,
+      "journal": "ACM / IMS Journal of Data Science",
+      "doi": "10.1145/3648506",
+      "pmid": null,
+      "url": "https://doi.org/10.1145/3648506",
+      "cited_by_count": 403,
+      "abstract_available": true,
+      "topics": [
+        "fno_pino"
+      ],
+      "origin": "topic_fno_pino",
+      "sources": [
+        "openalex",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "id": "ref0038"
+    },
+    {
+      "title": "Neural Green\u2019s operators for parametric partial differential equations",
+      "authors": [
+        "Hugo Melchers",
+        "Joost Prins",
+        "Michael Abdelmalik"
+      ],
+      "year": 2026,
+      "journal": "Computer Methods in Applied Mechanics and Engineering",
+      "doi": "10.1016/j.cma.2026.118893",
+      "pmid": null,
+      "url": "https://doi.org/10.1016/j.cma.2026.118893",
+      "cited_by_count": 4,
+      "abstract_available": true,
+      "topics": [
+        "fno_pino"
+      ],
+      "origin": "topic_fno_pino",
+      "sources": [
+        "openalex",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "id": "ref0039"
+    },
+    {
+      "title": "Gabor-Filtered Fourier Neural Operator for solving Partial Differential Equations",
+      "authors": [
+        "Kai Qi",
+        "Jian Sun"
+      ],
+      "year": 2024,
+      "journal": "Computers & Fluids",
+      "doi": "10.1016/j.compfluid.2024.106239",
+      "pmid": null,
+      "url": "https://doi.org/10.1016/j.compfluid.2024.106239",
+      "cited_by_count": 23,
+      "abstract_available": false,
+      "topics": [
+        "fno_pino"
+      ],
+      "origin": "topic_fno_pino",
+      "sources": [
+        "openalex",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "id": "ref0040"
+    },
+    {
+      "title": "Learning the solution operator of parametric partial differential equations with physics-informed DeepONets",
+      "authors": [
+        "Sifan Wang",
+        "Hanwen Wang",
+        "Paris G. Perdikaris"
+      ],
+      "year": 2021,
+      "journal": "Science Advances",
+      "doi": "10.1126/sciadv.abi8605",
+      "pmid": "34586842",
+      "url": "https://doi.org/10.1126/sciadv.abi8605",
+      "cited_by_count": 840,
+      "abstract_available": true,
+      "topics": [
+        "fno_pino"
+      ],
+      "origin": "topic_fno_pino",
+      "sources": [
+        "openalex",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "id": "ref0041"
+    },
+    {
+      "title": "SSNO: Spatio-Spectral Neural Operator for Functional Space Learning of Partial Differential Equations",
+      "authors": [
+        "Muhammad Tahir Rafiq",
+        "Ghazala Rafiq",
+        "Ho-Youl Jung",
+        "Gyu Sang Choi"
+      ],
+      "year": 2022,
+      "journal": "IEEE Access",
+      "doi": "10.1109/access.2022.3148401",
+      "pmid": null,
+      "url": "https://doi.org/10.1109/access.2022.3148401",
+      "cited_by_count": 15,
+      "abstract_available": true,
+      "topics": [
+        "fno_pino"
+      ],
+      "origin": "topic_fno_pino",
+      "sources": [
+        "openalex",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "id": "ref0042"
+    },
+    {
+      "title": "Learning nonlinear operators via DeepONet based on the universal approximation theorem of operators",
+      "authors": [
+        "Lu Lu",
+        "Pengzhan Jin",
+        "Guofei Pang",
+        "Zhongqiang Zhang",
+        "George Em Karniadakis"
+      ],
+      "year": 2021,
+      "journal": "Nature Machine Intelligence",
+      "doi": "10.1038/s42256-021-00302-5",
+      "pmid": null,
+      "url": "https://doi.org/10.1038/s42256-021-00302-5",
+      "cited_by_count": 3569,
+      "abstract_available": false,
+      "topics": [
+        "deeponet"
+      ],
+      "origin": "topic_deeponet",
+      "sources": [
+        "openalex",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "id": "ref0043"
+    },
+    {
+      "title": "Error estimates for DeepONets: a deep learning framework in infinite dimensions",
+      "authors": [
+        "Samuel Lanthaler",
+        "Siddhartha Mishra",
+        "George Em Karniadakis"
+      ],
+      "year": 2022,
+      "journal": "Transactions of Mathematics and Its Applications",
+      "doi": "10.1093/imatrm/tnac001",
+      "pmid": null,
+      "url": "https://doi.org/10.1093/imatrm/tnac001",
+      "cited_by_count": 174,
+      "abstract_available": true,
+      "topics": [
+        "deeponet"
+      ],
+      "origin": "topic_deeponet",
+      "sources": [
+        "openalex",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "id": "ref0044"
+    },
+    {
+      "title": "ELM-DeepONets: Backpropagation-Free Training of Deep Operator Networks via Extreme Learning Machines",
+      "authors": [
+        "Hwijae Son"
+      ],
+      "year": 2025,
+      "journal": "IEEE Access",
+      "doi": "10.1109/access.2025.3570502",
+      "pmid": null,
+      "url": "https://doi.org/10.1109/access.2025.3570502",
+      "cited_by_count": 2,
+      "abstract_available": true,
+      "topics": [
+        "deeponet"
+      ],
+      "origin": "topic_deeponet",
+      "sources": [
+        "openalex",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "id": "ref0045"
+    },
+    {
+      "title": "Layer-Interaction DeepONet for Modeling Ultrafast Nonlinear Dynamics in Optical Fibers",
+      "authors": [
+        "Qiuying Ma",
+        "Xinghan Jiang",
+        "Xinlong Guo",
+        "Qian Zhou",
+        "Xiaohao Wang",
+        "Haoyang Yu",
+        "Kai Ni"
+      ],
+      "year": 2025,
+      "journal": "Journal of Lightwave Technology",
+      "doi": "10.1109/jlt.2025.3598027",
+      "pmid": null,
+      "url": "https://doi.org/10.1109/jlt.2025.3598027",
+      "cited_by_count": 6,
+      "abstract_available": true,
+      "topics": [
+        "deeponet"
+      ],
+      "origin": "topic_deeponet",
+      "sources": [
+        "openalex",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "id": "ref0046"
+    },
+    {
+      "title": "Nonlocality and Nonlinearity Implies Universality in Operator Learning",
+      "authors": [
+        "Samuel Lanthaler",
+        "Zongyi Li",
+        "Andrew M. Stuart"
+      ],
+      "year": 2025,
+      "journal": "Constructive Approximation",
+      "doi": "10.1007/s00365-025-09718-3",
+      "pmid": null,
+      "url": "https://doi.org/10.1007/s00365-025-09718-3",
+      "cited_by_count": 25,
+      "abstract_available": true,
+      "topics": [
+        "deeponet"
+      ],
+      "origin": "topic_deeponet",
+      "sources": [
+        "openalex",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "id": "ref0047"
+    },
+    {
+      "title": "Operator learning for consolidation: An architectural comparison for DeepONet variants",
+      "authors": [
+        "Yongjin Choi",
+        "Chenying Liu",
+        "Jorge Macedo"
+      ],
+      "year": 2026,
+      "journal": "Computers and Geotechnics",
+      "doi": "10.1016/j.compgeo.2026.108017",
+      "pmid": null,
+      "url": "https://doi.org/10.1016/j.compgeo.2026.108017",
+      "cited_by_count": 4,
+      "abstract_available": true,
+      "topics": [
+        "deeponet"
+      ],
+      "origin": "topic_deeponet",
+      "sources": [
+        "openalex",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "id": "ref0048"
+    },
+    {
+      "title": "Wave Equation Modeling via Physics-Informed Neural Networks: Models of Soft and Hard Constraints for Initial and Boundary Conditions",
+      "authors": [
+        "Shaikhah Alkhadhr",
+        "Mohamed Khaled Almekkawy"
+      ],
+      "year": 2023,
+      "journal": "Sensors",
+      "doi": "10.3390/s23052792",
+      "pmid": "36904994",
+      "url": "https://doi.org/10.3390/s23052792",
+      "cited_by_count": 48,
+      "abstract_available": true,
+      "topics": [
+        "constraints_conditioning"
+      ],
+      "origin": "topic_constraints_conditioning",
+      "sources": [
+        "openalex",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "id": "ref0049"
+    },
+    {
+      "title": "A unified hard-constraint physics-informed neural network approach for sparse-observation airflow-field reconstruction under complex boundary conditions",
+      "authors": [
+        "Gang Jing",
+        "Huan Wang",
+        "Yuan Jiu",
+        "Xianting Li",
+        "Guijin Wangy",
+        "Jian Gao"
+      ],
+      "year": 2026,
+      "journal": "Engineering Applications of Artificial Intelligence",
+      "doi": "10.1016/j.engappai.2026.116169",
+      "pmid": null,
+      "url": "https://doi.org/10.1016/j.engappai.2026.116169",
+      "cited_by_count": 0,
+      "abstract_available": false,
+      "topics": [
+        "constraints_conditioning"
+      ],
+      "origin": "topic_constraints_conditioning",
+      "sources": [
+        "openalex",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "id": "ref0050"
+    },
+    {
+      "title": "Physics-informed neural networks with hard and soft boundary conditions for linear free surface waves",
+      "authors": [
+        "Mohammad Sheikholeslami",
+        "Saeed Salehi",
+        "Wengang Mao",
+        "Arash Eslamdoost",
+        "H\u00e5kan Nilsson"
+      ],
+      "year": 2025,
+      "journal": "Physics of Fluids",
+      "doi": "10.1063/5.0277421",
+      "pmid": null,
+      "url": "https://doi.org/10.1063/5.0277421",
+      "cited_by_count": 10,
+      "abstract_available": true,
+      "topics": [
+        "constraints_conditioning"
+      ],
+      "origin": "topic_constraints_conditioning",
+      "sources": [
+        "openalex",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "id": "ref0051"
+    },
+    {
+      "title": "Application of improved physics-informed neural networks for nonlinear consolidation problems with continuous drainage boundary conditions",
+      "authors": [
+        "Peng Lan",
+        "Jing-jing Su",
+        "Xin-yan Ma",
+        "Sheng Zhang"
+      ],
+      "year": 2023,
+      "journal": "Acta Geotechnica",
+      "doi": "10.1007/s11440-023-01899-0",
+      "pmid": null,
+      "url": "https://doi.org/10.1007/s11440-023-01899-0",
+      "cited_by_count": 67,
+      "abstract_available": false,
+      "topics": [
+        "constraints_conditioning"
+      ],
+      "origin": "topic_constraints_conditioning",
+      "sources": [
+        "openalex",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "id": "ref0052"
+    },
+    {
+      "title": "Enforcing Dirichlet boundary conditions in physics-informed neural networks and variational physics-informed neural networks",
+      "authors": [
+        "Stefano Berrone",
+        "Claudio Canuto",
+        "Moreno Pintore",
+        "N. Sukumar"
+      ],
+      "year": 2023,
+      "journal": "Heliyon",
+      "doi": "10.1016/j.heliyon.2023.e18820",
+      "pmid": "37600384",
+      "url": "https://doi.org/10.1016/j.heliyon.2023.e18820",
+      "cited_by_count": 71,
+      "abstract_available": true,
+      "topics": [
+        "constraints_conditioning"
+      ],
+      "origin": "topic_constraints_conditioning",
+      "sources": [
+        "openalex",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "id": "ref0053"
+    },
+    {
+      "title": "Microseismic Source Imaging Using Physics-Informed Neural Networks With Hard Constraints",
+      "authors": [
+        "Xinquan Huang",
+        "Tariq A. Alkhalifah"
+      ],
+      "year": 2024,
+      "journal": "IEEE Transactions on Geoscience and Remote Sensing",
+      "doi": "10.1109/tgrs.2024.3366449",
+      "pmid": null,
+      "url": "https://doi.org/10.1109/tgrs.2024.3366449",
+      "cited_by_count": 14,
+      "abstract_available": true,
+      "topics": [
+        "constraints_conditioning"
+      ],
+      "origin": "topic_constraints_conditioning",
+      "sources": [
+        "openalex",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "id": "ref0054"
+    },
+    {
+      "title": "Electrokinetic Flow in a Nanochannel with an Overlapped Electrical Double Layer",
+      "authors": [
+        "Zhuorui Song"
+      ],
+      "year": 2021,
+      "journal": "Digital Commons - USU (Utah State University)",
+      "doi": "10.26076/a748-e85a",
+      "pmid": null,
+      "url": "https://doi.org/10.26076/a748-e85a",
+      "cited_by_count": 2,
+      "abstract_available": true,
+      "topics": [
+        "nanopore_edl_design"
+      ],
+      "origin": "topic_nanopore_edl_design",
+      "sources": [
+        "openalex"
+      ],
+      "verification": {
+        "crossref": false,
+        "openalex": true,
+        "title_match": null
+      },
+      "retrieval_date": "2026-10-18",
+      "id": "ref0055"
+    },
+    {
+      "title": "Pure Water Splitting Driven by Overlapping Electric Double Layers",
+      "authors": [
+        "Haosen Xu",
+        "Jianbo Zhang",
+        "Michael Hermann Eikerling",
+        "Jun Huang"
+      ],
+      "year": 2024,
+      "journal": "Journal of the American Chemical Society",
+      "doi": "10.1021/jacs.4c01070",
+      "pmid": "38985952",
+      "url": "https://doi.org/10.1021/jacs.4c01070",
+      "cited_by_count": 28,
+      "abstract_available": true,
+      "topics": [
+        "nanopore_edl_design"
+      ],
+      "origin": "topic_nanopore_edl_design",
+      "sources": [
+        "openalex",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "id": "ref0056"
+    },
+    {
+      "title": "Thermodynamics of Charge Regulation during Ion Transport through Silica Nanochannels",
+      "authors": [
+        "Cody L. Ritt",
+        "J. Pedro de Souza",
+        "Michelle G. Barsukov",
+        "Shari Yosinski",
+        "Martin Z. Bazant",
+        "Mark A. Reed",
+        "Menachem Elimelech"
+      ],
+      "year": 2022,
+      "journal": "ACS Nano",
+      "doi": "10.1021/acsnano.2c06633",
+      "pmid": "36075111",
+      "url": "https://doi.org/10.1021/acsnano.2c06633",
+      "cited_by_count": 30,
+      "abstract_available": true,
+      "topics": [
+        "nanopore_edl_design"
+      ],
+      "origin": "topic_nanopore_edl_design",
+      "sources": [
+        "openalex",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "id": "ref0057"
+    },
+    {
+      "title": "Electroosmotic Dispersion of Uncharged Solutes through a Nanochannel",
+      "authors": [
+        "Baisakhi Pal",
+        "Poulami Dutta",
+        "Sourav Chowdhury",
+        "Partha Pratim Gopmandal"
+      ],
+      "year": 2026,
+      "journal": "Industrial & Engineering Chemistry Research",
+      "doi": "10.1021/acs.iecr.6c00231",
+      "pmid": null,
+      "url": "https://doi.org/10.1021/acs.iecr.6c00231",
+      "cited_by_count": 0,
+      "abstract_available": true,
+      "topics": [
+        "nanopore_edl_design"
+      ],
+      "origin": "topic_nanopore_edl_design",
+      "sources": [
+        "openalex",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "id": "ref0058"
+    },
+    {
+      "title": "Brain-inspired computing with fluidic iontronic nanochannels",
+      "authors": [
+        "Tim M. Kamsma",
+        "Jaehyun Kim",
+        "Kyungjun Kim",
+        "Willem Q. Boon",
+        "Cristian Spitoni",
+        "Jungyul Park",
+        "Ren\u00e9 van Roij"
+      ],
+      "year": 2024,
+      "journal": "Proceedings of the National Academy of Sciences",
+      "doi": "10.1073/pnas.2320242121",
+      "pmid": "38657046",
+      "url": "https://doi.org/10.1073/pnas.2320242121",
+      "cited_by_count": 120,
+      "abstract_available": true,
+      "topics": [
+        "nanopore_edl_design"
+      ],
+      "origin": "topic_nanopore_edl_design",
+      "sources": [
+        "openalex",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "id": "ref0059"
+    },
+    {
+      "title": "Electrophoresis of ions and electrolyte conductivity: From bulk to nanochannels",
+      "authors": [
+        "Olga I. Vinogradova",
+        "Elena F. Silkina"
+      ],
+      "year": 2023,
+      "journal": "The Journal of Chemical Physics",
+      "doi": "10.1063/5.0168557",
+      "pmid": "37933780",
+      "url": "https://doi.org/10.1063/5.0168557",
+      "cited_by_count": 10,
+      "abstract_available": true,
+      "topics": [
+        "nanopore_edl_design"
+      ],
+      "origin": "topic_nanopore_edl_design",
+      "sources": [
+        "openalex",
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": true,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-18",
+      "id": "ref0060"
+    }
+  ]
+}

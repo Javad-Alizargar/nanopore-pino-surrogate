@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.0",
+  "config_source": "MASTER_PROMPT_ENHANCED.txt (Section 1) merged with Stage 1 user overrides",
+  "prepared_date": "2026-10-18",
+  "governing_spec": "OPEN INTERPRETER RESEARCH CONTROLLER - MASTER PROMPT v2.0",
+
+  "PROJECT_NAME": "nanopore_pino_surrogate",
+  "PROJECT_ROOT": "/Users/javadalizargar/Google drive MAC/PINN to a Neural Operator",
+  "TASK_MODE": "research_and_manuscript",
+  "TARGET_JOURNAL": "Journal of Computational Physics (JCP) / Computer Physics Communications (CPC)",
+  "MANUSCRIPT_LANGUAGE": "English",
+  "DATA_MODE": "local_only",
+  "EXTERNAL_LLM_DATA_POLICY": "public_evidence_and_non_sensitive_summaries_only",
+
+  "AUTO_PRIVATE_GITHUB_PUSH": false,
+  "AUTO_PUBLIC_RELEASE": false,
+  "AUTO_PRODUCTION_DEPLOY": false,
+
+  "UI_FRAMEWORK": "gradio",
+  "PUBLIC_SIMULATOR": "client_side_onnxruntime_web",
+  "PRIOR_SOLVER_STRATEGY": "copy_to_download_baseline_v0007_immutable",
+  "WORKING_SOLVER_DIR": "scripts/sg_baseline",
+  "VENV_STRATEGY": "python3 -m venv --system-site-packages .venv (reuse system torch/numpy/scipy/pandas/scikit-learn/requests)",
+
+  "MAX_TOTAL_ACTIVE_OI_SESSIONS": 4,
+  "MAX_ACTIVE_WORKERS": 3,
+  "DEFAULT_ACTIVE_WORKERS": 2,
+  "ALLOW_NESTED_WORKERS": false,
+  "MAX_WORKER_TASK_ATTEMPTS_PER_RUN": 20,
+  "MAX_CONCURRENT_PAID_REQUESTS": 3,
+
+  "PROJECT_TOTAL_API_BUDGET_USD": 5.00,
+  "OPENAI_PROJECT_SUBBUDGET_USD": 1.00,
+  "MAX_RESERVED_COST_PER_REQUEST_USD": 0.25,
+  "MAX_PAID_REQUEST_ATTEMPTS_PER_RUN": 80,
+  "MAX_PAID_REQUEST_ATTEMPTS_PER_TASK": 12,
+  "MAX_REQUEST_RETRIES": 2,
+  "SPEND_WARNING_FRACTION": 0.70,
+  "STOP_NEW_TASKS_FRACTION": 0.85,
+  "FINAL_REVIEW_AND_HANDOFF_RESERVE_USD": 0.50,
+  "DEFAULT_MAX_OUTPUT_TOKENS": 2000,
+  "LARGE_OUTPUT_TOKEN_CEILING": 6000,
+
+  "DEFAULT_WORKER_TIMEOUT_MINUTES": 20,
+  "MAX_AUTONOMOUS_RUN_MINUTES": 120,
+  "MAX_SIMULTANEOUS_HEAVY_ANALYSES": 1,
+  "MAX_TOTAL_NEW_DATA_DOWNLOAD_GB_PER_RUN": 2,
+  "MAX_NEW_DATASET_DOWNLOADS_PER_RUN": 10,
+
+  "credential_folder": "apis",
+  "credential_folder_note": "Legacy lowercase 'apis' is the active credential folder; it also contains prior DA-PINN helper scripts. Contents are never logged.",
+  "credential_file_map": {
+    "openai": "apis/chatgpt.txt",
+    "deepseek": "apis/deepseek.txt",
+    "ncbi": "apis/NCBI.txt",
+    "openalex": "apis/OPENALEX.txt",
+    "github": "apis/GITHUB_fine_grained 2.txt"
+  },
+  "credential_file_map_note": "Expected canonical names (OPENAI.txt, GITHUB_fine_grained.txt) are absent; present equivalents are mapped above. Treated as candidates pending verification in the smoke test.",
+
+  "timezone": "America/Taipei (author local); machine local time used for timestamps"
+}
