@@ -104,8 +104,8 @@ Algorithm block and dependency pinning, and released **v1.2.0** after a
    (Python 3.14.7, NumPy 2.5.4, SciPy 1.18.1, PyTorch 2.14.1, ONNX Runtime
    1.31.0) in Supplement S2.
 6. **Release**: audit extended to **28 checks — 28/28 PASS**; DOCX rebuilt
-   (main 158 paragraphs / 6 figures / 276 `m:oMath`; supplement 110 paragraphs /
-   19 table grids / 277 `m:oMath`); packages rebuilt (public **152 files /
+   (main 0 tables / 6 inline figures / 266 native equations; supplement
+   19 table grids / 0 images / 331 native equations); packages rebuilt (public **152 files /
    30.6 MB**, private **834 files / 89.2 MB**); portal scope block updated;
    both repositories tagged **v1.2.0** (`results/stage11_release.json`).
 
