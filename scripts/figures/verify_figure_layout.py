@@ -19,6 +19,7 @@ figure fails.  Local only; no paid calls.
 import importlib
 import json
 import os
+import re
 import sys
 
 import matplotlib
@@ -35,6 +36,7 @@ import common as K  # noqa: E402
 PAD_REQUIRED = 6.0     # px padding text must keep inside its box
 OVERLAP_TOL = 12.0     # px^2 overlap area tolerated between two texts
 PNG_MARGIN = 8.0       # px of white margin required around saved PNG
+PANEL_GAP = 14.0       # px minimum clearance for every panel letter
 
 FIGURES = [
     "fig1_workflow_and_architecture",
@@ -44,6 +46,14 @@ FIGURES = [
     "fig5_parametric_physics_sweeps",
     "fig6_h4_timing_and_amortization_breakeven",
 ]
+PANEL_SPECS = {
+    "fig1_workflow_and_architecture": set("ABCD"),
+    "fig2_benchmark_and_field_reconstruction": set("ABCDEF"),
+    "fig3_h3_charge_reparameterization_ablation": set("ABCDEF"),
+    "fig4_h1_h2_interp_vs_ood_regimes": set("ABCD"),
+    "fig5_parametric_physics_sweeps": set("ABC"),
+    "fig6_h4_timing_and_amortization_breakeven": set("ABCD"),
+}
 
 captured = {}
 _orig_save = K.save_fig
@@ -72,6 +82,13 @@ def _overlap_area(a, b):
     x0 = max(a.x0, b.x0); x1 = min(a.x1, b.x1)
     y0 = max(a.y0, b.y0); y1 = min(a.y1, b.y1)
     return max(0.0, x1 - x0) * max(0.0, y1 - y0)
+
+
+def _rect_gap(a, b):
+    """Euclidean gap in px between two axis-aligned bounding boxes."""
+    dx = max(a.x0 - b.x1, b.x0 - a.x1, 0.0)
+    dy = max(a.y0 - b.y1, b.y0 - a.y1, 0.0)
+    return float(np.hypot(dx, dy))
 
 
 def _in_view_ticks(axis, lo, hi):
@@ -161,7 +178,45 @@ def check_figure(name, fig):
                     issues.append({"type": "text_out_of_box", "text": t.get_text()[:40],
                                    "pad_px": round(float(pad), 1)})
 
-    # 2. text overlap (skip same-axis tick pairs)
+    # 2. panel labels: exact set, inside figure, and >= PANEL_GAP px clearance
+    expected = PANEL_SPECS.get(name, set())
+    panel = [d for d in texts if re.fullmatch(r"[A-F]", d["txt"].strip())]
+    found = [d["txt"].strip() for d in panel]
+    panel_issue_start = len(issues)
+    for letter in sorted(expected - set(found)):
+        issues.append({"type": "panel_missing", "letter": letter})
+    for letter in sorted(set(found) - expected):
+        issues.append({"type": "panel_extra", "letter": letter})
+    for letter in sorted({x for x in found if found.count(x) > 1}):
+        issues.append({"type": "panel_duplicate", "letter": letter})
+    fig_bb = fig.bbox
+    min_gap = None
+    for d in panel:
+        e = d["e"]
+        inside = (e.x0 >= fig_bb.x0 and e.x1 <= fig_bb.x1
+                  and e.y0 >= fig_bb.y0 and e.y1 <= fig_bb.y1)
+        if not inside:
+            issues.append({"type": "panel_out_of_bounds", "letter": d["txt"],
+                           "bbox": [round(e.x0, 1), round(e.y0, 1),
+                                    round(e.x1, 1), round(e.y1, 1)]})
+        gaps = [(_rect_gap(e, o["e"]), f'{o["kind"]}:{o["txt"][:28]}')
+                for o in texts if o is not d]
+        for pi, p in enumerate(patches):
+            gaps.append((_rect_gap(e, p), f"box{pi}"))
+        local, nearest = min(gaps) if gaps else (0.0, "-")
+        min_gap = local if min_gap is None else min(min_gap, local)
+        if local < PANEL_GAP:
+            issues.append({"type": "panel_clearance", "letter": d["txt"],
+                           "gap_px": round(local, 1), "required_px": PANEL_GAP,
+                           "nearest": nearest})
+    panel_ok = len(issues) == panel_issue_start and set(found) == expected
+    panel_info = {"expected": "".join(sorted(expected)), "found": "".join(sorted(found)),
+                  "set_ok": set(found) == expected, "all_in_bounds": not any(
+                      i["type"] == "panel_out_of_bounds" for i in issues[panel_issue_start:]),
+                  "min_gap_px": None if min_gap is None else round(min_gap, 1),
+                  "ok": bool(panel_ok and (min_gap is None or min_gap >= PANEL_GAP))}
+
+    # 3. text overlap (skip same-axis tick pairs)
     for i in range(len(texts)):
         for j in range(i + 1, len(texts)):
             a, b = texts[i], texts[j]
@@ -177,7 +232,7 @@ def check_figure(name, fig):
                                "c": [[round(0.5*(a["e"].x0+a["e"].x1)), round(0.5*(a["e"].y0+a["e"].y1))],
                                      [round(0.5*(b["e"].x0+b["e"].x1)), round(0.5*(b["e"].y0+b["e"].y1))]]})
 
-    # 3. saved-PNG white margin
+    # 4. saved-PNG white margin
     png = os.path.join(K.FIGDIR, name + ".png")
     if os.path.exists(png):
         img = mpimg.imread(png)
@@ -192,24 +247,27 @@ def check_figure(name, fig):
             if bad:
                 issues.append({"type": "png_margin", "margins": margins,
                                "required": PNG_MARGIN, "size": [W, H]})
-    return issues
+    return issues, panel_info
 
 
 def main():
     which = sys.argv[1:] or FIGURES
     K.save_fig = _capture
     report = {"pad_required_px": PAD_REQUIRED, "overlap_tol_px2": OVERLAP_TOL,
-              "png_margin_px": PNG_MARGIN, "figures": {}}
+              "png_margin_px": PNG_MARGIN, "panel_gap_px": PANEL_GAP,
+              "figures": {}}
     for mod in which:
         importlib.import_module(mod)
     total = 0
     for name in list(captured.keys()):
         fig = captured[name]
-        issues = check_figure(name, fig)
+        issues, panel_info = check_figure(name, fig)
         plt.close(fig)
-        report["figures"][name] = {"n_issues": len(issues), "issues": issues}
+        report["figures"][name] = {"n_issues": len(issues), "issues": issues,
+                                   "panel_labels": panel_info}
         total += len(issues)
         print(f"[layout] {name}: {'OK' if not issues else str(len(issues)) + ' ISSUES'}")
+        print(f"           panel labels: {panel_info}")
         for it in issues[:40]:
             print("        ", it)
     report["total_issues"] = total

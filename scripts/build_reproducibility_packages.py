@@ -33,6 +33,7 @@ PUBLIC_FILES = [
     "scripts/run_stage10_upgrades.py",
     "scripts/run_stage11_reviewer_upgrades.py",
     "scripts/run_stage12_diagnostics.py",
+    "scripts/run_cpc_test_case.py",
     "scripts/run_diffusivity_symmetry_check.py",
     "scripts/enforce_sequential_numbering_and_inline_figures.py",
     "scripts/verify_simulators.py",
@@ -60,6 +61,9 @@ PUBLIC_FILES = [
     "results/models/deeponet_reparam_data_plus_physics_seed42.pt",
     "results/models/fno_reparam_data_plus_physics_seed42.pt",
     "results/models/stage12_linear_ortho_seed42.pt",
+    "test_run/sample_input.json",
+    "test_run/expected_output.json",
+    "test_run/README.md",
 ]
 PUBLIC_TREES = [
     "scripts/operators",
@@ -125,6 +129,7 @@ physics-weight sweep, and a static browser simulator.
 ```bash
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
+python scripts/run_cpc_test_case.py             # self-contained CPC test run (<1 s)
 python scripts/test_operators_smoke.py          # ONNX/PyTorch parity smoke test
 python scripts/run_inverse_recovery_demo.py     # five-state inverse demo
 python scripts/run_stage10_upgrades.py          # trunk ablation, scaling law, identifiability
@@ -134,6 +139,19 @@ python scripts/run_diffusivity_symmetry_check.py  # exact-SG diffusivity-asymmet
 python scripts/serve_interactive.py             # live SG/FV + operator service
 python scripts/app_gradio.py                    # Gradio comparison app
 ```
+
+## CPC test run
+
+```bash
+python scripts/run_cpc_test_case.py
+```
+
+This is a complete, self-contained verification case: it loads
+`test_run/sample_input.json` (the held-out benchmark state), executes the
+exported DeepONet ONNX model, checks positivity, the charge and salt-sum
+identities, reservoir concentrations, and the stored reference summary in
+`test_run/expected_output.json`, and prints `CPC TEST RUN PASSED`. It requires
+only NumPy and ONNX Runtime and completes in under one second on one CPU.
 
 Open `web_simulator/index.html`, or use the hosted portal at
 <https://pino.statwhy.com/> (ONNX operator predictions, verified benchmark
@@ -151,12 +169,14 @@ cases, and a live SG/FV reference solver).
 | `scripts/run_stage11_reviewer_upgrades.py` | four-way constraint benchmark, physics-weight sweep, exact SG/FV Fisher validation |
 | `scripts/run_stage12_diagnostics.py` | OOD spatial/parametric decomposition, selectivity validation, positivity stress test |
 | `scripts/run_diffusivity_symmetry_check.py` | exact-SG/FV diffusivity-ratio scan and dual-observable conditioning |
+| `scripts/run_cpc_test_case.py` | self-contained CPC verification run against `test_run/` |
 | `scripts/enforce_sequential_numbering_and_inline_figures.py` | first-appearance reference/table renumbering and inline-figure audit |
 | `scripts/figures/` | figure generation and layout verification |
 | `results/` | statistics, tables 1--6 and S1--S20, verification JSONs, export models |
 | `data/processed/` | 240-state dataset and 384-state scaling expansion |
 | `web_simulator/` | static browser simulator (ONNX + JS SG engine) |
 | `tests/` | smoke and parity tests |
+| `test_run/` | sample 4D input, expected ONNX output, and CPC test instructions |
 
 ## Reproducibility notes
 
@@ -175,7 +195,7 @@ cases, and a live SG/FV reference solver).
   author  = {Alizargar, Javad},
   title   = {PINO-Nanopore: parameter-conditioned physics-informed neural operator for axisymmetric Poisson--Nernst--Planck transport},
   year    = {2026},
-  version = {v1.3.2},
+  version = {v1.3.3},
   doi     = {10.5281/zenodo.23487404},
   url     = {https://doi.org/10.5281/zenodo.23487404}
 }

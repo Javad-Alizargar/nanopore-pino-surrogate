@@ -41,7 +41,7 @@ for R in (3, 5, 7):
 axA.set_xlabel(r"$V_\mathrm{app}$  (mV)"); axA.set_ylabel(r"mean current  $\bar I$  (pA)")
 axA.set_title(r"$I$–$V$ characteristics  ($C_0{=}100$, $q_w{=}-0.01$)", fontsize=8.8)
 axA.legend(frameon=False, fontsize=6.2, ncol=1)
-K.panel_label(axA, "A", x=-0.13, y=1.13)
+K.panel_label(axA, "A", x=-0.20, y=1.13)
 
 # ---- Panel B: near-wall enrichment vs salt ------------------------------
 axB = fig.add_subplot(gs[0, 1])
@@ -62,7 +62,7 @@ axB.set_xlabel(r"bulk salt  $C_0$  (mol m$^{-3}$)")
 axB.set_ylabel(r"near-wall $c_+$  (dimensionless)")
 axB.set_title("Debye screening transition", fontsize=8.8)
 axB.legend(frameon=False, fontsize=6.4)
-K.panel_label(axB, "B", x=-0.13, y=1.13)
+K.panel_label(axB, "B", x=-0.20, y=1.13)
 
 # ---- Panel C: radial profiles at several lambda_D/R ---------------------
 axC = fig.add_subplot(gs[0, 2])
@@ -76,7 +76,7 @@ for c, col in [(20, K.C["vermillion"]), (100, K.C["blue"]), (200, K.C["green"])]
 axC.set_xlabel(r"$r/R$"); axC.set_ylabel(r"net charge  $\rho(r,0.5)$")
 axC.set_title(r"EDL overlap vs salinity  ($\lambda_D/R$)", fontsize=8.8)
 axC.legend(frameon=False, fontsize=5.6, ncol=1)
-K.panel_label(axC, "C", x=-0.13, y=1.13)
+K.panel_label(axC, "C", x=-0.20, y=1.13)
 
 sdata = {"Vs": Vs, "sg_V": sg_V, "C0s": C0s, "C0sg": np.array(C0sg),
          "enrich_operator": enrich, "enrich_sg": np.array(esg),

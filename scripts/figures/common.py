@@ -94,9 +94,9 @@ R, Z, *_ = make_grid(T.NR, T.NZ)
 AREA = annular_weights(R)[:, None] * (Z[1] - Z[0])
 
 
-def panel_label(ax, letter, x=-0.12, y=1.06):
-    ax.text(x, y, letter, transform=ax.transAxes, fontsize=11,
-            fontweight="bold", va="top", ha="left")
+def panel_label(ax, letter, x=-0.06, y=1.08):
+    ax.text(x, y, letter, transform=ax.transAxes, fontsize=12,
+            fontweight="bold", va="top", ha="left", clip_on=False)
 
 
 def save_fig(fig, name, data=None):

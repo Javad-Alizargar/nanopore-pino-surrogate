@@ -118,7 +118,7 @@ This work advances decisively beyond my prior fixed-state deep-adaptive PINN stu
 
 The manuscript is original, has not been published previously, and is not under consideration elsewhere. All authors have approved the submission, and the author declares no competing interests.
 
-**Data and code availability.** The reproducibility package is available at https://github.com/Javad-Alizargar/nanopore-pino-surrogate under the MIT License, and the interactive simulator is hosted at https://pino.statwhy.com/. The permanently archived release is available at Zenodo DOI: 10.5281/zenodo.23487404.
+**Data and code availability.** The reproducibility package is available at https://github.com/Javad-Alizargar/nanopore-pino-surrogate under the MIT License, and the interactive simulator is hosted at https://pino.statwhy.com/. The permanently archived release is available at Zenodo DOI: 10.5281/zenodo.23487404. The repository and archive contain a comprehensive `README.md` covering all files, installation, and execution, together with complete sample test-run input and output files in `test_run/`; `scripts/run_cpc_test_case.py` runs that self-contained CPC verification case.
 
 Thank you for considering this manuscript. I look forward to your response and would be glad to provide any additional information.
 

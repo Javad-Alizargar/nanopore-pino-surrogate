@@ -151,7 +151,7 @@ for sp in splits:
     axi.scatter(iref_mean[sp], ipred_mean[sp] - iref_mean[sp], s=8,
                 facecolor=label_map[sp], edgecolor="none")
 axi.set_title("residual (pA)", fontsize=6); axi.tick_params(labelsize=5.5)
-K.panel_label(axC, "C")
+K.panel_label(axC, "C", x=-0.20, y=1.10)
 
 # ---- Panel D: training-set size scaling law -----------------------------
 axD = fig.add_subplot(gs[:, 2])

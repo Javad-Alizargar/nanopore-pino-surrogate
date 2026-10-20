@@ -49,7 +49,7 @@ axA.set_title("4-way constraint schemes, 3-seed", fontsize=9)
 axA.legend(frameon=False, fontsize=7)
 axA.text(0.02, 0.93, "solid: interp  |  hatched: OOD", transform=axA.transAxes,
          fontsize=6.2, color="0.3")
-K.panel_label(axA, "A", x=-0.16)
+K.panel_label(axA, "A", x=-0.16, y=1.15)
 
 # ---- Panel B: identity-consistency mismatch + wall-gradient error -------
 axB = fig.add_subplot(gs[0, 1])
@@ -70,7 +70,7 @@ axB.set_xticklabels([PRETTY[s] for s in ORDER], fontsize=7.5)
 axB.set_ylabel("error (log)")
 axB.set_title("identity consistency vs wall accuracy", fontsize=9)
 axB.legend(frameon=False, fontsize=5.9)
-K.panel_label(axB, "B", x=-0.15)
+K.panel_label(axB, "B", x=-0.15, y=1.15)
 
 # ---- Panel C: physics-loss ablation -------------------------------------
 axC = fig.add_subplot(gs[0, 2])
@@ -96,7 +96,7 @@ axC.set_yscale("log")
 axC.set_ylabel("interior residual (log)")
 axC.set_title("physics-loss ablation (interp_test)", fontsize=9)
 axC.legend(frameon=False, fontsize=6.3)
-K.panel_label(axC, "C", x=-0.13, y=1.10)
+K.panel_label(axC, "C", x=-0.13, y=1.15)
 
 # ---- Panel D: physics-loss weight sensitivity (Pareto) ------------------
 axD = fig.add_subplot(gs[1, 0])
@@ -124,7 +124,7 @@ lines = [l for l in axD.get_lines() + axD2.get_lines()
 axD.legend(lines, [l.get_label() for l in lines], frameon=False, fontsize=6.0,
            loc="upper center")
 axD.set_title(r"$\lambda_{\rm phys}$ sensitivity (seed 42)", fontsize=9)
-K.panel_label(axD, "D", x=-0.20, y=1.05)
+K.panel_label(axD, "D", x=-0.20, y=1.15)
 
 # ---- Panel E: trunk ablation, normalised to the plain MLP trunk ---------
 abl = stat["stage10_radial_trunk_ablation"]["summary"]
@@ -151,7 +151,7 @@ axE.set_xlabel("trunk basis (radial decay $k$)")
 axE.set_ylabel("error relative to MLP trunk")
 axE.set_title("trunk ablation (500 ep, 3-seed)", fontsize=9)
 axE.legend(frameon=False, fontsize=6.6)
-K.panel_label(axE, "E", x=-0.16, y=1.06)
+K.panel_label(axE, "E", x=-0.18, y=1.15)
 
 # ---- Panel F: Fisher condition-number ridge ----------------------------
 fp = stat["stage10_fisher_plane"]
@@ -178,7 +178,7 @@ axF.set_title(r"Fisher conditioning $\log_{10}\kappa(\mathcal{F})$ (white: $10^{
 cb = fig.colorbar(mesh, ax=axF, pad=0.02, fraction=0.046)
 cb.set_label(r"$\log_{10}\kappa(\mathcal{F})$", fontsize=7.5)
 cb.ax.tick_params(labelsize=6.5)
-K.panel_label(axF, "F", x=-0.16, y=1.06)
+K.panel_label(axF, "F", x=-0.18, y=1.15)
 
 sdata = {
     "panelA_schemes": np.array(ORDER, dtype=object),

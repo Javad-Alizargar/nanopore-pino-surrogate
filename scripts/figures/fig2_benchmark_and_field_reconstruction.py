@@ -34,7 +34,7 @@ def field(ax, C, title, cmap, letter, vmin=None, vmax=None):
     ax.set_title(title, fontsize=9)
     ax.set_xlabel(r"$r/R$"); ax.set_ylabel(r"$z/L$")
     fig.colorbar(pc, ax=ax, fraction=0.046, pad=0.03)
-    K.panel_label(ax, letter, x=-0.25, y=1.05)
+    K.panel_label(ax, letter, x=-0.25, y=1.16)
 
 ax = fig.add_subplot(gs[0, 0])
 field(ax, psi_dn, r"$\psi_\theta(r,z)$  (DeepONet)", "RdBu_r", "A")
@@ -61,7 +61,7 @@ ax.axhspan(dapinn_mean - dapinn_err, dapinn_mean + dapinn_err,
            label="prior DA-PINN  $\\pm$ reported err")
 ax.set_xlabel(r"$z/L$"); ax.set_ylabel(r"$I(z)$  (pA)", labelpad=2)
 ax.set_title(r"axial current profile", fontsize=9)
-ax.legend(fontsize=6.4, loc="best"); K.panel_label(ax, "F", x=-0.25, y=1.05)
+ax.legend(fontsize=6.4, loc="best"); K.panel_label(ax, "F", x=-0.25, y=1.16)
 ax.set_xlim(0, 1)
 
 fig.suptitle(r"Benchmark state #0:  $V_\mathrm{app}=50$ mV, $C_0=100$ mol m$^{-3}$, "

@@ -76,7 +76,7 @@ axB.text(0.66, 0.205, "interactive tools", transform=axB.transAxes, ha="center",
          fontsize=6.8, fontweight="bold", color=K.C["blue"])
 axB.text(0.66, 0.105, "browser ONNX (0.072 ms)\n+ Gradio live SG/FV compare",
          transform=axB.transAxes, ha="center", fontsize=5.9)
-K.panel_label(axB, "B", x=-0.12, y=1.02)
+K.panel_label(axB, "B", x=-0.12, y=1.15)
 
 # ---- Panels C/D: exact SG/FV vs operator Fisher/Jacobian agreement ------
 fv = stat["stage11_fisher_sgfv_validation"]

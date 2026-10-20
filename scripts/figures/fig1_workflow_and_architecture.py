@@ -49,7 +49,7 @@ axA.text(0.5, 0.50, r"Poisson$-$Nernst$-$Planck" + "\n"
          ha="center", va="center", fontsize=9.6, color="0.25")
 axA.set_title(r"axisymmetric charged nanopore", fontsize=11,
               loc="left", fontweight="bold")
-K.panel_label(axA, "A", x=-0.02, y=1.02)
+K.panel_label(axA, "A")
 
 # --------------------------------------------------------------------------- #
 # Panel B: 4D parametric operating space
@@ -87,6 +87,7 @@ axB.set_title(r"4D operating space  "
               fontsize=11, loc="left", fontweight="bold")
 axB.text(0.985, 0.03, r"$N=240$ states", transform=axB.transAxes,
          ha="right", va="bottom", fontsize=9, color="0.3")
+K.panel_label(axB, "B")
 
 # --------------------------------------------------------------------------- #
 # Panel C: exact-reservoir and charge-balanced ansatz
@@ -127,7 +128,7 @@ for xa, xb in ((0.315, 0.345), (0.650, 0.680)):
                   color=K.C["grey"], transform=axC.transAxes))
 axC.set_title(r"architecture-independent hard constraints",
               fontsize=11, loc="left", fontweight="bold")
-K.panel_label(axC, "C", x=-0.02, y=1.02)
+K.panel_label(axC, "C")
 
 # --------------------------------------------------------------------------- #
 # Panel D: DeepONet vs FNO
@@ -184,7 +185,7 @@ axD.text(0.755, 0.045, "460,488 params  ·  ONNX 1.04 ms",
          ha="center", fontsize=9.0, color=K.C["orange"])
 axD.set_title(r"parameter-conditioned operator backbones",
               fontsize=11, loc="left", fontweight="bold")
-K.panel_label(axD, "D", x=-0.02, y=1.02)
+K.panel_label(axD, "D")
 
 save_data = {
     "lam_over_R": lam,

@@ -224,44 +224,44 @@
   },
   "figures_markdown": {
     "1": {
-      "mention_line": 189,
-      "image_line": 191,
-      "caption_line": 193,
+      "mention_line": 175,
+      "image_line": 177,
+      "caption_line": 179,
       "image_after_mention": true,
       "caption_after_image": true
     },
     "2": {
-      "mention_line": 197,
-      "image_line": 201,
-      "caption_line": 203,
+      "mention_line": 183,
+      "image_line": 187,
+      "caption_line": 189,
       "image_after_mention": true,
       "caption_after_image": true
     },
     "3": {
-      "mention_line": 209,
+      "mention_line": 195,
+      "image_line": 197,
+      "caption_line": 199,
+      "image_after_mention": true,
+      "caption_after_image": true
+    },
+    "4": {
+      "mention_line": 207,
       "image_line": 211,
       "caption_line": 213,
       "image_after_mention": true,
       "caption_after_image": true
     },
-    "4": {
-      "mention_line": 221,
-      "image_line": 225,
-      "caption_line": 227,
-      "image_after_mention": true,
-      "caption_after_image": true
-    },
     "5": {
-      "mention_line": 231,
-      "image_line": 233,
-      "caption_line": 235,
+      "mention_line": 217,
+      "image_line": 219,
+      "caption_line": 221,
       "image_after_mention": true,
       "caption_after_image": true
     },
     "6": {
-      "mention_line": 243,
-      "image_line": 247,
-      "caption_line": 249,
+      "mention_line": 229,
+      "image_line": 233,
+      "caption_line": 235,
       "image_after_mention": true,
       "caption_after_image": true
     }

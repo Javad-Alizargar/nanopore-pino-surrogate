@@ -5,11 +5,11 @@
       "scientific": "A: geometry/BCs (R,L,V_app,C0,qw); B: 4D operating space with all 240 states by split; C: exact-reservoir and charge-balanced ansatz; D: DeepONet (36,880 params) vs FNO (460,488 params, 4-layer real-DFT).",
       "communication": "Panels A-D each answer a distinct question (problem, coverage, hard constraints, backbones); no redundant panels.",
       "render": "Panel labels A-D present exactly once; axis units on all labelled axes; no text overlap after spacing fix; Okabe-Ito colorblind-safe palette.",
-      "pdf_bytes": 63214,
-      "png_bytes": 510413,
+      "pdf_bytes": 63405,
+      "png_bytes": 512120,
       "png_px": [
-        3596,
-        2418
+        3658,
+        2437
       ],
       "pixel_dpi_assumed": 300,
       "source_data": "results/figure_data/fig1_workflow_and_architecture_data.npz",
@@ -21,8 +21,8 @@
       "scientific": "Zero-shot DeepONet fields/errors on benchmark #0 computed against the SG/FV reference; I(z) compares SG/FV, DeepONet, 300-epoch FNO and the DA-PINN band.",
       "communication": "A-C fields, D-E error maps, F current profile; consistent scales per row.",
       "render": "Colorbars labelled; axis units (r/R, z/L, pA); legend inside panel F; spacing widened to avoid colorbar/label collisions.",
-      "pdf_bytes": 151958,
-      "png_bytes": 306346,
+      "pdf_bytes": 151969,
+      "png_bytes": 306973,
       "png_px": [
         3015,
         1748
@@ -37,11 +37,11 @@
       "scientific": "A: reparam vs direct_c net-charge error (3-seed mean\u00b1SD); B: |q_w| quartile breakdown; C: physics-loss ablation; D: weak-charge radial rho cross-section; E: Stage-10 trunk ablation (MLP vs radial k=1/3/10/30/multi, normalised to MLP); F: Fisher conditioning log10 kappa(F) over (lambda_D/R, |q_w|) showing the q_w-R degeneracy ridge with dlnI/dlnR~2 and |dlnI/dlnq_w|<2e-3.",
       "communication": "Shows the cancellation mechanism, the physics benefit, and quantifies the trunk choice and the fundamental current-only ill-conditioning.",
       "render": "Log y on panels B/C/E; pcolormesh + white contour lines on F; ~4-5 words per panel.",
-      "pdf_bytes": 52969,
-      "png_bytes": 458994,
+      "pdf_bytes": 52948,
+      "png_bytes": 460732,
       "png_px": [
         3359,
-        1713
+        1743
       ],
       "pixel_dpi_assumed": 300,
       "source_data": "results/figure_data/fig3_h3_charge_reparameterization_ablation_data.npz",
@@ -54,7 +54,7 @@
       "communication": "Distributions + regime dependence + parity + scaling give H1/H2 four ways.",
       "render": "Log axes where needed; strips overlaid on boxes; inset residual panel legible.",
       "pdf_bytes": 61460,
-      "png_bytes": 522992,
+      "png_bytes": 523046,
       "png_px": [
         3272,
         1790
@@ -70,7 +70,7 @@
       "communication": "Demonstrates continuous parametric control, not just pointwise accuracy.",
       "render": "Open-circle SG markers vs solid operator lines; units on all axes.",
       "pdf_bytes": 35719,
-      "png_bytes": 297012,
+      "png_bytes": 297191,
       "png_px": [
         2832,
         1065
@@ -85,11 +85,11 @@
       "scientific": "A: latency bars; B: cumulative-cost curves with N* break-even vs M1/Xeon SG-FV and the DA-PINN retrain; C/D: Stage-10 inverse recovery of |q_w| and R at 1% noise for single-salt I-V, multi-salt I-V and the dual I-V + near-wall selectivity protocol (q_w unidentifiable from I-V alone; dual recovers both).",
       "communication": "Latency + amortization + tool callout answer the cost question; C/D make the identifiability limitation and the added observable explicit.",
       "render": "Log axes labelled; break-even markers annotated without overlap after offset fix.",
-      "pdf_bytes": 44517,
-      "png_bytes": 396566,
+      "pdf_bytes": 44518,
+      "png_bytes": 397870,
       "png_px": [
         2928,
-        1981
+        2038
       ],
       "pixel_dpi_assumed": 300,
       "source_data": "results/figure_data/fig6_h4_timing_and_amortization_breakeven_data.npz",

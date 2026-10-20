@@ -1,10 +1,10 @@
-# REPORT FOR EXTERNAL REVIEW — Stage 14 final handoff
+# REPORT FOR EXTERNAL REVIEW — Stage 15 final handoff
 
 Project: `nanopore_pino_surrogate` — parameter-conditioned physics-informed
 neural operator for steady axisymmetric Poisson--Nernst--Planck (PNP)
 transport in a charged cylindrical nanopore.
 Root: `/Users/javadalizargar/Google drive MAC/PINN to a Neural Operator`
-Date: 2026-10-20. State: **COMPLETE** (Stage 1–14 done; stop point reached; archived at Zenodo DOI 10.5281/zenodo.23487404).
+Date: 2026-10-20. State: **COMPLETE** (Stage 1–15 done; stop point reached; archived at Zenodo DOI 10.5281/zenodo.23487404).
 
 Stage 8 and Stage 9 were executed on explicit authorization. The fine-grained
 token was used **in-memory only** (`GH_TOKEN` environment for `gh`; a transient
@@ -48,7 +48,38 @@ typo, and enforced individual table citations S1–S20. It released **v1.3.1**
 after a **31/31 audit**. **Stage 14** added the explicit CPiP statement,
 contextualized the DA-PINN comparison with both reference errors, tightened
 §3.6–3.7, and made the Section-1 first-citation flow strictly monotonic 1..60;
-it released **v1.3.2** after a **31/31 audit**.
+it released **v1.3.2** after a **31/31 audit**. **Stage 15** restored the
+missing Figure 1B label and spaced all panel letters, resolved the 72 external
+StatWhy citation-integrity flags, aligned the CPC Program Summary with the
+official template, added a self-contained `test_run/`, and released **v1.3.3**
+after a **33/33 audit**.
+
+## Stage 15 deliverables (citation integrity, figure labels, CPC template)
+
+1. **Figure 1 and all panel labels.** Panel B now carries its bold `B`; all
+   Figure 1 letters sit at `(-0.06, 1.08)` in axes coordinates. The verifier
+   now checks exact panel sets (`A–D`, `A–F`, `A–F`, `A–D`, `A–C`, `A–D`),
+   in-bounds rendering, and a 14 px minimum clearance from every text artist
+   and box edge. All six figures pass with **0 layout issues** (minimum gap
+   15.0 px; Figure 1 minimum 24.9 px).
+2. **StatWhy citation integrity.** All 72 flags were addressed by rewriting
+   cluster citations into individualized clause attributions for refs 1–60,
+   including the corrected `[43]` thermal-charring context, the `[52]`/`[54–60]`
+   operator-learning wording, and the Discussion replacement of `[20–23]` by
+   `[7, 8, 10]`. Mathematical interval brackets were converted to prose or
+   inequalities, and the `28,200` typo was corrected to 20–200 mol m^-3.
+   Check 32 confirms zero non-citation square brackets in prose.
+3. **CPC template and test run.** The Program Summary now follows the official
+   11-field Elsevier order (Program title through Running time), with MIT,
+   Python 3.10+ (tested 3.14), Code Ocean not applicable, and the repository/
+   Zenodo/portal links. `test_run/` contains sample input, expected ONNX
+   summary, and a runner that prints `CPC TEST RUN PASSED` in under one second;
+   the README and Data availability statement describe it explicitly.
+4. **Release (15.4).** Enforcement, typography, DOCX, and cover letters were
+   rerun; DOCX rebuilt (main 0 tables, 6 inline figures, native OMML;
+   supplement 21 grids, 0 images); packages rebuilt; audit **33/33 PASS**
+   (checks 32 and 33 added); portal redeployed (`/api/solve_sg` 196.137225 pA);
+   both repositories tagged **v1.3.3** (`results/stage15_release.json`).
 
 ## Stage 14 deliverables (surgical pre-submission polish)
 
@@ -318,23 +349,25 @@ metadata-only references have no online abstract and are recorded as
 
 ```
 Public repository   : https://github.com/Javad-Alizargar/nanopore-pino-surrogate            (visibility: public)
-  main / tag v1.3.2: e4ca7330fd2aa477f76ed01998469df526c8507a (authoritative: results/stage14_release.json)
+  main / tag v1.3.3: de9e3d01890ffc2effc3c3c04487cb92fe265d73 (authoritative: results/stage15_release.json)
+  tag v1.3.2      : e4ca7330fd2aa477f76ed01998469df526c8507a
   tag v1.3.1      : b2b832192200339f542a6a25e204450ce8fda2dc
   tag v1.3.0      : e97497f861bd8a71f0cf5c660fa871939531c64a
   tag v1.2.0      : 30ba2f841253ce45c264606af719cb64ba6b13ea
   tag v1.0.2      : 0105f96a0863db8f426ac07c6e08851a6403b3cb
   tag v1.0.0      : af5695f50b073a331a60e46ac7a327c610e9ae9e
-  files / size    : 161 files, 31.1 MB (31,117,629 B)
+  files / size    : 165 files, 31.1 MB (31,138,758 B)
 
 Private repository  : https://github.com/Javad-Alizargar/nanopore-pino-surrogate-private    (visibility: private)
-  main / tag v1.3.2: 3b5d61a62a036b836bf701122a296721b9b0ab6f (authoritative: results/stage14_release.json)
+  main / tag v1.3.3: 36cc073e54b5e589ccf9800d47662bfec3301ebf (authoritative: results/stage15_release.json)
+  tag v1.3.2      : 3b5d61a62a036b836bf701122a296721b9b0ab6f
   tag v1.3.1      : 518d51875bf8169e53b5f79325e71979423ad6c7
   tag v1.3.0      : 7801333be258d18bfe877efe028bb46cff2613e3
   tag v1.2.0      : 39c0a3d57dd11be40c15d282a6249df8f271b04b
-  files / size    : 845 files, 89.8 MB (89,834,447 B)
+  files / size    : 852 files, 89.9 MB (89,889,029 B)
 
 (Each package embeds a build timestamp in its manifest, so a rebuild advances the
-commit SHA; the exact released SHAs are always recorded in results/stage14_release.json.)
+commit SHA; the exact released SHAs are always recorded in results/stage15_release.json.)
 ```
 
 Hosted portal (primary) and GitHub Pages (mirror):
@@ -396,7 +429,7 @@ Inverse demo       : R median rel. err 0.004574 ; q_w not identifiable (median a
 
 ## Audit
 
-`scripts/audit_release_packages.py` → **31/31 PASS** (zero secret hits). The
+`scripts/audit_release_packages.py` → **33/33 PASS** (zero secret hits). The
 Stage-13/14 checks keep the DOCX bibliography `[1]--[60]`, enforce individual
 supplement-table first mentions in strict order 1..20 with no stray `_child`
 legend handles, and verify the official Zenodo DOI in the manuscript, main

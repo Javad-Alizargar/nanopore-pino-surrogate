@@ -17,6 +17,7 @@ import csv
 import json
 import re
 import subprocess
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -327,6 +328,79 @@ def stray_figure_checks() -> dict:
     return {"child_refs": hits, "png_meta": meta}
 
 
+
+def bracket_integrity_check() -> dict:
+    """Every prose square bracket must be a bibliographic citation 1..60."""
+    text = (ROOT / "manuscript" / "Manuscript.md").read_text()
+    body = re.sub(r"!\[[^\]]*\]\([^)]*\)", "", text)
+    bad = []
+    for m in re.finditer(r"\[([^\]]*)\]", body):
+        token = m.group(1)
+        if not re.fullmatch(r"\s*\d+(?:\s*(?:--|-|–|,)\s*\d+)*\s*", token):
+            bad.append(token)
+            continue
+        if re.search(r",\S", token):
+            bad.append(token)
+            continue
+        nums = [int(x) for x in re.findall(r"\d+", token)]
+        if not nums or min(nums) < 1 or max(nums) > 60:
+            bad.append(token)
+    typo = bool(re.search(r"28\s*,\s*200", body))
+    return {"ok": not bad and not typo, "bad_brackets": bad[:20],
+            "bad_count": len(bad), "typo_28_200": typo}
+
+
+def cpc_and_test_run_checks() -> dict:
+    layout = json.loads((ROOT / "results" / "figure_data" /
+                         "figure_layout_report.json").read_text())
+    specs = {"fig1_workflow_and_architecture": "ABCD",
+             "fig2_benchmark_and_field_reconstruction": "ABCDEF",
+             "fig3_h3_charge_reparameterization_ablation": "ABCDEF",
+             "fig4_h1_h2_interp_vs_ood_regimes": "ABCD",
+             "fig5_parametric_physics_sweeps": "ABC",
+             "fig6_h4_timing_and_amortization_breakeven": "ABCD"}
+    panels_ok = True
+    panel_detail = {}
+    for name, expected in specs.items():
+        info = layout.get("figures", {}).get(name, {}).get("panel_labels", {})
+        good = (info.get("expected") == expected and info.get("found") == expected
+                and info.get("set_ok") and info.get("all_in_bounds")
+                and info.get("ok") and (info.get("min_gap_px") or 0) >= 14.0)
+        panels_ok = panels_ok and bool(good)
+        panel_detail[name] = info
+    man = (ROOT / "manuscript" / "Manuscript.md").read_text()
+    labels = [
+        "**Program title:**",
+        "**CPC Library link to program files:**",
+        "**Developer's repository link:**",
+        "**Code Ocean capsule:**",
+        "**Licensing provisions:**",
+        "**Programming language:**",
+        "**Supplementary material:**",
+        "**Nature of the problem:**",
+        "**Solution method:**",
+        "**Additional comments including restrictions and unusual features:**",
+        "**Running time:**",
+    ]
+    positions = [man.find(x) for x in labels]
+    cpc_ok = all(p >= 0 for p in positions) and positions == sorted(positions)
+    cpc_ok = cpc_ok and "Python 3.10+ (tested on 3.14)" in man
+    cpc_ok = cpc_ok and "Not applicable" in man and "MIT License (MIT)" in man
+    cpc_ok = cpc_ok and "Supplementary Sections S0--S10 and Supplementary Tables S1--S20" in man
+    run_files = [PUB / "test_run" / "sample_input.json",
+                 PUB / "test_run" / "expected_output.json",
+                 PUB / "test_run" / "README.md",
+                 PUB / "scripts" / "run_cpc_test_case.py"]
+    files_ok = all(p.exists() for p in run_files)
+    proc = subprocess.run([sys.executable, "scripts/run_cpc_test_case.py"],
+                          cwd=PUB, capture_output=True, text=True, timeout=30) if files_ok else None
+    test_ok = bool(proc and proc.returncode == 0 and "CPC TEST RUN PASSED" in proc.stdout)
+    return {"panels_ok": bool(panels_ok), "panel_detail": panel_detail,
+            "cpc_ok": bool(cpc_ok), "files_ok": files_ok, "test_ok": test_ok,
+            "test_output": (proc.stdout.strip().splitlines()[0] if test_ok else
+                            (proc.stderr.strip()[-300:] if proc else "missing test_run"))}
+
+
 def main() -> None:
     tokens, apis_names = secret_tokens()
     public = scan_tree(PUB, tokens)
@@ -340,6 +414,8 @@ def main() -> None:
     s11 = stage11_checks()
     bib = bibliography_checks()
     stray = stray_figure_checks()
+    brackets = bracket_integrity_check()
+    cpc = cpc_and_test_run_checks()
     summary = json.loads((ROOT / "reproducibility" / "PACKAGE_SUMMARY.json").read_text())
 
     def ok(cond: bool) -> str:
@@ -399,6 +475,10 @@ def main() -> None:
             and not stray["child_refs"] and not stray["png_meta"])),
         ("Official Zenodo DOI present in manuscript, main DOCX, CPC letter, and public README",
          ok(zendo_doi_check())),
+        ("Zero non-citation square brackets in prose; no 28,200 typo",
+         ok(brackets["ok"])),
+        ("Figure 1--6 panel labels present/spaced; official CPC template and test_run pass",
+         ok(cpc["panels_ok"] and cpc["cpc_ok"] and cpc["files_ok"] and cpc["test_ok"])),
     ]
 
     lines = [
@@ -442,6 +522,8 @@ def main() -> None:
         f"main equations {seq['eq_main']['first_appearance']}; "
         f"supplement equations {seq['eq_supp']['first_appearance']}.",
         f"- Stage-11 upgrades: {json.dumps(s11)}.",
+        f"- Prose bracket integrity: {json.dumps(brackets)}.",
+        f"- CPC template/test run: {json.dumps(cpc)}.",
         f"- DOCX: {json.dumps(docx)}.",
         "",
         "## Scope and limitations",
