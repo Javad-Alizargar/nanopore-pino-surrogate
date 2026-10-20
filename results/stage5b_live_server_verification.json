@@ -1,0 +1,40 @@
+{
+  "stage": "5B.1b",
+  "generated_local_only": true,
+  "servers": {
+    "interactive": {
+      "url": "http://127.0.0.1:8765",
+      "index_http": 200,
+      "index_contains_Nanopore": true,
+      "health": {
+        "ok": true,
+        "service": "serve_interactive",
+        "sgfv_reference_pA": 196.13722469169718
+      },
+      "solve_sg_http": 200,
+      "solve_sg_mean_current_pA": 196.13722469169713,
+      "solve_sg_method": "direct",
+      "solve_sg_iterations": 4,
+      "solve_sg_residual": 2.4219382055434835e-10,
+      "solve_sg_runtime_s": 0.20822541695088148,
+      "solve_sg_roundtrip_s": 0.212,
+      "solve_sg_fields_ok": true,
+      "note": "served web_simulator/ + live SG/FV JSON API",
+      "pid": 9207,
+      "left_running": true
+    },
+    "gradio": {
+      "url": "http://127.0.0.1:7860",
+      "index_http": 200,
+      "config_http": 200,
+      "predict_api": "ok",
+      "predict_readout": "**Mean axial current:** 196.132 pA",
+      "predict_images_exist": true,
+      "compare_api": "ok",
+      "compare_live_solve_head": "Live SG/FV solve: **0.221 s** (direct, 4 iters, residual 2.42e-10)",
+      "compare_images_exist": true,
+      "pid": 9208,
+      "left_running": true
+    }
+  }
+}
