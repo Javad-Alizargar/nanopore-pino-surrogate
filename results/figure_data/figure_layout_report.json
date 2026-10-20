@@ -1,0 +1,81 @@
+{
+  "pad_required_px": 6.0,
+  "overlap_tol_px2": 12.0,
+  "png_margin_px": 8.0,
+  "panel_gap_px": 14.0,
+  "figures": {
+    "fig1_workflow_and_architecture": {
+      "n_issues": 0,
+      "issues": [],
+      "panel_labels": {
+        "expected": "ABCD",
+        "found": "ABCD",
+        "set_ok": true,
+        "all_in_bounds": true,
+        "min_gap_px": 24.9,
+        "ok": true
+      }
+    },
+    "fig2_benchmark_and_field_reconstruction": {
+      "n_issues": 0,
+      "issues": [],
+      "panel_labels": {
+        "expected": "ABCDEF",
+        "found": "ABCDEF",
+        "set_ok": true,
+        "all_in_bounds": true,
+        "min_gap_px": 20.4,
+        "ok": true
+      }
+    },
+    "fig3_h3_charge_reparameterization_ablation": {
+      "n_issues": 0,
+      "issues": [],
+      "panel_labels": {
+        "expected": "ABCDEF",
+        "found": "ABCDEF",
+        "set_ok": true,
+        "all_in_bounds": true,
+        "min_gap_px": 25.4,
+        "ok": true
+      }
+    },
+    "fig4_h1_h2_interp_vs_ood_regimes": {
+      "n_issues": 0,
+      "issues": [],
+      "panel_labels": {
+        "expected": "ABCD",
+        "found": "ABCD",
+        "set_ok": true,
+        "all_in_bounds": true,
+        "min_gap_px": 15.0,
+        "ok": true
+      }
+    },
+    "fig5_parametric_physics_sweeps": {
+      "n_issues": 0,
+      "issues": [],
+      "panel_labels": {
+        "expected": "ABC",
+        "found": "ABC",
+        "set_ok": true,
+        "all_in_bounds": true,
+        "min_gap_px": 17.0,
+        "ok": true
+      }
+    },
+    "fig6_h4_timing_and_amortization_breakeven": {
+      "n_issues": 0,
+      "issues": [],
+      "panel_labels": {
+        "expected": "ABCD",
+        "found": "ABCD",
+        "set_ok": true,
+        "all_in_bounds": true,
+        "min_gap_px": 18.7,
+        "ok": true
+      }
+    }
+  },
+  "total_issues": 0
+}
