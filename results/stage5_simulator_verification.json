@@ -1,0 +1,152 @@
+{
+  "stage": 5,
+  "task": "5.3",
+  "generated_local_only": true,
+  "web_assets": {
+    "web_simulator/index.html": {
+      "exists": true,
+      "bytes": 4947,
+      "sha256": "68bb2660ca523550847b8b6a9769b66b2a41a83f2affe9e0c24aeb095be2c23c"
+    },
+    "web_simulator/style.css": {
+      "exists": true,
+      "bytes": 4191,
+      "sha256": "e9db730d8f937ba89be502203f654cb0a16680136b5814e04ad01259a52cb013"
+    },
+    "web_simulator/app.js": {
+      "exists": true,
+      "bytes": 12170,
+      "sha256": "6c7e67244056bba2c35b2c0ed93c8e29db9dbe9ed7701bf5a7d857eca6199cf2"
+    },
+    "web_simulator/data/model_meta.json": {
+      "exists": true,
+      "bytes": 269594,
+      "sha256": "a2167021852d15554f1f7d8f59dcaf4c8e2466f77239c044fa26b83f5e818a47"
+    },
+    "web_simulator/models/deeponet_reparam_seed42.onnx": {
+      "exists": true,
+      "bytes": 188897,
+      "sha256": "2c5f315bf45f8acc83334d4ed07496b01a0eeea13e813b146908f2ca6dc5e067"
+    },
+    "web_simulator/models/fno_reparam_seed42.onnx": {
+      "exists": true,
+      "bytes": 1912172,
+      "sha256": "2c9b671750a06577221adc50fe3a04f4f1b4cbcb73c559f619d7f44113c16726"
+    }
+  },
+  "onnx_reload_ok": {
+    "deeponet": [
+      "psi",
+      "c_plus",
+      "c_minus",
+      "rho",
+      "s"
+    ],
+    "fno": [
+      "psi",
+      "c_plus",
+      "c_minus",
+      "rho",
+      "s"
+    ]
+  },
+  "onnx_parity_vs_pytorch": {
+    "deeponet": {
+      "checkpoint": "deeponet_reparam_data_plus_physics_seed42.pt",
+      "onnx_epochs": "110",
+      "states_checked": 48,
+      "max_abs_diff": {
+        "psi": 1.1920928955078125e-07,
+        "c_plus": 2.384185791015625e-07,
+        "c_minus": 1.7881393432617188e-07,
+        "rho": 3.725290298461914e-08,
+        "s": 2.384185791015625e-07
+      },
+      "max_abs_diff_overall": 2.384185791015625e-07,
+      "parity_ok": true
+    },
+    "fno": {
+      "checkpoint": "fno_reparam_seed42_300ep.pt",
+      "onnx_epochs": 300,
+      "states_checked": 48,
+      "max_abs_diff": {
+        "psi": 1.1920928955078125e-07,
+        "c_plus": 2.384185791015625e-07,
+        "c_minus": 2.384185791015625e-07,
+        "rho": 3.725290298461914e-08,
+        "s": 2.384185791015625e-07
+      },
+      "max_abs_diff_overall": 2.384185791015625e-07,
+      "parity_ok": true
+    }
+  },
+  "js_current_formula": {
+    "max_rel_diff": 5.686328624545558e-07,
+    "per_state": [
+      {
+        "id": 144,
+        "js_mean_pA": 196.1371819698746,
+        "sgfv_mean_pA": 196.13722469169718,
+        "rel_diff": 2.1781598392691084e-07
+      },
+      {
+        "id": 150,
+        "js_mean_pA": 46.83444595820536,
+        "sgfv_mean_pA": 46.83446204053864,
+        "rel_diff": 3.433867409017212e-07
+      },
+      {
+        "id": 0,
+        "js_mean_pA": 0.0,
+        "sgfv_mean_pA": 3.5340968553901327e-29,
+        "rel_diff": 3.5340968553901327e-29
+      },
+      {
+        "id": 3,
+        "js_mean_pA": 7.905640841040137e-22,
+        "sgfv_mean_pA": 1.8130401521421197e-14,
+        "rel_diff": 1.8130400730857113e-14
+      },
+      {
+        "id": 6,
+        "js_mean_pA": 14.124600993592939,
+        "sgfv_mean_pA": 14.124603632607002,
+        "rel_diff": 1.8683809697744828e-07
+      },
+      {
+        "id": 7,
+        "js_mean_pA": -1004.2224764384459,
+        "sgfv_mean_pA": -1004.223047472672,
+        "rel_diff": 5.686328624545558e-07
+      },
+      {
+        "id": 192,
+        "js_mean_pA": 14.006936727089302,
+        "sgfv_mean_pA": 14.00694000900347,
+        "rel_diff": 2.343062914437849e-07
+      },
+      {
+        "id": 216,
+        "js_mean_pA": -9.558490090802623,
+        "sgfv_mean_pA": -9.55849168593917,
+        "rel_diff": 1.6688161686020689e-07
+      }
+    ]
+  },
+  "gradio_app": {
+    "deeponet_mean_I_pA": 196.13211998653415,
+    "deeponet_infer_ms": 0.75683300383389,
+    "fno_mean_I_pA": 196.4517998371323,
+    "fno_infer_ms": 2.363833016715944,
+    "live_reference_wall_s": 0.20569012500345707,
+    "live_reference_method": "direct",
+    "live_reference_iterations": 4,
+    "live_reference_residual": 2.4219382055434835e-10,
+    "deeponet_vs_live_psi_rel_l2": 0.0002126069705341458,
+    "deeponet_vs_live_rho_rel_l2": 0.0946895782336638,
+    "deeponet_vs_live_I_rel_l2": 0.0007364054767019306,
+    "sgfv_mean_I_pA": 196.13722469169713,
+    "headless_total_s": 0.2912321250187233,
+    "source": "scripts/app_gradio.py (functions imported; same code path as UI)"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "stage": 10,
+  "task": "10.1B_384_state_expansion",
+  "base_dataset": "data/processed/pnp_parametric_240.npz",
+  "n_states": 384,
+  "n_train": 288,
+  "n_interp_test": 48,
+  "n_ood_test": 48,
+  "new_train_seed": 20261020,
+  "new_train_residual_max": 9.86420278792366e-10,
+  "new_train_wall_seconds": 29.6,
+  "test_states_identical_to_240": true,
+  "size_bytes": 6355972
+}

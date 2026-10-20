@@ -1,0 +1,10 @@
+protocol,noise,median_q_rel_err,median_R_rel_err,q_identifiable_10pct,R_recovered_2pct
+single,0.002,1,0.000478767,False,True
+single,0.01,1,0.00246273,False,True
+single,0.02,0.770261,0.00654203,False,True
+multi,0.002,0.823866,0.000258329,False,True
+multi,0.01,1,0.00105881,False,True
+multi,0.02,1,0.00251348,False,True
+dual,0.002,0.000482149,0.000261582,True,True
+dual,0.01,0.00239023,0.000791313,True,True
+dual,0.02,0.00280119,0.00175009,True,True

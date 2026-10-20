@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+*.npy
+*.npz.bak
+.DS_Store
+*.key
+*.pem
+.env
+apis/
+logs/
