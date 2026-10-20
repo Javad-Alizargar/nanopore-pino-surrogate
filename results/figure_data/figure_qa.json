@@ -34,14 +34,14 @@
       "palette": "Okabe-Ito (colorblind-safe)"
     },
     "fig3_h3_charge_reparameterization_ablation": {
-      "scientific": "reparam vs direct_c net-charge error (3-seed mean\u00b1SD, interp), |q_w| quartile breakdown, weak-charge radial rho cross-section, and physics-loss ablation.",
-      "communication": "Shows the cancellation mechanism and both the accuracy and physics benefit.",
-      "render": "Log y on panels B and D; no clipped labels; ratio annotations legible.",
-      "pdf_bytes": 31583,
-      "png_bytes": 269638,
+      "scientific": "A: reparam vs direct_c net-charge error (3-seed mean\u00b1SD); B: |q_w| quartile breakdown; C: physics-loss ablation; D: weak-charge radial rho cross-section; E: Stage-10 trunk ablation (MLP vs radial k=1/3/10/30/multi, normalised to MLP); F: Fisher conditioning log10 kappa(F) over (lambda_D/R, |q_w|) showing the q_w-R degeneracy ridge with dlnI/dlnR~2 and |dlnI/dlnq_w|<2e-3.",
+      "communication": "Shows the cancellation mechanism, the physics benefit, and quantifies the trunk choice and the fundamental current-only ill-conditioning.",
+      "render": "Log y on panels B/C/E; pcolormesh + white contour lines on F; ~4-5 words per panel.",
+      "pdf_bytes": 53027,
+      "png_bytes": 460401,
       "png_px": [
-        2685,
-        1650
+        3359,
+        1713
       ],
       "pixel_dpi_assumed": 300,
       "source_data": "results/figure_data/fig3_h3_charge_reparameterization_ablation_data.npz",
@@ -50,14 +50,14 @@
       "palette": "Okabe-Ito (colorblind-safe)"
     },
     "fig4_h1_h2_interp_vs_ood_regimes": {
-      "scientific": "Per-state rel-L2 (3-seed averaged) for psi, c+, rho, I across interp/OOD splits; error vs lambda_D/R; current parity over all 96 test states with R^2.",
-      "communication": "Distributions + regime dependence + parity give H1/H2 from three angles.",
-      "render": "Log y where needed; strips overlaid on boxes; inset residual panel legible.",
-      "pdf_bytes": 51276,
-      "png_bytes": 390502,
+      "scientific": "A: per-state rel-L2 (3-seed averaged) for psi, c+, rho, I across interp/OOD splits; B: error vs lambda_D/R; C: current parity over all 96 test states with R^2; D: Stage-10 data-scaling law (N_train = 36/72/144/288) with fitted power laws alpha_rho=0.55 (interp) vs 0.13 (OOD).",
+      "communication": "Distributions + regime dependence + parity + scaling give H1/H2 four ways.",
+      "render": "Log axes where needed; strips overlaid on boxes; inset residual panel legible.",
+      "pdf_bytes": 58255,
+      "png_bytes": 508012,
       "png_px": [
-        2644,
-        1703
+        3272,
+        1790
       ],
       "pixel_dpi_assumed": 300,
       "source_data": "results/figure_data/fig4_h1_h2_interp_vs_ood_regimes_data.npz",
@@ -82,14 +82,14 @@
       "palette": "Okabe-Ito (colorblind-safe)"
     },
     "fig6_h4_timing_and_amortization_breakeven": {
-      "scientific": "Latency bars and cumulative-cost curves with N* break-even vs M1/Xeon SG-FV and the DA-PINN retrain, from results/statistics.json.",
-      "communication": "Latency + amortization + tool callout answer the cost question directly.",
+      "scientific": "A: latency bars; B: cumulative-cost curves with N* break-even vs M1/Xeon SG-FV and the DA-PINN retrain; C/D: Stage-10 inverse recovery of |q_w| and R at 1% noise for single-salt I-V, multi-salt I-V and the dual I-V + near-wall selectivity protocol (q_w unidentifiable from I-V alone; dual recovers both).",
+      "communication": "Latency + amortization + tool callout answer the cost question; C/D make the identifiability limitation and the added observable explicit.",
       "render": "Log axes labelled; break-even markers annotated without overlap after offset fix.",
-      "pdf_bytes": 30566,
-      "png_bytes": 253994,
+      "pdf_bytes": 44517,
+      "png_bytes": 396566,
       "png_px": [
         2928,
-        1151
+        1981
       ],
       "pixel_dpi_assumed": 300,
       "source_data": "results/figure_data/fig6_h4_timing_and_amortization_breakeven_data.npz",

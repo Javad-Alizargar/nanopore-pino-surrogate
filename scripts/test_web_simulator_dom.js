@@ -47,10 +47,19 @@ function makeCtx(canvas) {
   };
 }
 function makeEl(id) {
+  const classes = new Set();
   const el = {
     id, value: "0", textContent: "", innerHTML: "", className: "", dataset: {},
     children: [], style: {}, disabled: false, checked: false,
-    classList: { toggle: () => {}, add: () => {}, remove: () => {} },
+    __classes: classes,
+    classList: {
+      toggle: (c, on) => { const v = on === undefined ? !classes.has(c) : !!on; if (v) classes.add(c); else classes.delete(c); return v; },
+      add: (c) => classes.add(c),
+      remove: (c) => classes.delete(c),
+      contains: (c) => classes.has(c),
+    },
+    setAttribute: (k, v) => { el[k] = v; },
+    getAttribute: (k) => el[k],
     appendChild(c) { this.children.push(c); return c; },
     addEventListener: () => {}, removeEventListener: () => {},
     getContext() { return makeCtx(this); },
@@ -71,6 +80,16 @@ const document = {
     return e;
   },
   addEventListener: () => {},
+};
+
+// tab-bar mock for the 3-tab portal
+const TAB_IDS = ["tab-operator", "tab-benchmarks", "tab-live"];
+const TAB_BUTTONS = TAB_IDS.map((id) => { const b = makeEl("tabbtn_" + id); b.dataset.tab = id; return b; });
+const TAB_PANELS = TAB_IDS.map((id) => document.getElementById(id));
+document.querySelectorAll = (sel) => {
+  if (sel === ".tab") return TAB_BUTTONS;
+  if (sel === ".tabpanel") return TAB_PANELS;
+  return [];
 };
 
 // default control values (as in index.html)
@@ -197,6 +216,16 @@ function loadScript(rel) {
 
     // ---- badge ----
     check("engine badge rendered", /Engine:/.test(elements.engineBadge.textContent), elements.engineBadge.textContent);
+
+    // ---- portal tabs (1-3) ----
+    check("tabs: 3 tab buttons", TAB_BUTTONS.length === 3);
+    check("tabs: 3 tab panels", TAB_PANELS.length === 3);
+    const r = global.window.__app.setTab("tab-live");
+    check("tabs: switch to live activates the panel",
+      r === "tab-live" && TAB_PANELS[2].__classes.has("active") && !TAB_PANELS[0].__classes.has("active"));
+    global.window.__app.setTab("tab-operator");
+    check("tabs: switch back to operator restores panel 1",
+      TAB_PANELS[0].__classes.has("active") && !TAB_PANELS[2].__classes.has("active"));
 
   } catch (e) {
     failures.push("uncaught exception: " + e.stack);

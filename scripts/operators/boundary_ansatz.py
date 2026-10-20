@@ -16,6 +16,13 @@ Mode ``reparam`` (charge-balanced reparameterization):
 Mode ``direct_c`` (ablation / baseline):
     c_pm  = exp(clip(z(1-z) G_pm, -15, 15))
     rho   = c_+ - c_-   (post-hoc subtraction)
+
+Mode ``linear_ortho_projection`` (Stage-11 constraint-scheme benchmark):
+    sigma = 2 + z(1-z) G_sigma
+    rho_t = z(1-z) G_rho
+    c_pm  = Softplus_beta(0.5 (sigma +/- rho_t)) / beta, beta = 20
+  => positivity by projection, but c_+ - c_- != rho_t after the projection
+     (the algebraic-consistency mismatch is measured as ``rho_latent`` vs rho).
 """
 
 import torch
@@ -24,6 +31,7 @@ import torch.nn as nn
 from .constants import NZ
 
 _CLIP = 15.0
+_SOFTPLUS_BETA = 20.0
 
 
 def salt_mean(c_plus: torch.Tensor, c_minus: torch.Tensor) -> torch.Tensor:
@@ -45,7 +53,7 @@ def reconstruct_concentrations(s: torch.Tensor, rho: torch.Tensor):
 class BoundaryAnsatz(nn.Module):
     def __init__(self, mode: str = "reparam", nz: int = NZ):
         super().__init__()
-        if mode not in ("reparam", "direct_c"):
+        if mode not in ("reparam", "direct_c", "linear_ortho_projection"):
             raise ValueError(f"unknown mode {mode!r}")
         self.mode = mode
         z = torch.linspace(0.0, 1.0, nz, dtype=torch.float32)
@@ -67,11 +75,21 @@ class BoundaryAnsatz(nn.Module):
             root = torch.sqrt(s * s + rho * rho)
             c_plus = 0.5 * (root + rho)
             c_minus = 0.5 * (root - rho)
+            rho_latent = rho
+        elif self.mode == "linear_ortho_projection":
+            sigma = 2.0 + env * g2
+            rho_latent = env * g3
+            b = _SOFTPLUS_BETA
+            c_plus = torch.nn.functional.softplus(b * 0.5 * (sigma + rho_latent)) / b
+            c_minus = torch.nn.functional.softplus(b * 0.5 * (sigma - rho_latent)) / b
+            rho = c_plus - c_minus
+            s = c_plus + c_minus
         else:
             c_plus = torch.exp(torch.clamp(env * g2, -_CLIP, _CLIP))
             c_minus = torch.exp(torch.clamp(env * g3, -_CLIP, _CLIP))
             rho = c_plus - c_minus
             s = c_plus + c_minus
+            rho_latent = rho
 
         return {
             "psi": psi.squeeze(1),
@@ -79,4 +97,5 @@ class BoundaryAnsatz(nn.Module):
             "c_minus": c_minus.squeeze(1),
             "rho": rho.squeeze(1),
             "s": s.squeeze(1),
+            "rho_latent": rho_latent.squeeze(1),
         }

@@ -1,121 +1,326 @@
-# REPORT FOR EXTERNAL REVIEW — Stage 6B handoff
+# REPORT FOR EXTERNAL REVIEW — Stage 11 final handoff
 
 Project: `nanopore_pino_surrogate` — parameter-conditioned physics-informed
 neural operator for steady axisymmetric Poisson--Nernst--Planck (PNP)
 transport in a charged cylindrical nanopore.
 Root: `/Users/javadalizargar/Google drive MAC/PINN to a Neural Operator`
-Date: 2026-10-19. State: **COMPLETE_WITH_LIMITATIONS** (Stage 6B done; stop
-point reached). No repository push, release, or DOI has been created.
+Date: 2026-10-20. State: **COMPLETE** (Stage 1–11 done; stop point reached).
+
+Stage 8 and Stage 9 were executed on explicit authorization. The fine-grained
+token was used **in-memory only** (`GH_TOKEN` environment for `gh`; a transient
+`gh auth git-credential` helper for `git push`). No token value was printed,
+echoed, or logged, and no remote URL contains a token (`.git/config` holds clean
+`https://github.com/...` URLs).
 
 ## Objective
+
 Build a 4D parameter-conditioned surrogate over
-$\boldsymbol{\mu}=(V_\text{app},C_0,q_w,R)$ that is CPC (CPiP + methodological)
-and JCP compatible: verified SG/FV dataset, two backbones (multi-scale radial
-PI-DeepONet and real-DFT FNO), charge-balanced reparameterization, inverse
-demonstration, browser + Gradio apps, and a defensible manuscript. Stage 6B
-adds independent review, revision, DOCX export, and the two release packages.
+$\boldsymbol{\mu}=(V_\text{app},C_0,q_w,R)$ that is CPC and JCP compatible:
+a verified SG/FV dataset, two backbones (multi-scale radial PI-DeepONet and a
+real-DFT FNO), charge-balanced reparameterization, an inverse demonstration,
+browser + Gradio apps, and a defensible manuscript. Stages 6B–7 added independent
+review, DOCX export, dual release packages, and deployment. **Stage 8** verified
+that every cited reference supports its sentence, moved every data table into the
+supplement (figure-only main text), refreshed the cover letters, re-audited the
+release at **22/22 PASS**, and re-released both repositories as **v1.0.1**.
+**Stage 9** made the DOCX equations natively editable (OMML, zero equation
+images), fixed number/symbol hygiene, placed figures inline, upgraded the web
+portal, deployed it live at **https://pino.statwhy.com**, added a journal
+suitability assessment, re-audited at **24/24 PASS**, and re-released as
+**v1.0.2**. **Stage 10** ran three pre-submission studies (a trunk ablation, a
+384-state data-scaling law, and a Fisher/multi-protocol identifiability
+analysis), updated Figures 3/4/6 and the supplement (S14–S15), reframed the
+manuscript honestly, re-audited at **24/24 PASS**, and released **v1.1.0**.
+**Stage 11** answered the remaining reviewer objections: it benchmarked four
+charge-constraint schemes, validated the Fisher/Jacobian analysis against exact
+SG/FV finite differences, swept the physics weight, renumbered all references,
+tables and equations by first appearance with in-text callouts, added an
+Algorithm block and dependency pinning, and released **v1.2.0** after a
+**28/28 audit**.
 
-## Work completed in Stage 6B
-1. **Independent cross-provider review** (`scripts/run_independent_review.py`
-   → `results/independent_review.json`). OpenAI `gpt-4.1-mini` found 11 issues
-   ($0.00549); DeepSeek `deepseek-v4-pro` found 12 issues ($0.02112); both
-   recommend **minor revision**. Task spend ≈ **$0.079** of the $0.15
-   allowance. This is AI-assisted review, **not** expert peer review.
-2. **All 23 issues resolved** in `manuscript/Manuscript.md` and
-   `manuscript/Supplementary_Materials.md`, each logged with severity,
-   evidence, decision, and fix in `reports/REVIEW_RESPONSE.md`. Conflicts were
-   resolved against the code and validated results, not by model majority.
-   - **Critical**: the reservoir limit was described incorrectly. The code
-     (`scripts/operators/boundary_ansatz.py`) uses
-     `s = 2 exp[clip(z(1−z)G_s, −15, 15)]`, `ρ = z(1−z)G_ρ`, so at the
-     reservoirs `s→2`, `ρ→0`, and `c±→C0` **exactly** (not `s→0`).
-   - Added the dimensionless PNP system and SG face flux (Supplement S3.1),
-     the exact data/physics loss (S2), the fixed multi-scale trunk features
-     `κ∈{1,3,10,30}`, complete CPC metadata, DA-PINN and break-even caveats,
-     absolute `q_w` errors, corrected Figure 5 description, and live benchmark
-     current. Wall-condition sign reconciled to the solver (no result changed).
-3. **Number formatting** (`scripts/format_manuscript_numbers.py`): 247 values
-   rounded to 3–4 significant figures; code spans, math, URLs, DOIs, arXiv
-   IDs, 298.15 K, and the reference list are protected. Exact values remain in
-   `results/statistics.json` and `results/tables/*.csv`; both documents say so.
-4. **Placeholders resolved**: MIT License (Copyright 2026 Javad Alizargar);
-   software name `nanopore-pino-surrogate`; repository
-   `https://github.com/Javad-Alizargar/nanopore-pino-surrogate`; simulator
-   `https://javad-alizargar.github.io/nanopore-pino-surrogate/web_simulator/`.
-   No DOI was invented; a Zenodo deposit is deferred to acceptance.
-5. **DOCX export** (`scripts/export_manuscript_docx.py`):
-   `manuscript/Manuscript_PINO_clean.docx` (6 tables, 6 embedded figures,
-   8 equation images) and `manuscript/Supplementary_Materials_PINO.docx`
-   (7 tables, 10 equation images). Verified structurally: no `$$`, no LaTeX
-   leakage, complete sections and 60 references.
-6. **Release packages** (`scripts/build_reproducibility_packages.py`):
-   `reproducibility/public_repo/` (136 files, 22.5 MB, strict shareable
-   allowlist) and `reproducibility/github/` (791 files, 80.2 MB, full research
-   state, credentials and `.venv` excluded), each with a SHA-256 manifest.
-7. **Final audit** (`scripts/audit_release_packages.py` →
-   `reports/FINAL_AUDIT_REPORT.md`): **20/20 PASS** — no credential values,
-   key patterns, or secret file names in either package or in tracked files;
-   abstract 234 words; 5 highlights ≤85 chars; references 1–60 all cited, all
-   with DOIs; no placeholders; claim-evidence map complete; DOCX structure and
-   packages correct.
-8. Reports updated: `reports/DECISIONS.md` (D-045–D-050), `reports/STATUS.md`,
-   `reports/NEXT_ACTIONS.md`, this file, and `reports/REVIEW_RESPONSE.md`.
+## Stage 10 deliverables (pre-submission upgrades)
 
-## Verified findings (unchanged from Stages 3–5)
-- Dataset: 240 states (144 train / 48 interpolation / 48 OOD), SG/FV
-  max residual 9.936e-10, on a 21×61 grid.
-- DeepONet (36,880 params) vs FNO (460,488): interpolation-test relative $L_2$
-  ψ 0.0008914 vs 0.005495, current 0.001093 vs 0.008511; OOD current 0.001363
-  vs 0.009123; OOD ψ 0.02024 vs 0.02079.
-- Charge-balanced reparameterization cuts net-charge error 8.63× (DeepONet)
-  and 10.29× (FNO).
-- ONNX inference: DeepONet 0.072 ms, FNO 1.04 ms; break-even vs SG/FV at the
-  dataset-mean solve time ≈ 546 (DeepONet) and ≈ 838 (FNO) states.
-- Benchmark state #0 (50 mV, 100 mol m⁻³, q_w −0.01, R 5 nm): reference
-  current 196.137 pA (live `/api/solve_sg` reproduces it).
-- Inverse demo: radius median relative error 0.004574; surface charge is a
-  flat direction for conductance-only inversion (physical identifiability
-  limit, disclosed).
+1. **Trunk ablation (10.1A).** Six trunk variants at matched capacity and 500
+   epochs, three seeds: the plain MLP trunk gives the lowest interpolation
+   net-charge error (0.0914), while radial variants (0.098–0.116) reduce the
+   wall-gradient error by about 7 % (radial k=30: 4.83e-3 vs 5.20e-3) and give
+   the best integrated-current errors (multi-scale 0.274 %, radial k=30 0.320 %,
+   MLP 0.364 %). The pre-defined hypothesis that the radial basis is *essential*
+   is **not supported**; per the user's instruction this is reported honestly as
+   a scope-bounding ablation, and the multi-scale radial trunk is retained as the
+   released default (favourable wall-gradient and current behaviour).
+2. **Data-scaling law (10.1B).** A 384-state solve expansion supports nested
+   training subsets N=36→288. Interpolation net-charge error falls 0.3927→0.1299
+   (fit `ε_ρ = 3.14 N^-0.552`; potential `ε_ψ = 0.0391 N^-0.535`), close to the
+   expected `N^-1/2`, whereas out-of-distribution net-charge error changes only
+   0.317→0.253 (`α=0.13`). The training box, not the sample count, bounds
+   extrapolation.
+3. **Fisher + multi-protocol identifiability (10.1C).** Over 15 states and
+   three protocols (single-salt, multi-salt, dual I–V + near-wall selectivity)
+   at 0.2/1/2 % noise, single- and multi-salt I–V leave the wall charge
+   unidentifiable (median error 0.77–1.00) while recovering radius to <0.7 %;
+   the dual protocol recovers both below 0.3 %. A 18×18 Fisher sweep gives
+   `κ(F)` median 7.46e8 (99.7 % > 1e8), `∂lnI/∂lnR = 2.029`, and
+   `|∂lnI/∂lnq_w| ≤ 1.6e-3`: the near-null Fisher direction is the charge axis at
+   every operating point.
+4. **Figures, supplement, manuscript (10.2–10.3).** Figure 3 is a 2×3 grid
+   (physics-loss→C, cross-section→D, new E trunk ablation, F Fisher `log10 κ`);
+   Figure 4 gains Panel D (log-log N_train scaling); Figure 6 gains Panels C/D
+   (q_w and R recovery). Layout verification reports **0 issues**. The supplement
+   gains Section S7b with **S14** and **S15** (header 13→15) and the claim map is
+   extended to **C01–C33**. The abstract was cut to 244 words, the Highlights and
+   cover letters reframed, and the Discussion/Conclusion/Data-availability
+   updated.
+5. **Release (10.4).** DOCX rebuilt (main: 155 paragraphs, 0 tables, 6 figures,
+   233 `m:oMath`; supplement: 16 tables, 0 images); packages rebuilt (public
+   **145 files / 30.2 MB**, private **822 files / 88.5 MB**); **24/24 audit
+   PASS**; the portal's Benchmarks tab gained a "Scope and validation" block and
+   was redeployed to **https://pino.statwhy.com** (HTTP 200; `/api/solve_sg` =
+   196.137225 pA); both repositories were force-pushed and tagged **v1.1.0**
+   (`results/stage10_release.json`).
 
-## Costs
-- Ledger before Stage 6B: $0.01989345 of the $5.00 cap.
-- Stage 6B: ~$0.0993 committed (~$0.079 review task spend; ~$0.024 wasted on
-  empty DeepSeek reasoning responses before thinking was disabled). No other
-  paid calls. Remaining ≈ **$4.90**.
+## Stage 11 deliverables (reviewer upgrades)
 
-## Files generated in Stage 6B
-- `results/independent_review.json`; `reports/REVIEW_RESPONSE.md`;
-  `reports/FINAL_AUDIT_REPORT.md`.
-- `scripts/run_independent_review.py`, `scripts/format_manuscript_numbers.py`,
-  `scripts/export_manuscript_docx.py`,
-  `scripts/build_reproducibility_packages.py`,
-  `scripts/audit_release_packages.py`.
-- `manuscript/Manuscript_PINO_clean.docx`,
-  `manuscript/Supplementary_Materials_PINO.docx`.
-- `reproducibility/public_repo/`, `reproducibility/github/`,
-  `reproducibility/PACKAGE_SUMMARY.json`.
-- Revised `manuscript/Manuscript.md`, `manuscript/Supplementary_Materials.md`.
+1. **Exact SG/FV Jacobian/Fisher validation** (`scripts/run_stage11_reviewer_upgrades.py`).
+   Centered finite differences of the float64 Scharfetter--Gummel solver on 15
+   states (1200 solves, 252 s) give ground-truth log-log sensitivities. The
+   operator agrees on `dlnI/dlnR` to a median relative difference of
+   **1.5e-4** (2.00003 vs 1.99997) and reproduces the dual-protocol conditioning
+   number `kappa(F) ~ 1.8e5`; both currents are flat in `q_w`.
+2. **Four-way constraint benchmark** (same backbone, three seeds, interp
+   net-charge rel. L2): hyperbolic reparam **0.2066 +/- 0.0154**, linear
+   orthogonal projection **0.2008 +/- 0.0206**, soft penalty **0.4114 +/- 0.1871**,
+   direct `c` **0.9334 +/- 0.0082**. Only the reparameterization keeps
+   `c+ - c- = rho` exact (1.1e-16 vs 4.2e-8).
+3. **Physics-weight sweep**: `lambda = 1e-3` is the Pareto point
+   (`rho` 0.2125, wall 5.55e-3, Poisson 0.472) and remains the default.
+4. **Numbering**: references 1--60 strictly by first appearance (propagated to
+   the supplement, `literature_db.json`, claim map and verification record);
+   supplementary tables **S1--S18** by first citation (labels only, sections
+   preserved per user decision); `Eq. (1)--(8)` and `Eq. (S1)--(S10)` all
+   called out in text.
+5. **Narrative**: CPiP framing, experimental feasibility of the near-wall
+   selectivity readout, compressed §3.10, **Algorithm 1** and pinned versions
+   (Python 3.14.7, NumPy 2.5.4, SciPy 1.18.1, PyTorch 2.14.1, ONNX Runtime
+   1.31.0) in Supplement S2.
+6. **Release**: audit extended to **28 checks — 28/28 PASS**; DOCX rebuilt
+   (main 158 paragraphs / 6 figures / 276 `m:oMath`; supplement 110 paragraphs /
+   19 table grids / 277 `m:oMath`); packages rebuilt (public **152 files /
+   30.6 MB**, private **834 files / 89.2 MB**); portal scope block updated;
+   both repositories tagged **v1.2.0** (`results/stage11_release.json`).
 
-## Checks executed
-- Reviewer JSON parsed for both providers; ledger reservations reconciled.
-- Formatter dry-run/apply on both manuscripts (0 residual long floats except
-  DOIs and the reference list).
-- DOCX read-back: table/figure/equation counts, no LaTeX leakage, 60 refs.
-- Package build and SHA-256 manifest; audit 20/20 PASS including credential
-  value scan, secret-name scan, and generic key-pattern scan.
+## Stage 9 deliverables
 
-## Unresolved issues and limitations
-- The review is AI-assisted, not human peer review.
-- DOCX was validated structurally; no page-rendered proof (no Word/PDF viewer
-  in this environment).
-- `q_w` remains non-identifiable from conductance alone (disclosed).
-- The FNO used 110 epochs (with a 300-epoch check reported); the DeepONet
-  advantage is architectural, not an epoch artifact.
-- No GitHub push, no public release, no Zenodo DOI yet.
+1. **Native editable equations + inline figures (9.1).**
+   `scripts/fix_manuscript_typography.py` normalized bare scientific notation,
+   caret units, and orphan superscript bases in both manuscript sources. New
+   `scripts/omml_math.py` converts LaTeX to OMML via pandoc with a cache
+   (`manuscript/cache/omml_cache.json`); the rewritten
+   `scripts/export_manuscript_docx.py` emits every display equation as a
+   numbered paragraph of **inline `<m:oMath>`** (center+right tab stops), so the
+   main DOCX carries **188** `m:oMath` and the supplement **204**, with **zero**
+   equation images. Figure blocks were moved inline after their first-citing
+   paragraph and the trailing caption section was removed; figures appear before
+   References in order 1→6.
+2. **Interactive portal (9.2).** `web_simulator/` is now a header + **3-tab**
+   site (Operator predictions / Verified benchmarks / Live solver); `app.js`
+   calls same-origin `/api/solve_sg` when hosted and falls back to a localhost
+   service offline. `scripts/test_web_simulator_dom.js` passes **33/33**;
+   `scripts/build_web_bundle.py` regenerated `embedded_bundle.js` (5,662,351 B).
+3. **Live deployment (9.3).** `scripts/deploy_pino_statwhy.sh` deploys the portal
+   to **https://pino.statwhy.com** in a fully isolated layout on the shared host
+   `statwhy.com`: static tree at `/var/www/pino.statwhy.com`, a systemd unit
+   `pino-statwhy.service` bound to `127.0.0.1:18765` running the unchanged
+   `scripts/serve_interactive.py`, an isolated nginx vhost that proxies `/api/`,
+   and Let's Encrypt TLS (expires 2027-01-17). The script writes only its own
+   files, gates every reload with `nginx -t`, and verifies the API on loopback
+   first. Verified: portal HTML 200, HTTP→HTTPS 301, `/api/solve_sg` returns
+   **196.137225 pA** (reference 196.13722469169718), and other sites on the host
+   remain 200. Record: `results/stage9_deployment.json`.
+4. **Journal suitability assessment (9.4).** `reports/JOURNAL_SUITABILITY_ASSESSMENT.md`
+   maps the contribution against CPC and JCP (recommended primary CPC,
+   equal alternative JCP), lists strengths/weaknesses, and gives a
+   pre-submission checklist. Availability statements in the manuscript, the three
+   cover letters, and the public `README.md` now point to the hosted portal.
+5. **Rebuild, audit, re-release (9.4).** DOCX rebuilt (main: **0 tables,
+   6 inline figures, 0 equation images**; supplement: **13 tables, 0 images**);
+   `scripts/audit_release_packages.py` **24/24 PASS**; packages rebuilt (public
+   **138 files / 22.5 MB**, private **810 files / 80.6 MB**) and redeployed as
+   **v1.0.2**.
+6. **Handoff.** This report plus `reports/STATUS.md`, `reports/DECISIONS.md`
+   (D-064–D-068), and `reports/NEXT_ACTIONS.md`.
 
-## Exact next action
-Stage 7, **only on explicit user command**: author review of the two DOCX
-files, then push `reproducibility/github/` and `reproducibility/public_repo/`
-to their repositories and enable GitHub Pages at `/web_simulator/`. Until
-then `AUTO_PRIVATE_GITHUB_PUSH` stays **false**. Re-run
-`scripts/audit_release_packages.py` before any push; it must report 20/20.
+## Stage 8 deliverables
+
+1. **API-backed literature verification (8.1).**
+   `scripts/verify_literature_claims_api.py` retrieved canonical metadata and
+   abstracts for all **60** references from OpenAlex (inverted-index
+   reconstruction), NCBI E-utilities, Crossref, Semantic Scholar, and Europe PMC
+   (cached in `literature/cache/verified_abstracts_60.json`), extracted every
+   manuscript sentence citing each reference, and audited each sentence against
+   the source with a budgeted `gpt-4.1-mini` pass. Basis: **48
+   abstract-verified, 12 metadata-only** (`refs 21, 28–32, 34, 35, 37, 40, 50,
+   52`). The audit flagged 14 sentences; each was adjudicated and recorded (see
+   *Literature adjudication* below). Result: `results/literature_claim_verification.json`
+   with **0 flagged**, keeping the raw LLM verdict alongside the adjudicated
+   support and note.
+2. **Consolidated claim map (8.1).** `scripts/build_claim_evidence.py` rebuilt
+   `manuscript/claim_evidence.csv` to a 10-column schema holding **C01–C28**
+   (quantitative claims, now pointing at the relocated `Supp. Table S1--S6` and
+   renumbered sections) plus **L01–L60** (one literature-support claim per
+   citation, with basis and abstract excerpt). All **88** rows are `supported`.
+3. **Figure-only main text (8.2).** All six main-text data tables were moved to
+   `manuscript/Supplementary_Materials.md` as **Supplementary Tables S1–S6**; the
+   seven existing supplement tables were relabeled **S7–S13** with a new S0
+   section, captions, and a rebuilt S13 crosswalk. Every supplement table is now
+   cited from the main text. The main text contains only the six multipanel
+   figures (1A–1D, 2A–2F, 3A–3D, 4A–4C, 5A–5C, 6A–6B), the Highlights, and the
+   CPC Program Summary. The Figure 5 paragraph moved to a new §3.5 "Continuous
+   parametric control" and later sections were renumbered, so figure
+   first-citation order is exactly 1→6. Panel callouts were added for Figures 3
+   and 6, the contribution list became prose, and the Figure 2 caption was
+   corrected to index 144.
+4. **Cover letters (8.3).** `scripts/export_cover_letter.py` now emits three
+   journal-tailored letters — `Cover_Letter_CPC`, `Cover_Letter_JCP`, and
+   `Cover_Letter_CPC_JCP` (`.md` + `.docx`) — with the refreshed contribution
+   numbers and zero LaTeX leakage.
+5. **Rebuild, audit, re-release (8.4).** DOCX rebuilt (main: **0 tables,
+   6 figures**; supplement: **13 tables**); `scripts/audit_release_packages.py`
+   extended to **22/22 PASS** with two new checks (figure-only display items +
+   13 supplement tables cited; C01–C28 + L01–L60 all supported); packages
+   rebuilt and redeployed as **v1.0.1**.
+6. **Handoff (8.5).** This report plus `reports/STATUS.md` and
+   `reports/DECISIONS.md` (D-057–D-063).
+
+## Literature adjudication (14 flags → 0)
+
+Every flag was a **cluster-citation strictness** false positive, or the canonical
+origin paper, not a substantive error:
+
+- **Cluster citations (13):** `[11,12,16,20,22,23,25,45,46,47,48]` and the
+  same-theme groups. The manuscript sentences summarize a body of literature and
+  do not attribute unsupported specificity to any single reference; each source
+  supports the cited theme (e.g., `[45]`–`[48]` are recent DeepONet
+  training/architectural variants; `[20–23]` introduce PINNs).
+- **Canonical origin paper (1):** `[33]` is the original Scharfetter–Gummel
+  (1969) paper (*IEEE Trans. Electron Devices*, DOI `10.1109/t-ed.1969.16566`);
+  its title concerns semiconductor device analysis, but the manuscript sentence
+  frames it explicitly as the semiconductor-transport origin of the SG
+  discretization, which is exactly this work.
+
+Two **genuine** citation-attribution issues were found during this stage and
+fixed in the text **before** the final verification run: the FNO sentence that
+had incorrectly cited `[41]` (physics-informed DeepONets) for the spectral
+convolution basis now cites the physics-informed DeepONet paper for the
+physics-informed formulation and `[37,40]` for the spectral basis. The 12
+metadata-only references have no online abstract and are recorded as
+`metadata_canonical` support from their canonical titles.
+
+## GitHub URLs and commit SHAs
+
+```
+Public repository   : https://github.com/Javad-Alizargar/nanopore-pino-surrogate            (visibility: public)
+  main / tag v1.2.0: see results/stage11_release.json (authoritative)
+  tag v1.0.2      : 0105f96a0863db8f426ac07c6e08851a6403b3cb
+  tag v1.0.1      : (see results/stage8_deployment.json)
+  tag v1.0.0      : af5695f50b073a331a60e46ac7a327c610e9ae9e
+  files / size    : 145 files, 30.2 MB (30,241,019 B)
+
+Private repository  : https://github.com/Javad-Alizargar/nanopore-pino-surrogate-private    (visibility: private)
+  main / tag v1.2.0: see results/stage11_release.json (authoritative)
+  files / size    : 822 files, 88.5 MB
+
+(Each package embeds a build timestamp in its manifest, so a rebuild advances the
+commit SHA; the exact released SHAs are always recorded in results/stage11_release.json.)
+```
+
+Hosted portal (primary) and GitHub Pages (mirror):
+```
+Portal      : https://pino.statwhy.com/            (Operator / Benchmarks / Live solver; live SG/FV API)
+Health      : https://pino.statwhy.com/api/health  ; POST /api/solve_sg -> 196.137225 pA
+TLS         : Let's Encrypt, expires 2027-01-17 ; HTTP->HTTPS redirect active
+Mirror      : https://javad-alizargar.github.io/nanopore-pino-surrogate/web_simulator/
+```
+
+## Submission file inventory
+
+```
+manuscript/Manuscript_PINO_clean.docx               (0 tables, 6 inline figures, native OMML, 0 equation images)
+manuscript/Supplementary_Materials_PINO.docx        (16 tables, native OMML, 0 images)
+manuscript/Cover_Letter_CPC.docx / Cover_Letter_JCP.docx / Cover_Letter_CPC_JCP.docx  (no LaTeX leakage)
+manuscript/Cover_Letter_CPC.md / Cover_Letter_JCP.md / Cover_Letter_CPC_JCP.md
+manuscript/Manuscript.md, manuscript/Supplementary_Materials.md       (canonical sources)
+manuscript/claim_evidence.csv                        (C01-C33 + L01-L60, 10 columns, all supported)
+manuscript/literature_db.json                        (60 references)
+literature/cache/verified_abstracts_60.json          (API metadata/abstract cache)
+reports/JOURNAL_SUITABILITY_ASSESSMENT.md            (CPC/JCP venue assessment)
+
+Figures (PDF + PNG), manuscript/figures/:
+  fig1_workflow_and_architecture            fig4_h1_h2_interp_vs_ood_regimes
+  fig2_benchmark_and_field_reconstruction   fig5_parametric_physics_sweeps
+  fig3_h3_charge_reparameterization_ablation fig6_h4_timing_and_amortization_breakeven
+```
+
+## Final budget ledger summary
+
+```
+Project cap              : $5.00
+Committed (all stages)   : $0.19564635
+Remaining                : $4.80435365
+OpenAI subbudget         : $0.1341195 / $1.00
+Final-review reserve     : $0.50 (untouched)
+Stage 8 literature tasks : stage8_literature_verification $0.0630572 ; _v2 $0.009224 ;
+                           _v3 $0.0164608 ; _v4 $0.0075968   (total $0.0963388)
+Other Stage 8 work       : $0.00 (editing, DOCX, packages, audit, deploy are local/API only)
+Stage 9 work             : $0.00 (typography, OMML export, portal, hosted deploy, assessment, release are all local/API-free)
+Stage 11 work            : $0.00 (experiments, numbering, DOCX, audit, portal and release are all local/API-free)
+```
+
+## Verified scientific results (unchanged, canonical)
+
+```
+H1 interp_test (3-seed mean rel-L2):
+  deeponet_reparam  psi 0.0008914  rho 0.08248  I 0.001093  |dI| 0.08031 pA
+  fno_reparam       psi 0.005495   rho 0.09310  I 0.008511  |dI| 0.6746 pA
+H2 ood_test:
+  deeponet_reparam  psi 0.02024  rho 0.3678  I 0.001363  |dI| 0.1077 pA
+  fno_reparam       psi 0.02079  rho 0.2241  I 0.009123  |dI| 0.5338 pA
+H3 reparameterization rho: DeepONet 8.63x ; FNO 10.29x
+H4 ONNX batch-1 (M1): DeepONet 0.072 ms ; FNO 1.04 ms   (params 36,880 vs 460,488 = 12.49x)
+Benchmark state (index 144) : reference I 196.137 pA ; live /api/solve_sg 196.137 pA
+Inverse demo       : R median rel. err 0.004574 ; q_w not identifiable (median abs err 0.0526) ; ~3,200x vs SG/FV
+```
+
+## Audit
+
+`scripts/audit_release_packages.py` → **28/28 PASS** (zero secret hits). The
+four Stage-11 checks are: references numbered strictly by first appearance
+1--60; supplement tables and equations strictly sequential; figures inline
+within 1--2 paragraphs of first mention in both Markdown and DOCX XML; and the
+Stage-11 artifacts/statistics present. Earlier checks cover the figure-only
+main text (order 1→6, 18 supplement tables cited), the claim-evidence map
+(C01--C38 and L01--L60, all supported), native OMML equations and the
+DOCX/PDF structure. The audit must be run **before** package deploy (the
+deploy step creates a `.git` directory in each package tree). Full checklist in
+`reports/FINAL_AUDIT_REPORT.md`.
+
+## Remaining limitations
+
+- The independent review was **AI-assisted** (two providers), not expert peer review.
+- The DOCX uses native OMML and was additionally page-rendered with LibreOffice for visual confirmation; a Word-specific page proof was not available here.
+- `q_w` identifiability is a physical limit of conductance-only inversion (disclosed in the manuscript).
+- A permanent **Zenodo DOI** has not been minted; deposit is deferred to acceptance (no fake DOI was inserted).
+- Literature claim support rests on retrieved abstracts plus adjudication; 12 references are metadata-only (no online abstract) and are flagged as such in the artifact.
+- The package builder regenerates each package tree, so both histories were force-pushed for each release (`v1.0.1`, `v1.0.2`); the public tags `v1.0.0`, `v1.0.1`, `v1.0.2` are stable.
+- The hosted portal runs on a shared third-party host (`statwhy.com`); uptime and certificate renewal are Let's Encrypt/certbot-managed and outside this repository's control.
+
+## Next (post-completion, author-driven)
+
+Submit to CPC or JCP with the matching cover letter (or the joint letter for an
+explicit transfer), per `reports/JOURNAL_SUITABILITY_ASSESSMENT.md`; deposit the
+released `v1.0.2` commit to Zenodo at acceptance and insert the real DOI;
+optional human expert review. Re-verification chain before any future release:
+`verify_figure_layout.py` (0 issues) → `verify_simulators.py` →
+`verify_live_servers.py` → `verify_literature_claims_api.py` (0 flagged) →
+`build_reproducibility_packages.py` → `audit_release_packages.py` (24/24,
+**before** deploy) → `deploy_github_repos.py` → `deploy_pino_statwhy.sh`.

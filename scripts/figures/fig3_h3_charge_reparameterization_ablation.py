@@ -1,4 +1,6 @@
-"""Figure 3: Hypothesis H3 - charge-balanced reparameterization vs direct c."""
+"""Figure 3: Hypothesis H3 - four-way constraint-scheme benchmark (Stage 11),
+physics-loss weight sweep, physics-loss ablation, trunk ablation and Fisher
+degeneracy plane."""
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -9,82 +11,72 @@ import common as K
 stat = K.load_statistics()
 dat = K.load_dataset()
 sgl = stat["summary_multiseed_global_rel_l2"]
-h3 = stat["h3_conditioning"]
+schemes = stat["stage11_constraint_schemes_benchmark"]["summary"]
+sweep = stat["stage11_physics_weight_sweep"]
 
-fig = plt.figure(figsize=(10.4, 6.2))
-gs = GridSpec(2, 2, figure=fig, hspace=0.40, wspace=0.26)
+ORDER = ["hyperbolic_reparam", "linear_ortho_projection",
+         "soft_charge_penalty", "direct_c"]
+PRETTY = {"hyperbolic_reparam": "reparam\n(ours)",
+          "linear_ortho_projection": "linear\nproj.",
+          "soft_charge_penalty": "soft\npenalty",
+          "direct_c": "direct $c$"}
+SCOL = {"hyperbolic_reparam": K.C["blue"],
+        "linear_ortho_projection": K.C["orange"],
+        "soft_charge_penalty": K.C["vermillion"],
+        "direct_c": K.C["purple"]}
+
+fig = plt.figure(figsize=(13.0, 6.4))
+gs = GridSpec(2, 3, figure=fig, hspace=0.46, wspace=0.42)
 width = 0.36
 
-# ---- Panel A: reparam vs direct_c (rho rel L2, interp_test) -------------
+# ---- Panel A: four-way constraint-scheme accuracy (rho rel L2) ----------
 axA = fig.add_subplot(gs[0, 0])
-families = ["DeepONet", "FNO-2D"]
-rp = [sgl["deeponet_reparam_data_plus_physics"]["interp_test"]["grel_l2_rho"],
-      sgl["fno_reparam_data_plus_physics"]["interp_test"]["grel_l2_rho"]]
-dc = [sgl["deeponet_direct_c_data_plus_physics"]["interp_test"]["grel_l2_rho"],
-      sgl["fno_direct_c_data_plus_physics"]["interp_test"]["grel_l2_rho"]]
-x = np.arange(2)
-axA.bar(x - width / 2, [v["mean"] for v in rp], width, yerr=[v["sd"] for v in rp],
-        capsize=3, color=K.C["blue"], label="reparam (charge-balanced)")
-axA.bar(x + width / 2, [v["mean"] for v in dc], width, yerr=[v["sd"] for v in dc],
-        capsize=3, color=K.C["vermillion"], label="direct $c$")
-for xi, (a, b) in enumerate(zip(rp, dc)):
-    axA.text(xi, max(a["mean"], b["mean"]) * 1.04,
-             f"{b['mean']/a['mean']:.1f}$\\times$", ha="center", fontsize=8.5,
-             color=K.C["black"])
-axA.set_xticks(x); axA.set_xticklabels(families)
+x = np.arange(len(ORDER))
+int_m = [schemes[s]["interp"]["rel_l2_rho"]["mean"] for s in ORDER]
+int_s = [schemes[s]["interp"]["rel_l2_rho"]["sd"] for s in ORDER]
+ood_m = [schemes[s]["ood"]["rel_l2_rho"]["mean"] for s in ORDER]
+ood_s = [schemes[s]["ood"]["rel_l2_rho"]["sd"] for s in ORDER]
+axA.bar(x - width / 2, int_m, width, yerr=int_s, capsize=2.5,
+        color=[SCOL[s] for s in ORDER], label="interp")
+axA.bar(x + width / 2, ood_m, width, yerr=ood_s, capsize=2.5,
+        color=[SCOL[s] for s in ORDER], alpha=0.45, hatch="//",
+        edgecolor="white", linewidth=0.4, label="OOD")
+axA.set_xticks(x)
+axA.set_xticklabels([PRETTY[s] for s in ORDER], fontsize=7.5)
 axA.set_ylabel(r"net-charge rel. $L_2$ error  $\rho$")
-axA.set_ylim(0, 1.12)
-axA.set_title("interp_test ($N{=}48$), 3-seed mean $\\pm$ SD", fontsize=9)
+axA.set_ylim(0, 1.15)
+axA.set_title("4-way constraint schemes, 3-seed", fontsize=9)
 axA.legend(frameon=False, fontsize=7)
-K.panel_label(axA, "A", x=-0.15)
+axA.text(0.02, 0.93, "solid: interp  |  hatched: OOD", transform=axA.transAxes,
+         fontsize=6.2, color="0.3")
+K.panel_label(axA, "A", x=-0.16)
 
-# ---- Panel B: quartile breakdown by |q_w| -------------------------------
+# ---- Panel B: identity-consistency mismatch + wall-gradient error -------
 axB = fig.add_subplot(gs[0, 1])
-qkeys = list(h3["deeponet_data_plus_physics"]["reparam"]["by_abs_qw_quartile"].keys())
-xq = np.arange(len(qkeys))
-for off, (kind, col, lab) in enumerate([("deeponet", K.C["blue"], "DeepONet reparam"),
-                                        ("fno", K.C["orange"], "FNO reparam")]):
-    vals = [h3[f"{kind}_data_plus_physics"]["reparam"]["by_abs_qw_quartile"][k] for k in qkeys]
-    axB.bar(xq + (off - 0.5) * width, vals, width, color=col, label=lab)
-for off, (kind, col, lab) in enumerate([("deeponet", K.C["vermillion"], "DeepONet direct $c$"),
-                                        ("fno", K.C["purple"], "FNO direct $c$")]):
-    vals = [h3[f"{kind}_data_plus_physics"]["direct_c"]["by_abs_qw_quartile"][k] for k in qkeys]
-    axB.bar(xq + (off + 0.5) * width, vals, width, color=col, hatch="//",
-            edgecolor="white", linewidth=0.4, label=lab)
-short = [k.replace("[", "").replace("]", "").split(",") for k in qkeys]
-axB.set_xticks(xq)
-axB.set_xticklabels([f"{float(a):.2g}–{float(b):.2g}" for a, b in short], fontsize=7.5)
-axB.set_xlabel(r"surface-charge magnitude quartile  $|q_w|$")
-axB.set_ylabel(r"$\rho$ rel. $L_2$ error")
-axB.set_title("weak-charge cancellation regime", fontsize=9)
-axB.legend(frameon=False, fontsize=6.4, ncol=2)
-K.panel_label(axB, "B", x=-0.13)
+xb = np.arange(len(ORDER))
+cons = [max(schemes[s]["interp"]["consistency_err"]["mean"], 1e-10) for s in ORDER]
+wall = [schemes[s]["interp"]["wall_deriv_err"]["mean"] for s in ORDER]
+axB.bar(xb - width / 2, cons, width, color=K.C["sky"],
+        edgecolor="0.35", linewidth=0.3, label=r"$|\rho-\rho_{\rm latent}|$ mismatch")
+axB.bar(xb + width / 2, wall, width, color=K.C["orange"],
+        edgecolor="0.35", linewidth=0.3, label=r"wall-gradient error")
+for xi, c in enumerate(cons):
+    if c <= 1e-9:
+        axB.text(xi - width / 2, c, "exact", ha="center", va="bottom", fontsize=5.6,
+                 rotation=90, color="0.25")
+axB.set_yscale("log")
+axB.set_xticks(xb)
+axB.set_xticklabels([PRETTY[s] for s in ORDER], fontsize=7.5)
+axB.set_ylabel("error (log)")
+axB.set_title("identity consistency vs wall accuracy", fontsize=9)
+axB.legend(frameon=False, fontsize=5.9)
+K.panel_label(axB, "B", x=-0.15)
 
-# ---- Panel C: radial rho cross-section on a weak-charge test state ------
-axC = fig.add_subplot(gs[1, 0])
-interp = dat["interp_idx"]
-weak = interp[np.argmin(np.abs(dat["mu"][interp, 2]))]
-mu_w = dat["mu"][weak:weak + 1]
-m_rp = K.load_model("deeponet", "reparam", 42)
-m_dc = K.load_model("deeponet", "direct_c", 42)
-p_rp, _ = K.predict_mu(m_rp, mu_w)
-p_dc, _ = K.predict_mu(m_dc, mu_w)
-rz = 30
-axC.plot(K.R, dat["ref"]["rho"][weak, :, rz], color="k", lw=2.2, label="SG/FV reference")
-axC.plot(K.R, p_rp["rho"][0, :, rz], color=K.C["blue"], lw=1.5, ls="--",
-         label="DeepONet reparam")
-axC.plot(K.R, p_dc["rho"][0, :, rz], color=K.C["vermillion"], lw=1.3, ls=":",
-         label="DeepONet direct $c$")
-axC.set_xlabel(r"$r/R$"); axC.set_ylabel(r"$\rho(r,\,z{=}0.5)$")
-axC.set_title(r"weak-charge state: $q_w=" + f"{dat['mu'][weak,2]:.4f}" + r"$, $R="
-              + f"{dat['mu'][weak,3]:.1f}" + r"$ nm", fontsize=9)
-axC.legend(frameon=False, fontsize=7); K.panel_label(axC, "C", x=-0.20, y=1.05)
-
-# ---- Panel D: physics-loss ablation -------------------------------------
-axD = fig.add_subplot(gs[1, 1])
+# ---- Panel C: physics-loss ablation -------------------------------------
+axC = fig.add_subplot(gs[0, 2])
 metrics = [("wall_deriv_err_mean", r"$|\partial_r\psi|_{r=1}-q_w|$"),
            ("poisson_residual_mean", "interior Poisson resid.")]
-x = np.arange(len(metrics))
+xc = np.arange(len(metrics))
 ph = {("deeponet", "phys"): [], ("deeponet", "data"): [],
       ("fno", "phys"): [], ("fno", "data"): []}
 for m, _ in metrics:
@@ -97,34 +89,113 @@ combos = [("deeponet", "phys", K.C["blue"], "DeepONet + physics"),
           ("fno", "phys", K.C["orange"], "FNO + physics"),
           ("fno", "data", K.C["yellow"], "FNO data-only")]
 for i, (kind, cond, col, lab) in enumerate(combos):
-    axD.bar(x + (i - 1.5) * 0.20, ph[(kind, cond)], 0.20, color=col,
+    axC.bar(xc + (i - 1.5) * 0.20, ph[(kind, cond)], 0.20, color=col,
             edgecolor="0.4", linewidth=0.3, label=lab)
-axD.set_xticks(x); axD.set_xticklabels([l for _, l in metrics], fontsize=7.5)
-axD.set_yscale("log")
-axD.set_ylabel("interior residual (log)")
-axD.set_title("physics-loss ablation (interp_test)", fontsize=9)
-axD.legend(frameon=False, fontsize=6.3)
-K.panel_label(axD, "D", x=-0.13, y=1.10)
+axC.set_xticks(xc); axC.set_xticklabels([l for _, l in metrics], fontsize=7.5)
+axC.set_yscale("log")
+axC.set_ylabel("interior residual (log)")
+axC.set_title("physics-loss ablation (interp_test)", fontsize=9)
+axC.legend(frameon=False, fontsize=6.3)
+K.panel_label(axC, "C", x=-0.13, y=1.10)
+
+# ---- Panel D: physics-loss weight sensitivity (Pareto) ------------------
+axD = fig.add_subplot(gs[1, 0])
+drows = [r for r in sweep["rows"] if r["split"] == "interp"]
+dlam = np.array([r["lambda_phys"] for r in drows])
+drho = np.array([r["rel_l2_rho"] for r in drows])
+dwall = np.array([r["wall_deriv_err"] for r in drows])
+dpois = np.array([r["poisson_residual"] for r in drows])
+dx = np.where(dlam <= 0, 1e-5, dlam)
+axD.plot(dx, drho, "o-", color=K.C["blue"], label=r"$\rho$ rel.-$L_2$ (acc.)")
+axD.set_xscale("log")
+axD.set_xlabel(r"physics-loss weight  $\lambda_{\rm phys}$")
+axD.set_ylabel(r"$\rho$ rel. $L_2$ error", color=K.C["blue"])
+axD.tick_params(axis="y", labelcolor=K.C["blue"])
+axD.axvline(1e-3, color="0.5", lw=0.8, ls=":")
+axD.text(1e-3, axD.get_ylim()[1], " 1e-3", fontsize=6, va="top", color="0.4")
+axD2 = axD.twinx()
+axD2.plot(dx, dwall, "s--", color=K.C["orange"], label="wall-grad err")
+axD2.plot(dx, dpois, "^:", color=K.C["purple"], label="Poisson resid.")
+axD2.set_yscale("log")
+axD2.set_ylabel("residual (log)", color=K.C["orange"])
+axD2.tick_params(axis="y", labelcolor=K.C["orange"])
+lines = axD.get_lines() + axD2.get_lines()
+axD.legend(lines, [l.get_label() for l in lines], frameon=False, fontsize=6.0,
+           loc="upper center")
+axD.set_title(r"$\lambda_{\rm phys}$ sensitivity (seed 42)", fontsize=9)
+K.panel_label(axD, "D", x=-0.20, y=1.05)
+
+# ---- Panel E: trunk ablation, normalised to the plain MLP trunk ---------
+abl = stat["stage10_radial_trunk_ablation"]["summary"]
+order = ["mlp_trunk", "radial_k1", "radial_k3", "radial_k10", "radial_k30",
+         "radial_multiscale"]
+pretty = {"mlp_trunk": "MLP", "radial_k1": r"$k{=}1$", "radial_k3": r"$k{=}3$",
+          "radial_k10": r"$k{=}10$", "radial_k30": r"$k{=}30$",
+          "radial_multiscale": "multi"}
+base_rho = abl["mlp_trunk"]["interp_rel_l2_rho"]["mean"]
+base_wall = abl["mlp_trunk"]["interp_wall_deriv_err"]["mean"]
+rho_rel = [abl[c]["interp_rel_l2_rho"]["mean"] / base_rho for c in order]
+wall_rel = [abl[c]["interp_wall_deriv_err"]["mean"] / base_wall for c in order]
+rho_sd = [abl[c]["interp_rel_l2_rho"]["sd"] / base_rho for c in order]
+wall_sd = [abl[c]["interp_wall_deriv_err"]["sd"] / base_wall for c in order]
+axE = fig.add_subplot(gs[1, 1])
+xe = np.arange(len(order))
+axE.axhline(1.0, color="0.5", lw=0.8, ls="--", zorder=0)
+axE.bar(xe - 0.19, rho_rel, 0.36, yerr=rho_sd, capsize=2.5, color=K.C["blue"],
+        label=r"$\rho$ rel.-$L_2$")
+axE.bar(xe + 0.19, wall_rel, 0.36, yerr=wall_sd, capsize=2.5, color=K.C["orange"],
+        label=r"wall-gradient error")
+axE.set_xticks(xe); axE.set_xticklabels([pretty[c] for c in order], fontsize=7.5)
+axE.set_xlabel("trunk basis (radial decay $k$)")
+axE.set_ylabel("error relative to MLP trunk")
+axE.set_title("trunk ablation (500 ep, 3-seed)", fontsize=9)
+axE.legend(frameon=False, fontsize=6.6)
+K.panel_label(axE, "E", x=-0.16, y=1.06)
+
+# ---- Panel F: Fisher condition-number ridge ----------------------------
+fp = stat["stage10_fisher_plane"]
+lam = np.array([g["lambda_D_over_R"] for g in fp])
+qw = np.array([g["q_w"] for g in fp])
+cn = np.array([g["cond"] for g in fp])
+dlq = np.array([g["dlnI_dlnq"] for g in fp])
+dlr = np.array([g["dlnI_dlnR"] for g in fp])
+Lc = np.unique(lam); Qc = np.unique(qw)
+Kc = np.full((Lc.size, Qc.size), np.nan)
+for g in fp:
+    Kc[np.argmin(np.abs(Lc - g["lambda_D_over_R"])),
+       np.argmin(np.abs(Qc - g["q_w"]))] = np.log10(max(g["cond"], 1e-6))
+axF = fig.add_subplot(gs[1, 2])
+mesh = axF.pcolormesh(Lc, Qc * 1e3, Kc.T, cmap="viridis", shading="auto")
+axF.contour(Lc, Qc * 1e3, Kc.T, levels=[9.0, 10.0, 11.0],
+            colors="white", linewidths=1.2, alpha=0.85)
+axF.set_xlabel(r"Debye ratio  $\lambda_D/R$")
+axF.set_ylabel(r"surface charge  $|q_w|$  ($\times10^{-3}$)")
+axF.set_title(r"Fisher conditioning $\log_{10}\kappa(\mathcal{F})$ (white: $10^{9,10,11}$)"
+              "\n" + rf"$\partial\ln I/\partial\ln R\!\approx\!{np.nanmean(dlr):.2f}$, "
+              rf"$|\partial\ln I/\partial\ln q_w|\!<\!{np.nanmax(np.abs(dlq)):.1e}$",
+              fontsize=8.0)
+cb = fig.colorbar(mesh, ax=axF, pad=0.02, fraction=0.046)
+cb.set_label(r"$\log_{10}\kappa(\mathcal{F})$", fontsize=7.5)
+cb.ax.tick_params(labelsize=6.5)
+K.panel_label(axF, "F", x=-0.16, y=1.06)
 
 sdata = {
-    "panelA_families": np.array(families, dtype=object),
-    "panelA_reparam_mean": np.array([v["mean"] for v in rp]),
-    "panelA_reparam_sd": np.array([v["sd"] for v in rp]),
-    "panelA_direct_mean": np.array([v["mean"] for v in dc]),
-    "panelA_direct_sd": np.array([v["sd"] for v in dc]),
-    "panelB_qw_quartile_labels": np.array(qkeys, dtype=object),
-    "panelB_deeponet_reparam": np.array([h3["deeponet_data_plus_physics"]["reparam"]["by_abs_qw_quartile"][k] for k in qkeys]),
-    "panelB_deeponet_direct": np.array([h3["deeponet_data_plus_physics"]["direct_c"]["by_abs_qw_quartile"][k] for k in qkeys]),
-    "panelB_fno_reparam": np.array([h3["fno_data_plus_physics"]["reparam"]["by_abs_qw_quartile"][k] for k in qkeys]),
-    "panelB_fno_direct": np.array([h3["fno_data_plus_physics"]["direct_c"]["by_abs_qw_quartile"][k] for k in qkeys]),
-    "panelC_weak_index": weak, "panelC_mu": mu_w[0], "r": K.R,
-    "panelC_rho_sg": dat["ref"]["rho"][weak, :, rz],
-    "panelC_rho_reparam": p_rp["rho"][0, :, rz],
-    "panelC_rho_direct": p_dc["rho"][0, :, rz],
-    "panelD_metrics": np.array([m for m, _ in metrics], dtype=object),
-    "panelD_deeponet_phys": np.array(ph[("deeponet", "phys")]),
-    "panelD_deeponet_data": np.array(ph[("deeponet", "data")]),
-    "panelD_fno_phys": np.array(ph[("fno", "phys")]),
-    "panelD_fno_data": np.array(ph[("fno", "data")]),
+    "panelA_schemes": np.array(ORDER, dtype=object),
+    "panelA_interp_mean": np.array(int_m), "panelA_interp_sd": np.array(int_s),
+    "panelA_ood_mean": np.array(ood_m), "panelA_ood_sd": np.array(ood_s),
+    "panelB_schemes": np.array(ORDER, dtype=object),
+    "panelB_consistency": np.array(cons), "panelB_wall": np.array(wall),
+    "panelC_metrics": np.array([m for m, _ in metrics], dtype=object),
+    "panelC_deeponet_phys": np.array(ph[("deeponet", "phys")]),
+    "panelC_deeponet_data": np.array(ph[("deeponet", "data")]),
+    "panelC_fno_phys": np.array(ph[("fno", "phys")]),
+    "panelC_fno_data": np.array(ph[("fno", "data")]),
+    "panelD_lambda": dlam, "panelD_rho": drho,
+    "panelD_wall": dwall, "panelD_poisson": dpois,
+    "panelE_trunk_order": np.array(order, dtype=object),
+    "panelE_rho_rel": np.array(rho_rel), "panelE_rho_sd": np.array(rho_sd),
+    "panelE_wall_rel": np.array(wall_rel), "panelE_wall_sd": np.array(wall_sd),
+    "panelF_lambda": Lc, "panelF_qw": Qc, "panelF_log10_cond": Kc,
+    "panelF_dlnI_dlnR": dlr, "panelF_dlnI_dlnq": dlq,
 }
 K.save_fig(fig, "fig3_h3_charge_reparameterization_ablation", sdata)

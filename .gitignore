@@ -113,3 +113,7 @@ reproducibility/
 # ============================================================
 MASTER_PROMPT*.txt
 MASTER_PROMPT*.md
+
+# Office lock files and regenerable docx cache
+~$*
+manuscript/cache/

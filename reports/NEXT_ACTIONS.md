@@ -12,17 +12,21 @@ Ordered plan. Each item is reversible unless flagged. Paid calls must pass the b
 - [x] **Stage 6A (figure 1 + inverse demo + manuscripts)** — Figure 1 rebuilt as 2×2 panels A–D (geometry, operating space, constraints, backbones) with exact counts 36,880/460,488; all six figures regenerated, layout verifier **0 issues**, `figure_qa.json` refreshed; `scripts/run_inverse_recovery_demo.py` (R median rel. err **0.0045737918517061785**, q_w **1.1539643805520952** → not identifiable, 0.12526570879854262 s vs 402.6 s SG/FV); `manuscript/claim_evidence.csv` (28 claims), `manuscript/Manuscript.md` (234-word abstract, 5 highlights, 60 refs), `manuscript/Supplementary_Materials.md` (S1–S10). No paid calls. See `REPORT_FOR_CHATGPT.md`.
 - [x] **Stage 6B (review + export + packages)** — `scripts/run_independent_review.py` (OpenAI + DeepSeek, ~$0.079 / $0.15); 23 issues resolved in `reports/REVIEW_RESPONSE.md` (critical ansatz `s=2exp[clip(z(1−z)G_s,−15,15)]`; S3.1 dimensionless system; explicit loss; CPC metadata; caveats); `scripts/format_manuscript_numbers.py` (3–4 sig figs); `scripts/export_manuscript_docx.py` → both DOCX; `scripts/build_reproducibility_packages.py` → public 136 files/22.5 MB + private 790 files/80.2 MB; `scripts/audit_release_packages.py` → `reports/FINAL_AUDIT_REPORT.md` **20/20 PASS**. No push.
 - [x] **Stage 7 (dual deployment + cover letter)** — authorized by explicit user command (`AUTO_PRIVATE_GITHUB_PUSH: true`, `AUTO_PUBLIC_RELEASE: true`): pre-push audit re-confirmed **20/20 PASS**; `scripts/deploy_github_repos.py` created and pushed `Javad-Alizargar/nanopore-pino-surrogate` (**public**, tag `v1.0.0`) and `Javad-Alizargar/nanopore-pino-surrogate-private` (**private**, verified via API); GitHub Pages enabled from `main` `/` and verified live (simulator + assets HTTP 200); `scripts/export_cover_letter.py` → `manuscript/Cover_Letter_CPC_JCP.{md,docx}`; local project-root commit made. Token passed only via `GH_TOKEN` / transient credential helper (never in `.git/config`).
+- [x] **Stage 8 (literature audit + figure-only main text + v1.0.1)** — `scripts/verify_literature_claims_api.py` verified all 60 references (48 abstract-basis, 12 metadata-only; 14 flags adjudicated → 0); `scripts/build_claim_evidence.py` rebuilt the claim map (C01–C28 + L01–L60, all supported); all main-text tables moved to Supplementary Tables S1–S13 and the main text became figure-only with figure order 1→6; `scripts/export_cover_letter.py` now emits CPC/JCP/joint letters; DOCX and packages rebuilt; `scripts/audit_release_packages.py` **22/22 PASS**; both repos redeployed and tagged `v1.0.1`.
+- [x] **Stage 9 (native equations, portal, hosted deploy, v1.0.2)** — `scripts/fix_manuscript_typography.py` (number/unit hygiene); `scripts/omml_math.py` + rewritten `scripts/export_manuscript_docx.py` (native OMML display equations, **zero equation images**, inline figures); `web_simulator/` upgraded to a 3-tab portal (DOM harness **33/33**); `scripts/deploy_pino_statwhy.sh` deployed it live to **https://pino.statwhy.com** (isolated nginx vhost + systemd `pino-statwhy.service` + Let's Encrypt); `reports/JOURNAL_SUITABILITY_ASSESSMENT.md`; availability statements point to the hosted portal; `scripts/audit_release_packages.py` **24/24 PASS**; both repos redeployed and tagged `v1.0.2`.
+- [x] **Stage 10 (ablation, scaling law, identifiability, v1.1.0)** — `scripts/run_stage10_upgrades.py` (Experiment A trunk ablation, B 384-state scaling law, C Fisher/multi-protocol identifiability; cached); Figures 3/4/6 updated (layout verify **0 issues**); manuscript + supplement reframed (S14–S15, claim map C01–C33); cover letters extended; DOCX and packages rebuilt; **24/24 audit PASS**; portal scope block added and redeployed to `pino.statwhy.com`; both repos force-pushed and tagged `v1.1.0`.
+- [x] **Stage 11 (reviewer upgrades, numbering, v1.2.0)** — `scripts/run_stage11_reviewer_upgrades.py` (four-way constraint benchmark, exact SG/FV Fisher/Jacobian validation, physics-weight sweep; cached); Figures 3A–D and 6C–D updated (layout verify **0 issues**); `scripts/enforce_sequential_numbering_and_inline_figures.py` applied (refs 1–60, tables S1–S18, equation callouts); manuscript §3.2/§3.3/§3.9/§3.10 + Discussion refined; Supplement gains Algorithm 1, dependency pinning, S7c (S16–S18); claim map C01–C38; DOCX + cover letters rebuilt; **28/28 audit PASS** (before deploy); portal redeployed; both repos tagged `v1.2.0`.
 
-## Next (post-Stage-7; project COMPLETE)
-1. **Author review** of `manuscript/Manuscript_PINO_clean.docx`, `Supplementary_Materials_PINO.docx`, and `manuscript/Cover_Letter_CPC_JCP.docx` (pagination, equation rendering, journal LaTeX template, CRediT/GenAI wording) before journal submission.
-2. **Submit** via the CPC / JCP editorial system using `Cover_Letter_CPC_JCP.docx`; cite the prior study `COMPHY-D-26-00857`.
-3. **Zenodo deposit** of the exact released public commit (`v1.0.0`) at acceptance and insertion of the real DOI (no fake DOI).
+## Next (post-Stage-11; project COMPLETE)
+1. **Author review** of `manuscript/Manuscript_PINO_clean.docx`, `Supplementary_Materials_PINO.docx`, and the matching cover letter (`Cover_Letter_CPC.docx`, `Cover_Letter_JCP.docx`, or the joint `Cover_Letter_CPC_JCP.docx`) before journal submission; `reports/JOURNAL_SUITABILITY_ASSESSMENT.md` recommends **CPC (primary)** or **JCP (alternative)**.
+2. **Submit** via the CPC or JCP editorial system; cite the prior study `COMPHY-D-26-00857`.
+3. **Zenodo deposit** of the exact released public commit (`v1.2.0`) at acceptance and insertion of the real DOI (no fake DOI).
 4. Optional **human expert review** or a targeted follow-up AI pass on any single unresolved issue (keep the $0.50 final-review reserve).
-5. Re-run the verification chain before any future release: `scripts/figures/verify_figure_layout.py` (0 issues) → `scripts/verify_simulators.py` → `scripts/verify_live_servers.py` → `scripts/audit_release_packages.py` (20/20) → `scripts/deploy_github_repos.py` (idempotent re-push).
+5. Re-run the verification chain before any future release: `scripts/figures/verify_figure_layout.py` (0 issues) → `scripts/verify_simulators.py` → `scripts/verify_live_servers.py` → `scripts/verify_literature_claims_api.py` (0 flagged) → `scripts/build_reproducibility_packages.py` → `scripts/audit_release_packages.py` (28/28, **before** deploy) → `scripts/deploy_github_repos.py` (idempotent re-push) → `scripts/deploy_pino_statwhy.sh` (idempotent re-deploy of the hosted portal).
 
 ## Blocked / needs user decision
 - **Compute for a stronger FNO** — M1-only CPU; the 300-epoch check (D-034) shows the DeepONet gap is architectural, so no further FNO compute is planned unless reconsidered.
-- **Budget increase** — only if explicitly requested; current cap $5.00 (~$4.90 remaining).
+- **Budget increase** — only if explicitly requested; current cap $5.00 (~$4.80 remaining).
 - **Human peer review** — cannot be performed by the controller; the AI-assisted review is disclosed in the cover letter.
 - **Zenodo DOI** — deferred to acceptance; requires the author's Zenodo account.
 
@@ -40,11 +44,16 @@ python3 orchestration/budget_ledger.py status       # check budget
 # re-verify live servers:            .venv/bin/python scripts/verify_live_servers.py
 # stop live servers:                 .venv/bin/python scripts/verify_live_servers.py --stop
 # round manuscript numbers:          .venv/bin/python scripts/format_manuscript_numbers.py
+# number/symbol hygiene:             .venv/bin/python scripts/fix_manuscript_typography.py
 # rebuild DOCX:                      .venv/bin/python scripts/export_manuscript_docx.py
 # rebuild cover letter:              .venv/bin/python scripts/export_cover_letter.py
+# rebuild claim map:                 .venv/bin/python scripts/build_claim_evidence.py
+# run Stage-10 experiments:          .venv/bin/python scripts/run_stage10_upgrades.py   (--force to retrain)
+# verify literature claims:          .venv/bin/python scripts/verify_literature_claims_api.py
 # rebuild release packages:          .venv/bin/python scripts/build_reproducibility_packages.py
-# final audit (must be 20/20):       .venv/bin/python scripts/audit_release_packages.py
+# final audit (must be 24/24):       .venv/bin/python scripts/audit_release_packages.py     # run BEFORE deploy
 # deploy both repos (idempotent):    .venv/bin/python scripts/deploy_github_repos.py
 # deploy one repo only:              .venv/bin/python scripts/deploy_github_repos.py --only public|private
+# redeploy hosted portal:            bash scripts/deploy_pino_statwhy.sh   (--dry-run to stage only)
 # project is COMPLETE; see reports/REPORT_FOR_CHATGPT.md for final URLs and SHAs
 ```

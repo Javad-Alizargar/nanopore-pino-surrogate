@@ -24,15 +24,15 @@ REPOS = {
         "dir": ROOT / "reproducibility" / "public_repo",
         "name": "Javad-Alizargar/nanopore-pino-surrogate",
         "private": False,
-        "message": "Initial public release v1.0.0: Exact-boundary charge-balanced neural operators for nanopore PNP transport",
-        "tag": "v1.0.0",
+        "message": "Public release v1.2.0: four-way constraint benchmark, exact SG/FV Fisher validation, and physics-weight sweep (Stage 11)",
+        "tag": "v1.2.0",
     },
     "private": {
         "dir": ROOT / "reproducibility" / "github",
         "name": "Javad-Alizargar/nanopore-pino-surrogate-private",
         "private": True,
-        "message": "Complete private research archive v1.0.0 (Stage 1-7 verified)",
-        "tag": None,
+        "message": "Complete private research archive v1.2.0 (Stage 1-11 verified)",
+        "tag": "v1.2.0",
     },
 }
 
@@ -147,14 +147,17 @@ def main() -> None:
                 git([*IDENTITY, "tag", "-f", spec["tag"]], env, spec["dir"])
                 git([*CRED, "push", "-f", "origin", spec["tag"]], env, spec["dir"])
             sha = git(["rev-parse", "HEAD"], env, spec["dir"]).stdout.strip()
-        out[key] = {"repo": spec["name"], "sha": sha, "private": ok_private}
+        out[key] = {"repo": spec["name"], "sha": sha,
+                    "visibility": "private" if spec["private"] else "public",
+                    "visibility_ok": ok_private}
         if key == "public":
             pages = enable_pages(spec["name"], env)
             out[key]["pages"] = {"html_url": pages.get("html_url"),
                                  "status": pages.get("status"),
                                  "url": "https://javad-alizargar.github.io/nanopore-pino-surrogate/web_simulator/"}
+            out[key]["portal"] = "https://pino.statwhy.com/"
     import json
-    (ROOT / "results" / "stage7_deployment.json").write_text(json.dumps(out, indent=2))
+    (ROOT / "results" / "stage11_release.json").write_text(json.dumps(out, indent=2))
     print(json.dumps(out, indent=2))
 
 

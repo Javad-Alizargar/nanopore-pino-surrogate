@@ -41,16 +41,22 @@ QA = {
                   "widened to avoid colorbar/label collisions.",
     },
     "fig3_h3_charge_reparameterization_ablation": {
-        "scientific": "reparam vs direct_c net-charge error (3-seed mean±SD, interp), |q_w| quartile "
-                      "breakdown, weak-charge radial rho cross-section, and physics-loss ablation.",
-        "communication": "Shows the cancellation mechanism and both the accuracy and physics benefit.",
-        "render": "Log y on panels B and D; no clipped labels; ratio annotations legible.",
+        "scientific": "A: reparam vs direct_c net-charge error (3-seed mean±SD); B: |q_w| quartile "
+                      "breakdown; C: physics-loss ablation; D: weak-charge radial rho cross-section; "
+                      "E: Stage-10 trunk ablation (MLP vs radial k=1/3/10/30/multi, normalised to MLP); "
+                      "F: Fisher conditioning log10 kappa(F) over (lambda_D/R, |q_w|) showing the "
+                      "q_w-R degeneracy ridge with dlnI/dlnR~2 and |dlnI/dlnq_w|<2e-3.",
+        "communication": "Shows the cancellation mechanism, the physics benefit, and quantifies the "
+                         "trunk choice and the fundamental current-only ill-conditioning.",
+        "render": "Log y on panels B/C/E; pcolormesh + white contour lines on F; ~4-5 words per panel.",
     },
     "fig4_h1_h2_interp_vs_ood_regimes": {
-        "scientific": "Per-state rel-L2 (3-seed averaged) for psi, c+, rho, I across interp/OOD "
-                      "splits; error vs lambda_D/R; current parity over all 96 test states with R^2.",
-        "communication": "Distributions + regime dependence + parity give H1/H2 from three angles.",
-        "render": "Log y where needed; strips overlaid on boxes; inset residual panel legible.",
+        "scientific": "A: per-state rel-L2 (3-seed averaged) for psi, c+, rho, I across interp/OOD "
+                      "splits; B: error vs lambda_D/R; C: current parity over all 96 test states with "
+                      "R^2; D: Stage-10 data-scaling law (N_train = 36/72/144/288) with fitted power "
+                      "laws alpha_rho=0.55 (interp) vs 0.13 (OOD).",
+        "communication": "Distributions + regime dependence + parity + scaling give H1/H2 four ways.",
+        "render": "Log axes where needed; strips overlaid on boxes; inset residual panel legible.",
     },
     "fig5_parametric_physics_sweeps": {
         "scientific": "Continuous operator I-V, screening, and radial rho curves benchmarked against "
@@ -59,9 +65,12 @@ QA = {
         "render": "Open-circle SG markers vs solid operator lines; units on all axes.",
     },
     "fig6_h4_timing_and_amortization_breakeven": {
-        "scientific": "Latency bars and cumulative-cost curves with N* break-even vs M1/Xeon SG-FV "
-                      "and the DA-PINN retrain, from results/statistics.json.",
-        "communication": "Latency + amortization + tool callout answer the cost question directly.",
+        "scientific": "A: latency bars; B: cumulative-cost curves with N* break-even vs M1/Xeon SG-FV "
+                      "and the DA-PINN retrain; C/D: Stage-10 inverse recovery of |q_w| and R at 1% "
+                      "noise for single-salt I-V, multi-salt I-V and the dual I-V + near-wall "
+                      "selectivity protocol (q_w unidentifiable from I-V alone; dual recovers both).",
+        "communication": "Latency + amortization + tool callout answer the cost question; C/D make "
+                         "the identifiability limitation and the added observable explicit.",
         "render": "Log axes labelled; break-even markers annotated without overlap after offset fix.",
     },
 }

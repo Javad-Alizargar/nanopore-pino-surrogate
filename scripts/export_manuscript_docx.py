@@ -1,115 +1,73 @@
 #!/usr/bin/env python3
 """Export the canonical markdown manuscripts to review-ready DOCX.
 
-Display equations are rendered to images with matplotlib mathtext; inline math
-is converted to Unicode. All tables become real Word tables and the six main
-figures are embedded with their captions.
+All mathematics is emitted as **native, editable Word OMML** via
+``scripts/omml_math.py`` (pandoc ``$...$`` -> ``<m:oMath>``); there are no
+equation images.  Display equations become numbered (1)--(8) paragraphs built
+with center/right tab stops.  Figures are placed inline immediately after the
+paragraph that first cites them, followed by their caption.  Tables become real
+Word tables.  Prose numbers use a true minus sign and en/em dashes.
 """
 from __future__ import annotations
 
 import re
-import tempfile
 from pathlib import Path
 
-import matplotlib
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
 from docx import Document
+from docx.enum.text import WD_TAB_ALIGNMENT
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.shared import Inches, Pt
 from PIL import Image
 
+import omml_math
+
 ROOT = Path(__file__).resolve().parents[1]
-FIGDIR = ROOT / "manuscript" / "figures"
 JOBS = [
-    (ROOT / "manuscript" / "Manuscript.md", ROOT / "manuscript" / "Manuscript_PINO_clean.docx", True),
-    (ROOT / "manuscript" / "Supplementary_Materials.md", ROOT / "manuscript" / "Supplementary_Materials_PINO.docx", False),
+    (ROOT / "manuscript" / "Manuscript.md",
+     ROOT / "manuscript" / "Manuscript_PINO_clean.docx", True, True),
+    (ROOT / "manuscript" / "Supplementary_Materials.md",
+     ROOT / "manuscript" / "Supplementary_Materials_PINO.docx", False, False),
 ]
 
-GREEK = {
-    "alpha": "α", "beta": "β", "gamma": "γ", "delta": "δ", "epsilon": "ε",
-    "varepsilon": "ε", "zeta": "ζ", "eta": "η", "theta": "θ", "kappa": "κ",
-    "lambda": "λ", "mu": "μ", "nu": "ν", "xi": "ξ", "pi": "π", "rho": "ρ",
-    "sigma": "σ", "tau": "τ", "phi": "φ", "varphi": "φ", "chi": "χ",
-    "psi": "ψ", "omega": "ω", "Gamma": "Γ", "Delta": "Δ", "Theta": "Θ",
-    "Lambda": "Λ", "Xi": "Ξ", "Pi": "Π", "Sigma": "Σ", "Phi": "Φ",
-    "Psi": "Ψ", "Omega": "Ω",
-}
-SYMBOLS = {
-    "times": "×", "cdot": "·", "pm": "±", "mp": "∓", "le": "≤", "leq": "≤",
-    "ge": "≥", "geq": "≥", "to": "→", "approx": "≈", "infty": "∞",
-    "partial": "∂", "nabla": "∇", "sum": "Σ", "int": "∫", "equiv": "≡",
-    "propto": "∝", "sim": "∼", "odot": "⊙", "ell": "ℓ", "lVert": "‖",
-    "rVert": "‖", "vert": "|", "langle": "⟨", "rangle": "⟩", "circ": "°",
-    "sqrt": "√", "quad": " ", "qquad": "  ", "mathrm": "", "text": "",
-    "mathcal": "", "mathbf": "", "bf": "", "left": "", "right": "",
-    "big": "", "Big": "", "bigg": "", "Bigg": "", "overline": "", "bar": "",
-    "hat": "", "tilde": "", "frac": "", "tfrac": "", "dfrac": "", "!": "",
-    ",": " ", ";": " ", ":": " ",
-}
+DASH_EM = "\u2014"
+DASH_EN = "\u2013"
+MINUS = "\u2212"
+
+# Tokens that must not be split: bold, italic, code, inline math, links.
+TOKEN = re.compile(
+    r"(\*\*[^*]+\*\*|\*[^*\n]+\*|`[^`]+`|\$[^$\n]+\$|\[[^\]]+\]\([^)]+\))"
+)
+SUPSUB = re.compile(r"(?<=[A-Za-z0-9\)\]\}])([\^_])\{?([A-Za-z0-9+\-]+)\}?")
+DISPLAY = re.compile(r"\$\$(.+?)\$\$", re.S)
+INLINE = re.compile(r"\$([^$\n]+)\$")
 
 
-def inline_math(tex: str) -> str:
-    out = tex
-    out = re.sub(r"\\(?:lVert|rVert)", "‖", out)
-    out = re.sub(r"\\frac\{([^{}]*)\}\{([^{}]*)\}", r"(\1)/(\2)", out)
-    out = re.sub(r"\\sqrt\{([^{}]*)\}", r"√(\1)", out)
-    for name, ch in sorted(GREEK.items(), key=lambda kv: -len(kv[0])):
-        out = re.sub(r"\\" + name + r"(?![a-zA-Z])", ch, out)
-    for name, ch in sorted(SYMBOLS.items(), key=lambda kv: -len(kv[0])):
-        out = re.sub(r"\\" + re.escape(name) + r"(?![a-zA-Z])", ch, out)
-    out = re.sub(r"\\[a-zA-Z]+", "", out)
-    out = out.replace("\\", "")
-    out = out.replace("{", "").replace("}", "")
-    out = re.sub(r"\s+", " ", out)
-    return out.strip()
+def normalize_math(tex: str) -> str:
+    return " ".join(tex.split())
 
 
-def sanitize_tex(tex: str) -> str:
-    out = tex.strip()
-    out = re.sub(r"\\lVert|\\rVert", r"\|", out)
-    out = out.replace(r"\!", "")
-    out = re.sub(r"\\big[glr]?", "", out)
-    out = re.sub(r"\\Big[glr]?", "", out)
-    out = out.replace(r"\tfrac", r"\frac")
-    return out
+def prose_fix(text: str) -> str:
+    text = text.replace("---", DASH_EM)
+    text = text.replace("--", DASH_EN)
+    text = text.replace("<=", "\u2264").replace(">=", "\u2265")
+    text = re.sub(r"(?<![\w\u2013\u2014])-(?=[\d.])", MINUS, text)
+    return text
 
 
-_eq_counter = [0]
-
-
-def render_equation(tex: str, tmp: Path) -> Path | None:
-    _eq_counter[0] += 1
-    path = tmp / f"eq_{_eq_counter[0]:03d}.png"
-    clean = sanitize_tex(tex)
-    try:
-        fig = plt.figure(figsize=(0.1, 0.1))
-        fig.text(0, 0, f"${clean}$", fontsize=12, color="black")
-        fig.savefig(path, dpi=220, bbox_inches="tight", transparent=False,
-                    facecolor="white", pad_inches=0.05)
-        plt.close(fig)
-        return path
-    except Exception:
-        return None
-
-
-def add_equation(doc: Document, tex: str, tmp: Path) -> None:
-    path = render_equation(tex, tmp)
-    if path is None:
-        p = doc.add_paragraph(inline_math(tex))
-        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        return
-    with Image.open(path) as im:
-        w_px, h_px = im.size
-    width_in = w_px / 220.0
-    if width_in > 6.1:
-        width_in = 6.1
-    p = doc.add_paragraph()
-    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    p.add_run().add_picture(str(path), width=Inches(width_in))
-
-
-TOKEN = re.compile(r"(\*\*[^*]+\*\*|\*[^*\n]+\*|`[^`]+`|\$[^$\n]+\$|\[[^\]]+\]\([^)]+\))")
+def add_prose(paragraph, text: str) -> None:
+    text = prose_fix(text)
+    cursor = 0
+    for m in SUPSUB.finditer(text):
+        if m.start() > cursor:
+            paragraph.add_run(text[cursor:m.start()])
+        run = paragraph.add_run(m.group(2))
+        if m.group(1) == "^":
+            run.font.superscript = True
+        else:
+            run.font.subscript = True
+        cursor = m.end()
+    if cursor < len(text):
+        paragraph.add_run(text[cursor:])
 
 
 def add_runs(paragraph, text: str) -> None:
@@ -123,19 +81,33 @@ def add_runs(paragraph, text: str) -> None:
             run.font.name = "Consolas"
             run.font.size = Pt(9.5)
         elif part.startswith("$") and part.endswith("$"):
-            paragraph.add_run(inline_math(part[1:-1]))
+            paragraph._p.append(omml_math.inline_element(normalize_math(part[1:-1])))
         elif part.startswith("*") and part.endswith("*"):
             paragraph.add_run(part[1:-1]).italic = True
         elif part.startswith("[") and "](" in part:
             label, url = part[1:-1].split("](", 1)
-            run = paragraph.add_run(label)
-            run.font.color.rgb = None
+            paragraph.add_run(label)
             paragraph.add_run(f" ({url})")
         else:
-            paragraph.add_run(part)
+            add_prose(paragraph, part)
 
 
-def add_table(doc: Document, rows: list[list[str]]) -> None:
+def add_equation(doc: Document, tex: str, number: str) -> None:
+    p = doc.add_paragraph()
+    pf = p.paragraph_format
+    pf.space_before = Pt(6)
+    pf.space_after = Pt(6)
+    pf.tab_stops.add_tab_stop(Inches(3.25), WD_TAB_ALIGNMENT.CENTER)
+    pf.tab_stops.add_tab_stop(Inches(6.5), WD_TAB_ALIGNMENT.RIGHT)
+    run = p.add_run()
+    run.add_tab()
+    p._p.append(omml_math.inline_element(normalize_math(tex)))
+    run = p.add_run()
+    run.add_tab()
+    run.add_text(f"({number})")
+
+
+def add_table(doc: Document, rows: list[list[str]], size: float = 8.5) -> None:
     rows = [r for r in rows if not all(re.fullmatch(r":?-{2,}:?", c.strip()) for c in r)]
     if not rows:
         return
@@ -149,19 +121,31 @@ def add_table(doc: Document, rows: list[list[str]]) -> None:
             para = cells[ci].paragraphs[0]
             add_runs(para, text.strip())
             for run in para.runs:
-                run.font.size = Pt(8.5)
+                run.font.size = Pt(size)
                 if ri == 0:
                     run.bold = True
     p = doc.add_paragraph()
     p.paragraph_format.space_after = Pt(6)
 
 
-def find_fig(n: int) -> Path | None:
-    matches = sorted(FIGDIR.glob(f"fig{n}_*.png"))
-    return matches[0] if matches else None
+def add_figure(doc: Document, path: Path) -> None:
+    with Image.open(path) as im:
+        w_px, h_px = im.size
+    width_in = min(6.4, w_px / 200.0)
+    p = doc.add_paragraph()
+    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p.paragraph_format.space_before = Pt(6)
+    p.paragraph_format.space_after = Pt(2)
+    p.add_run().add_picture(str(path), width=Inches(width_in))
 
 
-def build(src: Path, dst: Path, with_figures: bool) -> dict:
+def warm_document(text: str) -> None:
+    inline = [normalize_math(m.group(1)) for m in INLINE.finditer(DISPLAY.sub(" ", text))]
+    display = [normalize_math(m.group(1)) for m in DISPLAY.finditer(text)]
+    omml_math.warm(inline + display, [])
+
+
+def build(src: Path, dst: Path, with_figures: bool, numbered_eq: bool) -> dict:
     doc = Document()
     for section in doc.sections:
         section.left_margin = section.right_margin = Inches(1.0)
@@ -170,10 +154,12 @@ def build(src: Path, dst: Path, with_figures: bool) -> dict:
     style.font.name = "Calibri"
     style.font.size = Pt(11)
 
-    lines = src.read_text().splitlines()
-    tmp = Path(tempfile.mkdtemp(prefix="docx_eq_"))
+    text = src.read_text()
+    warm_document(text)
+    lines = text.splitlines()
+    stats = {"paragraphs": 0, "tables": 0, "equations": 0, "figures": 0, "math": 0}
     i = 0
-    stats = {"paragraphs": 0, "tables": 0, "equations": 0, "figures": 0}
+    eqn = 0
     while i < len(lines):
         line = lines[i]
         stripped = line.strip()
@@ -190,13 +176,23 @@ def build(src: Path, dst: Path, with_figures: bool) -> dict:
             add_runs(heading, m.group(2))
             i += 1
             continue
+        m = re.match(r"^!\[[^\]]*\]\(([^)]+)\)\s*$", stripped)
+        if m:
+            fig = (src.parent / m.group(1)).resolve()
+            if with_figures and fig.exists():
+                add_figure(doc, fig)
+                stats["figures"] += 1
+            i += 1
+            continue
         if stripped == "$$":
             j = i + 1
             buf = []
             while j < len(lines) and lines[j].strip() != "$$":
                 buf.append(lines[j])
                 j += 1
-            add_equation(doc, "\n".join(buf), tmp)
+            eqn += 1
+            number = (f"S{eqn}" if not numbered_eq else str(eqn))
+            add_equation(doc, "\n".join(buf), number)
             stats["equations"] += 1
             i = j + 1
             continue
@@ -209,15 +205,9 @@ def build(src: Path, dst: Path, with_figures: bool) -> dict:
             stats["tables"] += 1
             continue
         m = re.match(r"^\*\*Figure (\d+)\.\*\*\s*(.*)$", stripped)
-        if m and with_figures:
-            n = int(m.group(1))
-            fig = find_fig(n)
-            if fig:
-                p = doc.add_paragraph()
-                p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-                p.add_run().add_picture(str(fig), width=Inches(6.1))
-                stats["figures"] += 1
+        if m:
             cap = doc.add_paragraph()
+            cap.paragraph_format.space_after = Pt(10)
             add_runs(cap, stripped)
             for run in cap.runs:
                 run.font.size = Pt(9)
@@ -243,12 +233,13 @@ def build(src: Path, dst: Path, with_figures: bool) -> dict:
         i += 1
 
     doc.save(dst)
+    stats["math"] = omml_math.cache_stats()["inline"]
     return stats
 
 
 def main() -> None:
-    for src, dst, with_figures in JOBS:
-        stats = build(src, dst, with_figures)
+    for src, dst, with_figures, numbered_eq in JOBS:
+        stats = build(src, dst, with_figures, numbered_eq)
         print(f"{dst.name}: {stats}")
     print("done")
 

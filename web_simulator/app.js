@@ -16,7 +16,10 @@ let META = null;
 const SESSIONS = {};
 let ENGINE = "js"; // "onnx" | "js"
 const CURRENT = { mu: [50, 100, -0.01, 5], pred: null, preset: null };
-const LIVE_API = "http://127.0.0.1:8765/api/solve_sg";
+// Same-origin when served over http(s) (deployed portal), localhost otherwise.
+const LOCAL_API = "http://127.0.0.1:8765/api/solve_sg";
+const LIVE_API = (typeof location !== "undefined" && /^https?:$/.test(location.protocol))
+  ? "/api/solve_sg" : LOCAL_API;
 
 // ------------------------------------------------------------------ colormap
 const VIRIDIS_STOPS = [
@@ -288,6 +291,30 @@ function setStatus(text, cls) {
   el.className = "status" + (cls ? " " + cls : "");
 }
 
+// --------------------------------------------------------------- tab switching
+function setTab(name) {
+  const panels = document.querySelectorAll(".tabpanel");
+  Array.prototype.forEach.call(panels, (p) => p.classList.toggle("active", p.id === name));
+  const tabs = document.querySelectorAll(".tab");
+  Array.prototype.forEach.call(tabs, (t) => {
+    const on = t.dataset.tab === name;
+    t.classList.toggle("active", on);
+    t.setAttribute("aria-selected", on ? "true" : "false");
+  });
+  return name;
+}
+
+function initTabs() {
+  const tabs = document.querySelectorAll(".tab");
+  Array.prototype.forEach.call(tabs, (t) => {
+    t.onclick = () => setTab(t.dataset.tab);
+  });
+  const links = document.querySelectorAll("a.nav-link[href^='#tab-']");
+  Array.prototype.forEach.call(links, (a) => {
+    a.onclick = (ev) => { if (ev && ev.preventDefault) ev.preventDefault(); setTab(a.getAttribute("href").slice(1)); };
+  });
+}
+
 function buildPresets() {
   const box = document.getElementById("presets");
   box.innerHTML = "";
@@ -341,6 +368,7 @@ async function init() {
       : "Ready \u2014 running on the embedded JS engine (offline mode).",
       "ok");
     buildPresets();
+    initTabs();
     document.getElementById("modelSelect").onchange = schedule;
     ["sl_V", "sl_C0", "sl_q", "sl_R"].forEach((id) => { document.getElementById(id).oninput = schedule; });
     document.getElementById("compareToggle").onchange = evaluate;
@@ -356,6 +384,7 @@ if (typeof window !== "undefined") {
   // testability hook (used by scripts/test_web_simulator_dom.js)
   window.__app = {
     init, evaluate, runModel, sgCurrentProfile, buildPresets, runLiveSolver, setBadge,
+    setTab, initTabs,
     getCurrent: () => CURRENT, getEngine: () => ENGINE, getMeta: () => META,
   };
   window.addEventListener("DOMContentLoaded", init);

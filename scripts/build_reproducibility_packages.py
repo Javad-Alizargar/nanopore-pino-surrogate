@@ -30,6 +30,9 @@ PUBLIC_FILES = [
     "scripts/train_and_evaluate_suite.py",
     "scripts/fno_extended_check.py",
     "scripts/run_inverse_recovery_demo.py",
+    "scripts/run_stage10_upgrades.py",
+    "scripts/run_stage11_reviewer_upgrades.py",
+    "scripts/enforce_sequential_numbering_and_inline_figures.py",
     "scripts/verify_simulators.py",
     "scripts/verify_live_servers.py",
     "scripts/test_operators_smoke.py",
@@ -37,12 +40,17 @@ PUBLIC_FILES = [
     "scripts/benchmark_sg_m1.py",
     "results/statistics.json",
     "results/dataset_manifest.json",
+    "results/dataset_manifest_384.json",
+    "results/stage10_upgrades.json",
+    "results/stage11_upgrades.json",
+    "results/stage11_numbering_report.json",
     "results/stage2_sg_baseline_verification.json",
     "results/stage3_operator_smoke.json",
     "results/stage5_simulator_verification.json",
     "results/stage5b_live_server_verification.json",
     "results/inverse_recovery_demo.json",
     "data/processed/pnp_parametric_240.npz",
+    "data/processed/pnp_parametric_384.npz",
     "results/models/deeponet_reparam_seed42.onnx",
     "results/models/fno_reparam_seed42.onnx",
     "results/models/deeponet_reparam_data_plus_physics_seed42.pt",
@@ -100,9 +108,12 @@ README = """# nanopore-pino-surrogate
 Parameter-conditioned physics-informed neural operator (PINO) for steady
 axisymmetric Poisson--Nernst--Planck (PNP) transport in a charged cylindrical
 nanopore. The repository contains the conservative Scharfetter--Gummel
-finite-volume reference solver, the 240-state benchmark, a multi-scale radial
-physics-informed DeepONet, a real-DFT Fourier neural operator, the inverse
-recovery demo, and a static browser simulator.
+finite-volume reference solver, the 240-state benchmark and a 384-state scaling
+expansion, a multi-scale radial physics-informed DeepONet, a real-DFT Fourier
+neural operator, the inverse recovery demo, a trunk ablation, a data-scaling
+study, a Fisher-information and multi-protocol identifiability analysis, a
+four-way constraint-scheme benchmark, an exact SG/FV Fisher validation, a
+physics-weight sweep, and a static browser simulator.
 
 ## Quick start
 
@@ -111,11 +122,15 @@ python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 python scripts/test_operators_smoke.py          # ONNX/PyTorch parity smoke test
 python scripts/run_inverse_recovery_demo.py     # five-state inverse demo
+python scripts/run_stage10_upgrades.py          # trunk ablation, scaling law, identifiability
+python scripts/run_stage11_reviewer_upgrades.py # 4-way constraints, physics sweep, exact Fisher
 python scripts/serve_interactive.py             # live SG/FV + operator service
 python scripts/app_gradio.py                    # Gradio comparison app
 ```
 
-Open `web_simulator/index.html` (or the hosted page) for the browser simulator.
+Open `web_simulator/index.html`, or use the hosted portal at
+<https://pino.statwhy.com/> (ONNX operator predictions, verified benchmark
+cases, and a live SG/FV reference solver).
 
 ## Layout
 
@@ -125,9 +140,12 @@ Open `web_simulator/index.html` (or the hosted page) for the browser simulator.
 | `scripts/sg_baseline/` | conservative SG/FV reference solver |
 | `scripts/train_and_evaluate_suite.py` | three-seed training/evaluation |
 | `scripts/run_inverse_recovery_demo.py` | radius/charge inverse demo |
+| `scripts/run_stage10_upgrades.py` | trunk ablation, 384-state scaling law, Fisher/multi-protocol identifiability |
+| `scripts/run_stage11_reviewer_upgrades.py` | four-way constraint benchmark, physics-weight sweep, exact SG/FV Fisher validation |
+| `scripts/enforce_sequential_numbering_and_inline_figures.py` | first-appearance reference/table renumbering and inline-figure audit |
 | `scripts/figures/` | figure generation and layout verification |
-| `results/` | statistics, tables 1--6, verification JSONs, export models |
-| `data/processed/` | 240-state dataset |
+| `results/` | statistics, tables 1--6 and S3, S14--S18, verification JSONs, export models |
+| `data/processed/` | 240-state dataset and 384-state scaling expansion |
 | `web_simulator/` | static browser simulator (ONNX + JS SG engine) |
 | `tests/` | smoke and parity tests |
 
@@ -150,6 +168,8 @@ ARCH_MAP = """# Architecture map
 | FNO budget | `scripts/fno_extended_check.py` | dataset | `results/tables/table5_*.csv` | Table 5 |
 | Inverse | `scripts/run_inverse_recovery_demo.py` | dataset, ONNX models | `results/inverse_recovery_demo.json`, `results/tables/table6_*.csv` | Table 6, Figure 6B |
 | Timing | `scripts/benchmark_sg_m1.py` | models, solver | `results/tables/table4_*.csv` | Figure 6A |
+| Stage-10 upgrades | `scripts/run_stage10_upgrades.py` | 240/384-state datasets, `scripts/operators/` | `results/stage10_upgrades.json`, `results/tables/table_s14_*.csv`, `table_s15_*.csv`, `data/processed/pnp_parametric_384.npz` | Figures 3E,F, 4D; Tables S3, S15 |
+| Stage-11 upgrades | `scripts/run_stage11_reviewer_upgrades.py` | 240-state dataset, ONNX operator, SG/FV solver | `results/stage11_upgrades.json`, `results/tables/table_sgfv_fisher_validation.csv`, `table_constraint_schemes_4way.csv`, `table_physics_weight_sensitivity.csv` | Figures 3A--D, 6C,D; Tables S16--S18 |
 | Figures | `scripts/figures/*.py` | `results/*` | `figures/*.png`, `pdf` | Figures 1--6 |
 | Deployment | `scripts/build_web_simulator.py`, `scripts/build_web_bundle.py` | ONNX models | `web_simulator/` | -- |
 | Live apps | `scripts/serve_interactive.py`, `scripts/app_gradio.py` | solver, models | HTTP/Gradio services | -- |

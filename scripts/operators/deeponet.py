@@ -28,7 +28,8 @@ def _mlp(dims):
 
 class DeepONet(nn.Module):
     def __init__(self, mode="reparam", normalizer=None, p=64, branch_width=64,
-                 trunk_width=64, depth=3, n_outputs=3, n_params=7, nr=NR, nz=NZ):
+                 trunk_width=64, depth=3, n_outputs=3, n_params=7, nr=NR, nz=NZ,
+                 use_radial_basis=True, radial_scales=_RADIAL_SCALES):
         super().__init__()
         if normalizer is None:
             normalizer = ParamNormalizer([0.0] * n_params, [1.0] * n_params)
@@ -38,8 +39,11 @@ class DeepONet(nn.Module):
         self.n_params = n_params
         self.p = p
         self.n_outputs = n_outputs
+        # Multi-scale exponential (EDL) radial basis vs. a standard (r, z) MLP trunk.
+        self.use_radial_basis = bool(use_radial_basis)
+        self.radial_scales = tuple(radial_scales) if use_radial_basis else ()
 
-        trunk_in = 2 + len(_RADIAL_SCALES)
+        trunk_in = 2 + len(self.radial_scales)
         self.branch = _mlp([n_params] + [branch_width] * depth + [n_outputs * p])
         self.trunk = _mlp([trunk_in] + [trunk_width] * depth + [p])
         self.bias = nn.Parameter(torch.zeros(n_outputs))
@@ -57,7 +61,7 @@ class DeepONet(nn.Module):
         r = (coords[..., 0] + 1.0) * 0.5   # (nr,nz)
         z = (coords[..., 1] + 1.0) * 0.5
         feats = [r, z]
-        for s in _RADIAL_SCALES:
+        for s in self.radial_scales:
             feats.append(torch.exp(-s * (1.0 - r)))
         return torch.stack(feats, dim=-1)
 
@@ -69,7 +73,7 @@ class DeepONet(nn.Module):
         if coords is None:
             coords = self.grid_coords.to(mu.dtype)
 
-        trunk_feats = self._trunk_features(coords).reshape(-1, 2 + len(_RADIAL_SCALES))
+        trunk_feats = self._trunk_features(coords).reshape(-1, 2 + len(self.radial_scales))
         trunk = self.trunk(trunk_feats)              # (N, p)
         branch = self.branch(norm).reshape(B, self.n_outputs, self.p)
 

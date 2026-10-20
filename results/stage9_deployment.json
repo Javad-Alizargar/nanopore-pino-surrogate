@@ -1,0 +1,45 @@
+{
+  "domain": "pino.statwhy.com",
+  "host": "statwhy.com",
+  "server_ip": "199.192.22.106",
+  "ssh_user": "root",
+  "ssh_key": "kras_nanopore_codex",
+  "static_root": "/var/www/pino.statwhy.com",
+  "app_dir": "/opt/pino-statwhy",
+  "service": "pino-statwhy.service",
+  "loopback_bind": "127.0.0.1:18765",
+  "nginx_vhost": "/etc/nginx/sites-available/pino.statwhy.com",
+  "tls": {
+    "provider": "certbot/letsencrypt",
+    "not_after": "2027-01-17T04:17:52Z",
+    "http_to_https_redirect": true
+  },
+  "endpoints": {
+    "portal": "https://pino.statwhy.com/",
+    "health": "https://pino.statwhy.com/api/health",
+    "solve_sg": "https://pino.statwhy.com/api/solve_sg"
+  },
+  "verification": {
+    "portal_html": 200,
+    "assets": {
+      "/app.js": 200,
+      "/style.css": 200,
+      "/data/embedded_bundle.js": 5662351
+    },
+    "sgfv_reference_pA": 196.13722469169718,
+    "sgfv_live_pA": 196.137225,
+    "sgfv_residual": 9.634228970156755e-10,
+    "sgfv_iterations": 4,
+    "http_redirect_status": 301
+  },
+  "isolation": {
+    "other_sites_verified_200": [
+      "https://statwhy.com/",
+      "https://nhrid.statwhy.com/",
+      "https://mandarin.statwhy.com/"
+    ],
+    "only_own_files_written": true,
+    "nginx_test_gate": true
+  },
+  "deploy_script": "scripts/deploy_pino_statwhy.sh"
+}
