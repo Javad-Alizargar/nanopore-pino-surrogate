@@ -1,0 +1,259 @@
+{
+  "stage": 3,
+  "task": "3.1_parametric_sg_fv_dataset",
+  "generated_utc": "2026-10-18T09:39:24Z",
+  "seed": 20261018,
+  "hardware": {
+    "platform": "macOS-14.1-arm64-arm-64bit-Mach-O",
+    "machine": "arm64",
+    "cpu": "Apple M1 (8 cores)"
+  },
+  "solver": {
+    "module": "scripts/sg_baseline/src/pnp_da_pinn/conservative.py",
+    "conservative_sha256": "dc726e670f329e37474425636ac0f588f251165fd1a7f9d462150cb462efc8a7",
+    "sg_solver_sha256": "03a1e948afe10181772b4af60ff4f551590bd6690032d57be80e7d79414b9748",
+    "tolerance": 1e-09,
+    "max_iter": 300,
+    "dtype": "float64 (fields stored float32)"
+  },
+  "grid": {
+    "nr": 21,
+    "nz": 61,
+    "length_nm": 30.0,
+    "temperature_K": 298.15
+  },
+  "in_distribution_box": {
+    "V_app_mV": [
+      -50.0,
+      50.0
+    ],
+    "C0": [
+      20.0,
+      200.0
+    ],
+    "q_w": [
+      -0.05,
+      0.0
+    ],
+    "R_nm": [
+      3.0,
+      8.0
+    ]
+  },
+  "benchmark_state": {
+    "index": 144,
+    "mu": [
+      50.0,
+      100.0,
+      -0.01,
+      5.0
+    ],
+    "mean_axial_current_pA": 196.13722469169718,
+    "residual": 2.4219382055434835e-10,
+    "prior_da_pinn_reference": {
+      "mean_axial_current_pA": 196.137225,
+      "note": "v0.007 fixed-state benchmark; operator prediction compared out-of-sample against this DA-PINN result."
+    }
+  },
+  "dataset": {
+    "path": "data/processed/pnp_parametric_240.npz",
+    "n_states": 240,
+    "sha256": "3cf16cf70142138e991985fbcfd99c113e535577f32f9241bd894ce719be6cab",
+    "size_bytes": 4021110,
+    "size_mb": 4.021,
+    "compact_under_15mb": true,
+    "arrays": [
+      "mu",
+      "psi",
+      "c_plus",
+      "c_minus",
+      "rho",
+      "sigma_c",
+      "i_z",
+      "splits",
+      "r",
+      "z",
+      "residual",
+      "iterations",
+      "runtime_s",
+      "converged",
+      "lambda_D_m",
+      "lambda_D_over_R",
+      "beta",
+      "alpha_r",
+      "mean_current_pA",
+      "rel_current_range",
+      "n_continuation_steps",
+      "method",
+      "feature_names"
+    ]
+  },
+  "splits": {
+    "train": {
+      "n": 144,
+      "V_app_mV": [
+        -50.0,
+        50.0
+      ],
+      "C0": [
+        20.0,
+        200.0
+      ],
+      "q_w": [
+        -0.05,
+        0.0
+      ],
+      "R_nm": [
+        3.0,
+        8.0
+      ],
+      "residual_max": 9.936325096049359e-10,
+      "residual_mean": 1.6380418937983255e-10,
+      "mean_current_pA_range": [
+        -1004.223047472672,
+        516.3312968088345
+      ],
+      "lambda_D_over_R_range": [
+        0.0850280881136688,
+        0.7170197960764888
+      ]
+    },
+    "interp_test": {
+      "n": 48,
+      "V_app_mV": [
+        -49.208248278739404,
+        50.0
+      ],
+      "C0": [
+        20.809532970994326,
+        198.121713750585
+      ],
+      "q_w": [
+        -0.049947224708771006,
+        -0.0003424939796022111
+      ],
+      "R_nm": [
+        3.0544336259317184,
+        7.9104720999057205
+      ],
+      "residual_max": 6.907945326872778e-10,
+      "residual_mean": 1.6823392505471713e-10,
+      "mean_current_pA_range": [
+        -250.20431714258544,
+        392.7462587826069
+      ],
+      "lambda_D_over_R_range": [
+        0.09212421170325097,
+        0.49540330617994716
+      ]
+    },
+    "ood_test": {
+      "n": 48,
+      "V_app_mV": [
+        -72.48588383326297,
+        74.23969566085053
+      ],
+      "C0": [
+        10.23157728587714,
+        139.6168800515213
+      ],
+      "q_w": [
+        -0.09815884117319931,
+        -0.008166096024849606
+      ],
+      "R_nm": [
+        2.0265975267620897,
+        7.827000725623109
+      ],
+      "residual_max": 9.819438595570773e-10,
+      "residual_mean": 1.8358894862246372e-10,
+      "mean_current_pA_range": [
+        -406.0637425843882,
+        360.88749260745675
+      ],
+      "lambda_D_over_R_range": [
+        0.1515339385494675,
+        1.1594120248878301
+      ]
+    },
+    "ood_charge_salt": {
+      "n": 24,
+      "V_app_mV": [
+        -47.82213675426799,
+        48.93645294701058
+      ],
+      "C0": [
+        10.23157728587714,
+        19.82808937360247
+      ],
+      "q_w": [
+        -0.09815884117319931,
+        -0.05565528285246909
+      ],
+      "R_nm": [
+        2.5784413687523537,
+        4.898845846808065
+      ],
+      "residual_max": 6.935763352533542e-10,
+      "residual_mean": 1.28563502797945e-10,
+      "mean_current_pA_range": [
+        -20.488924669123328,
+        14.00694000900347
+      ],
+      "lambda_D_over_R_range": [
+        0.4516573200902114,
+        1.1594120248878301
+      ]
+    },
+    "ood_geometry_voltage": {
+      "n": 24,
+      "V_app_mV": [
+        -72.48588383326297,
+        74.23969566085053
+      ],
+      "C0": [
+        16.889225185640985,
+        139.6168800515213
+      ],
+      "q_w": [
+        -0.07930590676012056,
+        -0.008166096024849606
+      ],
+      "R_nm": [
+        2.0265975267620897,
+        7.827000725623109
+      ],
+      "residual_max": 9.819438595570773e-10,
+      "residual_mean": 2.3861439444698246e-10,
+      "mean_current_pA_range": [
+        -406.0637425843882,
+        360.88749260745675
+      ],
+      "lambda_D_over_R_range": [
+        0.1515339385494675,
+        0.8799280900308252
+      ]
+    }
+  },
+  "acceptance": {
+    "all_converged": true,
+    "residual_below_1e-9": true,
+    "max_residual": 9.936325096049359e-10,
+    "strictly_positive_concentrations": true,
+    "min_c_plus": 0.9999474287033081,
+    "min_c_minus": 0.8033685088157654,
+    "finite_fields": true
+  },
+  "timing": {
+    "wall_seconds": 59.18,
+    "mean_solve_s": 0.23909970383974724,
+    "median_solve_s": 0.2199542919988744,
+    "max_solve_s": 0.785325999953784
+  },
+  "continuation": {
+    "n_states_using_continuation": 0,
+    "methods": {
+      "direct": 240
+    }
+  }
+}

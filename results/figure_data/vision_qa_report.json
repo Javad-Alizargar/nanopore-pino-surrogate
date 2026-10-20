@@ -1,0 +1,137 @@
+{
+  "model": "gpt-4o-mini",
+  "task_allowance_usd": 0.03,
+  "figures": {
+    "fig1_workflow_and_architecture": {
+      "bytes_sent": 199083,
+      "reserved_cost_usd": 0.00040146,
+      "status": "ok",
+      "calc_cost_usd": 0.0038736,
+      "verdict": {
+        "pass": false,
+        "text_overlaps": [],
+        "clipped_or_overflowing_text": [
+          "panel A right side",
+          "panel B bottom"
+        ],
+        "other_issues": [],
+        "notes": "Some text is clipped or overflowing."
+      }
+    },
+    "fig2_benchmark_and_field_reconstruction": {
+      "bytes_sent": 149309,
+      "reserved_cost_usd": 0.00040146,
+      "status": "ok",
+      "calc_cost_usd": 0.0038808,
+      "verdict": {
+        "pass": false,
+        "text_overlaps": [
+          "panel A bottom-right",
+          "panel B bottom-right"
+        ],
+        "clipped_or_overflowing_text": [
+          "panel F top-left"
+        ],
+        "other_issues": [],
+        "notes": "Some text overlaps and is clipped."
+      }
+    },
+    "fig3_h3_charge_reparameterization_ablation": {
+      "bytes_sent": 144217,
+      "reserved_cost_usd": 0.00040146,
+      "status": "ok",
+      "calc_cost_usd": 0.003879,
+      "verdict": {
+        "pass": false,
+        "text_overlaps": [
+          "panel B top-left"
+        ],
+        "clipped_or_overflowing_text": [
+          "panel D bottom"
+        ],
+        "other_issues": [],
+        "notes": "Text overlaps in panel B and clipping in panel D."
+      }
+    },
+    "fig4_h1_h2_interp_vs_ood_regimes": {
+      "bytes_sent": 166057,
+      "reserved_cost_usd": 0.00040146,
+      "status": "ok",
+      "calc_cost_usd": 0.0038796,
+      "verdict": {
+        "pass": false,
+        "text_overlaps": [
+          "panel A bottom-left",
+          "panel B top-left"
+        ],
+        "clipped_or_overflowing_text": [],
+        "other_issues": [
+          "panel C inset text too small"
+        ],
+        "notes": "Some text overlaps in panels A and B."
+      }
+    },
+    "fig5_parametric_physics_sweeps": {
+      "bytes_sent": 110734,
+      "reserved_cost_usd": 0.00040146,
+      "status": "ok",
+      "calc_cost_usd": 0.0021885,
+      "verdict": {
+        "pass": false,
+        "text_overlaps": [
+          "panel A legend overlaps with data points"
+        ],
+        "clipped_or_overflowing_text": [
+          "panel B title is clipped at the top"
+        ],
+        "other_issues": [
+          "panel C legend is too close to the bottom edge"
+        ],
+        "notes": "Some text elements are not properly positioned."
+      }
+    },
+    "fig6_h4_timing_and_amortization_breakeven": {
+      "bytes_sent": 103485,
+      "reserved_cost_usd": 0.00040146,
+      "status": "ok",
+      "calc_cost_usd": 0.0021765,
+      "verdict": {
+        "pass": false,
+        "text_overlaps": [
+          "panel B bottom-left"
+        ],
+        "clipped_or_overflowing_text": [
+          "panel A bottom"
+        ],
+        "other_issues": [],
+        "notes": "Some text is clipped and overlaps."
+      }
+    }
+  },
+  "total_spend_usd": 0.019878,
+  "ledger_status_after": {
+    "committed": 0.01989345,
+    "outstanding": 0.0,
+    "total": 0.01989345,
+    "inflight": 0,
+    "by_provider": {
+      "deepseek": 1.275e-05,
+      "openai": 0.0198807
+    },
+    "by_task": {
+      "stage1_smoke": 1.545e-05,
+      "stage5b_vision_qa": 0.019878000000000003
+    },
+    "total_attempts": 9,
+    "project_total_usd": 5.0,
+    "remaining_usd": 4.98010655,
+    "fraction_used": 0.003979,
+    "reserved_share_usd": 0.0,
+    "spent_share_usd": 0.01989345,
+    "openai_subbudget_used": 0.0198807,
+    "openai_subbudget_cap": 1.0,
+    "warning": false,
+    "stop_new_tasks": false,
+    "final_review_reserve_usd": 0.5
+  }
+}
