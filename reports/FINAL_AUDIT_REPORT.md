@@ -1,10 +1,10 @@
 # Final audit report
 
-Generated: 2026-10-20T00:07:10Z
+Generated: 2026-10-20T00:40:59Z
 
 Audited packages:
-- Public: 152 files, 30.6 MB
-- Private: 834 files, 89.2 MB
+- Public: 159 files, 31.1 MB
+- Private: 841 files, 89.8 MB
 
 ## Checklist
 
@@ -32,28 +32,30 @@ Audited packages:
 | Supplementary DOCX: native OMML equations, no images | PASS |
 | Public package has no private logs/download/literature | PASS |
 | Private package contains manuscript and reports | PASS |
-| Six figures cited sequentially; no main-text data tables; 18 supplement tables cited | PASS |
+| Six figures cited sequentially; no main-text data tables; 19 supplement tables cited | PASS |
 | Claim-evidence map spans C01--C38 and L01--L60, all supported | PASS |
 | References are numbered strictly by first appearance 1..60 | PASS |
 | Supplementary tables and equations are strictly sequential | PASS |
 | Figures are placed inline within 1-2 paragraphs of the first mention (Markdown + DOCX) | PASS |
 | Stage-11 reviewer upgrades present (tables, JSON, statistics, script) | PASS |
+| DOCX bibliography is numbered [1]--[60] with authors and years | PASS |
+| Supplementary tables first-seen 1..19; no stray legend children in figures | PASS |
 
 ## Details
 
 - Credential files inspected: 12 (values never printed).
 - Public package secret-value hits: []
 - Private package secret-value hits: []
-- Tracked/unignored files scanned: 194; hits: []
+- Tracked/unignored files scanned: 200; hits: []
 - Public secret-name hits: []
 - Private secret-name hits: []
-- Abstract: 244 words; highlights: 5 (max 80 chars).
+- Abstract: 230 words; highlights: 5 (max 84 chars).
 - References: 60, cited: 60, uncited: [], missing: [], with DOI: 60.
 - Claims: 98 (38 quantitative + 60 literature), statuses: ['supported'].
-- Display items: figure first-citation order [1, 2, 3, 4, 5, 6]; main-text data tables 0; supplement tables 18; uncited supplement tables [].
-- Sequential numbering: references [1, 2, 3, 4, 5]... (n=60); supplementary tables [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]; main equations [1, 2, 3, 4, 5, 6, 7, 8]; supplement equations [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].
+- Display items: figure first-citation order [1, 2, 3, 4, 5, 6]; main-text data tables 0; supplement tables 19; uncited supplement tables [].
+- Sequential numbering: references [1, 2, 3, 4, 5]... (n=60); supplementary tables [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]; main equations [1, 2, 3, 4, 5, 6, 7, 8]; supplement equations [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].
 - Stage-11 upgrades: {"tables": true, "json_keys": {"fisher_sgfv_validation": true, "constraint_schemes_benchmark": true, "physics_weight_sweep": true}, "statistics_keys": true, "script": true}.
-- DOCX: {"Manuscript_PINO_clean.docx": {"exists": true, "tables": 0, "omath": 266, "omathpara": 0, "media": 6, "equation_pngs": [], "n_drawings": 6, "figures_before_references": true, "raw_dollar": false, "latex_commands": false, "equation_or_latex_leak": false, "refs_60": true}, "Supplementary_Materials_PINO.docx": {"exists": true, "tables": 19, "omath": 331, "omathpara": 0, "media": 0, "equation_pngs": [], "n_drawings": 0, "figures_before_references": true, "raw_dollar": false, "latex_commands": false, "equation_or_latex_leak": false, "refs_60": false}}.
+- DOCX: {"Manuscript_PINO_clean.docx": {"exists": true, "tables": 0, "omath": 287, "omathpara": 0, "media": 6, "equation_pngs": [], "n_drawings": 6, "figures_before_references": true, "raw_dollar": false, "latex_commands": false, "equation_or_latex_leak": false, "refs_60": true}, "Supplementary_Materials_PINO.docx": {"exists": true, "tables": 20, "omath": 354, "omathpara": 0, "media": 0, "equation_pngs": [], "n_drawings": 0, "figures_before_references": true, "raw_dollar": false, "latex_commands": false, "equation_or_latex_leak": false, "refs_60": false}}.
 
 ## Scope and limitations
 

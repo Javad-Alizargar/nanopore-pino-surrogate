@@ -11,7 +11,7 @@ What it does (deterministic, idempotent):
      ``manuscript/claim_evidence.csv``, and
      ``results/literature_claim_verification.json`` are permuted to match.
   2. Supplementary-table renumbering by first citation in the main text, so the
-     labels are strictly increasing S1..S18 (labels only; each table stays in
+     labels are strictly increasing S1..S19 (labels only; each table stays in
      its thematic supplement section).  The manuscript and supplement callouts
      are rewritten consistently.
   3. Verification of strict sequential equation callouts (main ``Eq. (1)..(8)``,
@@ -207,9 +207,9 @@ def renumber_references() -> dict:
 def renumber_tables() -> dict:
     body, _, _ = read_doc(MAN)
     order = first_appearance(body, TAB_RE, "table")
-    if sorted(order) != list(range(1, 19)):
+    if sorted(order) != list(range(1, 20)):
         raise SystemExit(
-            f"supplementary-table first-appearance is not a permutation of 1..18: {sorted(order)}")
+            f"supplementary-table first-appearance is not a permutation of 1..19: {sorted(order)}")
     perm = {old: i + 1 for i, old in enumerate(order)}
 
     man = MAN.read_text()
@@ -334,7 +334,7 @@ def main() -> None:
     REPORT.write_text(json.dumps(report, indent=2) + "\n")
     print(json.dumps({
         "references_strict": report["references"]["first_appearance"] == list(range(1, 61)),
-        "tables_strict": report["supplementary_tables"]["first_appearance"] == list(range(1, 19)),
+        "tables_strict": report["supplementary_tables"]["first_appearance"] == list(range(1, 20)),
         "equations_main_strict": report["equations_main"]["strict_sequential"],
         "equations_supp_strict": report["equations_supp"]["strict_sequential"],
         "figures_inline": all(v["image_after_mention"] and v["caption_after_image"]

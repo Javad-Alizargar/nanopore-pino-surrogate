@@ -160,6 +160,8 @@ def build(src: Path, dst: Path, with_figures: bool, numbered_eq: bool) -> dict:
     stats = {"paragraphs": 0, "tables": 0, "equations": 0, "figures": 0, "math": 0}
     i = 0
     eqn = 0
+    in_refs = False
+    refn = 0
     while i < len(lines):
         line = lines[i]
         stripped = line.strip()
@@ -174,6 +176,9 @@ def build(src: Path, dst: Path, with_figures: bool, numbered_eq: bool) -> dict:
             level = len(m.group(1))
             heading = doc.add_heading(level=min(level, 4)) if level > 1 else doc.add_heading(level=0)
             add_runs(heading, m.group(2))
+            if m.group(2).strip().lower() == "references":
+                in_refs = True
+                refn = 0
             i += 1
             continue
         m = re.match(r"^!\[[^\]]*\]\(([^)]+)\)\s*$", stripped)
@@ -222,8 +227,17 @@ def build(src: Path, dst: Path, with_figures: bool, numbered_eq: bool) -> dict:
             continue
         m = re.match(r"^\s*\d+\.\s+(.*)$", line)
         if m and not line.strip().startswith("**"):
-            para = doc.add_paragraph(style="List Number")
-            add_runs(para, m.group(1))
+            if in_refs:
+                refn += 1
+                para = doc.add_paragraph()
+                fmt = para.paragraph_format
+                fmt.left_indent = Inches(0.42)
+                fmt.first_line_indent = Inches(-0.42)
+                fmt.space_after = Pt(3)
+                add_runs(para, f"[{refn}] " + m.group(1))
+            else:
+                para = doc.add_paragraph(style="List Number")
+                add_runs(para, m.group(1))
             stats["paragraphs"] += 1
             i += 1
             continue

@@ -78,7 +78,8 @@ axA.legend(handles=handles, frameon=False, fontsize=7, loc="upper left")
 K.panel_label(axA, "A", x=-0.14, y=1.13)
 
 # ---- Panel B: error vs Debye ratio --------------------------------------
-axB = fig.add_subplot(gs[0, 1])
+gsB = gs[0, 1].subgridspec(2, 1, height_ratios=[1.45, 1.0], hspace=0.95)
+axB = fig.add_subplot(gsB[0])
 allidx = np.concatenate([splits[sp] for sp in splits])
 label_map = {sp: split_color[sp] for sp in splits}
 for sp in splits:
@@ -93,7 +94,40 @@ axB.set_ylabel("per-state relative $L_2$ error")
 axB.set_title("error vs EDL overlap  (filled: $\\rho$, open\ntriangles: $I(z)$)",
               fontsize=8.6)
 axB.legend(frameon=False, fontsize=6.2)
-K.panel_label(axB, "B", x=-0.14, y=1.12)
+K.panel_label(axB, "B", x=-0.08, y=1.45)
+
+# ---- Panel B2: OOD error budget by spatial zone -------------------------
+oodstat = K.load_statistics()["ood_mechanistic_breakdown"]["backbones"]
+axB2 = fig.add_subplot(gsB[1])
+zone_order = ["reservoir_corners", "wall_edl", "core"]
+zone_lab = ["corners", "wall EDL", "core"]
+zone_col = [K.C["vermillion"], K.C["orange"], K.C["blue"]]
+bbars = ["deeponet", "fno"]
+for bi, bb in enumerate(bbars):
+    for fi, field in enumerate(("psi", "rho")):
+        shares = [oodstat[bb]["zones"][z][field]["share_of_sq_error"] for z in zone_order]
+        left = 0.0
+        for si, (s, zl) in enumerate(zip(shares, zone_lab)):
+            axB2.barh(bi * 2 + fi, 100 * s, left=100 * left, height=0.72,
+                      color=zone_col[si], alpha=0.85 if bi == 0 else 0.6,
+                      edgecolor="white", lw=0.4,
+                      hatch=None if bi == 0 else "///")
+            left += s
+axB2.set_yticks([0, 1, 2, 3])
+axB2.set_yticklabels([r"$\psi$ DN", r"$\rho$ DN", r"$\psi$ FNO", r"$\rho$ FNO"],
+                     fontsize=6.0)
+axB2.set_xlim(0, 100)
+axB2.set_xlabel("share of OOD squared error (%)", fontsize=6.2, labelpad=1)
+axB2.tick_params(axis="x", labelsize=5.8)
+excl = oodstat["deeponet"]["parametric_exclusive"]
+lab_map = {"combined_charge_salt": "charge+salt", "charge_only": "charge",
+           "salt_only": "salt", "narrow_radius": "narrow $R$",
+           "high_voltage": "high $V$", "other": "other"}
+txt = "  ".join(f"{lab_map.get(k, k)} {100*v['share_sq_rho']:.0f}%"
+                for k, v in excl.items())
+axB2.set_title("OOD budget by zone\ncharge+salt 94%, charge 6%", fontsize=5.8, pad=2)
+
+
 
 # ---- Panel C: parity of mean axial current ------------------------------
 axC = fig.add_subplot(gs[1, 1])
@@ -158,6 +192,14 @@ for sp in splits:
     for m in metrics:
         sdata[f"err_{sp}_{m}"] = errs[sp][m]
     sdata[f"ipred_{sp}"] = ipred_mean[sp]; sdata[f"iref_{sp}"] = iref_mean[sp]
+sdata["panelB2_zones"] = np.array(zone_order, dtype=object)
+for bb in bbars:
+    for field in ("psi", "rho"):
+        sdata[f"panelB2_{bb}_{field}_zone_share"] = np.array(
+            [oodstat[bb]["zones"][z][field]["share_of_sq_error"] for z in zone_order])
+sdata["panelB2_exclusive_categories"] = np.array(list(excl.keys()), dtype=object)
+sdata["panelB2_exclusive_share_rho"] = np.array(
+    [v["share_sq_rho"] for v in excl.values()])
 sdata["panelD_n_train"] = ns
 for key, lab, col, mk, ls in curves:
     sdata[f"panelD_{key}_mean"] = np.array([ssum[str(int(n))][key]["mean"] for n in ns])

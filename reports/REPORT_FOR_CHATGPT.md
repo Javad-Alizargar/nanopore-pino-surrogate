@@ -36,7 +36,47 @@ charge-constraint schemes, validated the Fisher/Jacobian analysis against exact
 SG/FV finite differences, swept the physics weight, renumbered all references,
 tables and equations by first appearance with in-text callouts, added an
 Algorithm block and dependency pinning, and released **v1.2.0** after a
-**28/28 audit**.
+**28/28 audit**. **Stage 12** reframed the paper around conductance
+identifiability, decomposed the out-of-distribution error spatially and
+parametrically, validated the near-wall selectivity observable against exact
+SG/FV, stress-tested positivity, repaired the bibliography and table ordering,
+and released **v1.3.0** after a **30/30 audit**.
+
+## Stage 12 deliverables (identifiability reframing)
+
+1. **Diagnostics (12.1).** `scripts/run_stage12_diagnostics.py` produces the
+   spatial OOD budget (DeepONet psi/rho shares: core 51.3/52.4%, wall EDL
+   38.8/39.1%, transitions 9.9/8.4%; per-unit wall psi 2.40%, transitions rho
+   40.0%), the mutually exclusive parametric budget (combined charge+low-salt
+   94.2/93.6%, charge-only 5.5/6.2%, narrow R 0.2/0.2%, high V 0.0/0.0%), the
+   45-case selectivity validation (median absolute S error **1.18e-4**, 1.9%
+   relative; wall c+ 2.2e-4 and c- 3.4e-4; field c± <=0.20%), and the
+   positivity stress test (linear projection identity 1.19e-7 in float32 vs
+   hyperbolic 1.11e-16; Softplus bias ln2/20 = 0.0347 with 22.5% clipped grid
+   points). Tables S18--S19 and `results/stage12_diagnostics.json`.
+2. **Figures (12.2).** Figure 3D legend leak fixed without a literal `_child`
+   string; Figure 4 Panel B split and new Panel B2 (OOD budget by zone). Layout
+   verifier **0 issues**.
+3. **Manuscript (12.3).** New title **"Conductance identifiability limits and
+   physics-constrained neural operators for axisymmetric Poisson--Nernst--Planck
+   transport in charged nanopores"**; 230-word abstract led by the inverse
+   problem; inverse/identifiability background plus three use cases in §1;
+   §3.2 compressed and strengthened with the selectivity validation; §3.3 frames
+   sum/difference decoupling as the driver and chooses hyperbolic on structural
+   grounds (no Softplus clipping bias); §3.4 adds the OOD budget; §5 ends on the
+   negative identifiability result and the charge-sensitive-observable
+   recommendation.
+4. **Bibliography/formatting (12.4).** Refs 33 and 57 repaired (Krishnapriyan
+   et al. 2021; Zhang, Xiao, Ghosh 2025, 9(1) 45--64) in both the database and
+   the manuscript; DOCX references render `[1]--[60]` with hanging indent;
+   supplement S7c reordered **S16--S19**; enforcement range updated to 1..19.
+5. **Release (12.5).** Audit extended to **30 checks — 30/30 PASS** (new:
+   DOCX bibliography format; table first-seen order plus no stray legend
+   children). DOCX rebuilt (main 0 tables / 6 inline figures / 287 native
+   equations; supplement 20 table grids / 0 images / 354 native equations);
+   packages rebuilt (public **159 files / 31.1 MB**, private **841 files /
+   89.8 MB**); cover letters retitled (20 October 2026); portal redeployed;
+   both repositories tagged **v1.3.0** (`results/stage12_release.json`).
 
 ## Stage 10 deliverables (pre-submission upgrades)
 
@@ -220,18 +260,19 @@ metadata-only references have no online abstract and are recorded as
 
 ```
 Public repository   : https://github.com/Javad-Alizargar/nanopore-pino-surrogate            (visibility: public)
-  main / tag v1.2.0: see results/stage11_release.json (authoritative)
+  main / tag v1.3.0: e97497f861bd8a71f0cf5c660fa871939531c64a (authoritative: results/stage12_release.json)
+  tag v1.2.0      : 30ba2f841253ce45c264606af719cb64ba6b13ea
   tag v1.0.2      : 0105f96a0863db8f426ac07c6e08851a6403b3cb
-  tag v1.0.1      : (see results/stage8_deployment.json)
   tag v1.0.0      : af5695f50b073a331a60e46ac7a327c610e9ae9e
-  files / size    : 145 files, 30.2 MB (30,241,019 B)
+  files / size    : 159 files, 31.1 MB (31,103,168 B)
 
 Private repository  : https://github.com/Javad-Alizargar/nanopore-pino-surrogate-private    (visibility: private)
-  main / tag v1.2.0: see results/stage11_release.json (authoritative)
-  files / size    : 822 files, 88.5 MB
+  main / tag v1.3.0: 7801333be258d18bfe877efe028bb46cff2613e3 (authoritative: results/stage12_release.json)
+  tag v1.2.0      : 39c0a3d57dd11be40c15d282a6249df8f271b04b
+  files / size    : 841 files, 89.8 MB (89,767,694 B)
 
 (Each package embeds a build timestamp in its manifest, so a rebuild advances the
-commit SHA; the exact released SHAs are always recorded in results/stage11_release.json.)
+commit SHA; the exact released SHAs are always recorded in results/stage12_release.json.)
 ```
 
 Hosted portal (primary) and GitHub Pages (mirror):
@@ -293,12 +334,15 @@ Inverse demo       : R median rel. err 0.004574 ; q_w not identifiable (median a
 
 ## Audit
 
-`scripts/audit_release_packages.py` → **28/28 PASS** (zero secret hits). The
-four Stage-11 checks are: references numbered strictly by first appearance
+`scripts/audit_release_packages.py` → **30/30 PASS** (zero secret hits). The
+two new Stage-12 checks are: the DOCX bibliography is numbered `[1]--[60]`
+with authors and years; and supplement tables are first seen in strict order
+1..19 with no stray `_child` legend handles in figure scripts or PNG metadata.
+The Stage-11 checks remain: references numbered strictly by first appearance
 1--60; supplement tables and equations strictly sequential; figures inline
 within 1--2 paragraphs of first mention in both Markdown and DOCX XML; and the
 Stage-11 artifacts/statistics present. Earlier checks cover the figure-only
-main text (order 1→6, 18 supplement tables cited), the claim-evidence map
+main text (order 1→6, 19 supplement tables cited), the claim-evidence map
 (C01--C38 and L01--L60, all supported), native OMML equations and the
 DOCX/PDF structure. The audit must be run **before** package deploy (the
 deploy step creates a `.git` directory in each package tree). Full checklist in

@@ -23669,5 +23669,409 @@
         "dlnI_dlnR_rel_agreement": 0.0010434301033219145
       }
     ]
+  },
+  "ood_mechanistic_breakdown": {
+    "n_ood_states": 48,
+    "zones_definition": {
+      "reservoir_corners": "z in [0,0.10] U [0.90,1.0]",
+      "wall_edl": "r >= 0.80 and 0.10 < z < 0.90",
+      "core": "r < 0.80 and 0.10 < z < 0.90"
+    },
+    "backbones": {
+      "deeponet": {
+        "zones": {
+          "reservoir_corners": {
+            "psi": {
+              "share_of_sq_error": 0.09877443691652771,
+              "zone_rel_l2": 0.011428118693017486
+            },
+            "rho": {
+              "share_of_sq_error": 0.08431519188232141,
+              "zone_rel_l2": 0.4004046123093326
+            }
+          },
+          "wall_edl": {
+            "psi": {
+              "share_of_sq_error": 0.3879067767810207,
+              "zone_rel_l2": 0.023962006246164836
+            },
+            "rho": {
+              "share_of_sq_error": 0.3914819100059464,
+              "zone_rel_l2": 0.33589936217722033
+            }
+          },
+          "core": {
+            "psi": {
+              "share_of_sq_error": 0.5133187863024515,
+              "zone_rel_l2": 0.022493441222746182
+            },
+            "rho": {
+              "share_of_sq_error": 0.5242028981117322,
+              "zone_rel_l2": 0.38327748174532855
+            }
+          }
+        },
+        "psi_rel_l2_global": 0.02021773381711512,
+        "rho_rel_l2_global": 0.36360004539004603,
+        "I_rel_l2_global": 0.0012111718416597343,
+        "cross_section_psi_cancel_ratio": 0.012751445185610305,
+        "parametric_axis_specific": {
+          "combined_charge_salt": {
+            "n_states": 25,
+            "mean_rel_l2_psi": 0.038841060323210566,
+            "mean_rel_l2_rho": 0.37211348483042805,
+            "mean_rel_l2_I": 0.012324385310608737
+          },
+          "charge_only": {
+            "n_states": 9,
+            "mean_rel_l2_psi": 0.008161765524940856,
+            "mean_rel_l2_rho": 0.3038552986957885,
+            "mean_rel_l2_I": 0.00098298943366178
+          },
+          "salt_only": {
+            "n_states": 1,
+            "mean_rel_l2_psi": 0.0009418227760176267,
+            "mean_rel_l2_rho": 0.0591216736617127,
+            "mean_rel_l2_I": 0.001494626447891051
+          },
+          "narrow_radius": {
+            "n_states": 17,
+            "mean_rel_l2_psi": 0.04079482194487767,
+            "mean_rel_l2_rho": 0.414256137690031,
+            "mean_rel_l2_I": 0.0043320333982170755
+          },
+          "high_voltage": {
+            "n_states": 12,
+            "mean_rel_l2_psi": 0.0008641185203649752,
+            "mean_rel_l2_rho": 0.11404520248052523,
+            "mean_rel_l2_I": 0.0008544833441400198
+          }
+        },
+        "parametric_exclusive": {
+          "combined_charge_salt": {
+            "n_states": 25,
+            "share_sq_psi": 0.9423106691809557,
+            "share_sq_rho": 0.9363315575604184
+          },
+          "charge_only": {
+            "n_states": 9,
+            "share_sq_psi": 0.055044133872966375,
+            "share_sq_rho": 0.06207963991775182
+          },
+          "salt_only": {
+            "n_states": 1,
+            "share_sq_psi": 0.00010001190528769664,
+            "share_sq_rho": 7.922775188068751e-06
+          },
+          "narrow_radius": {
+            "n_states": 7,
+            "share_sq_psi": 0.002253470122998647,
+            "share_sq_rho": 0.0015261097128775423
+          },
+          "high_voltage": {
+            "n_states": 6,
+            "share_sq_psi": 0.00029171491779134606,
+            "share_sq_rho": 5.477003376439715e-05
+          }
+        }
+      },
+      "fno": {
+        "zones": {
+          "reservoir_corners": {
+            "psi": {
+              "share_of_sq_error": 0.1397262102301321,
+              "zone_rel_l2": 0.008872896934707362
+            },
+            "rho": {
+              "share_of_sq_error": 0.15480434995919057,
+              "zone_rel_l2": 0.27070434155138307
+            }
+          },
+          "wall_edl": {
+            "psi": {
+              "share_of_sq_error": 0.3801840259948687,
+              "zone_rel_l2": 0.015485686473133874
+            },
+            "rho": {
+              "share_of_sq_error": 0.3819187070363966,
+              "zone_rel_l2": 0.1655374578322552
+            }
+          },
+          "core": {
+            "psi": {
+              "share_of_sq_error": 0.4800897637749992,
+              "zone_rel_l2": 0.01420030204076384
+            },
+            "rho": {
+              "share_of_sq_error": 0.4632769430044128,
+              "zone_rel_l2": 0.17978002003567678
+            }
+          }
+        },
+        "psi_rel_l2_global": 0.013197950959489096,
+        "rho_rel_l2_global": 0.18141843432802165,
+        "I_rel_l2_global": 0.0023400102153657413,
+        "cross_section_psi_cancel_ratio": 0.012812680034759123,
+        "parametric_axis_specific": {
+          "combined_charge_salt": {
+            "n_states": 25,
+            "mean_rel_l2_psi": 0.025372563159785887,
+            "mean_rel_l2_rho": 0.18502213408673077,
+            "mean_rel_l2_I": 0.00840739738386611
+          },
+          "charge_only": {
+            "n_states": 9,
+            "mean_rel_l2_psi": 0.0039367135975470185,
+            "mean_rel_l2_rho": 0.1567431230839575,
+            "mean_rel_l2_I": 0.0019331623504169695
+          },
+          "salt_only": {
+            "n_states": 1,
+            "mean_rel_l2_psi": 0.0005967761837195238,
+            "mean_rel_l2_rho": 0.09812135825263732,
+            "mean_rel_l2_I": 0.0005953456279681608
+          },
+          "narrow_radius": {
+            "n_states": 17,
+            "mean_rel_l2_psi": 0.026117360850535225,
+            "mean_rel_l2_rho": 0.2042264072370975,
+            "mean_rel_l2_I": 0.011226542557741474
+          },
+          "high_voltage": {
+            "n_states": 12,
+            "mean_rel_l2_psi": 0.0014690994619304119,
+            "mean_rel_l2_rho": 0.10871467419385014,
+            "mean_rel_l2_I": 0.0019513106086645785
+          }
+        },
+        "parametric_exclusive": {
+          "combined_charge_salt": {
+            "n_states": 25,
+            "share_sq_psi": 0.9436100695330176,
+            "share_sq_rho": 0.929846464289846
+          },
+          "charge_only": {
+            "n_states": 9,
+            "share_sq_psi": 0.030051239052693045,
+            "share_sq_rho": 0.06635560007033994
+          },
+          "salt_only": {
+            "n_states": 1,
+            "share_sq_psi": 9.422978874190233e-05,
+            "share_sq_rho": 8.7658901511013e-05
+          },
+          "narrow_radius": {
+            "n_states": 7,
+            "share_sq_psi": 0.020734672766161536,
+            "share_sq_rho": 0.00364982225257231
+          },
+          "high_voltage": {
+            "n_states": 6,
+            "share_sq_psi": 0.005509788859385956,
+            "share_sq_rho": 6.045448573090918e-05
+          }
+        }
+      }
+    },
+    "wall_s": 0.145249875029549
+  },
+  "inversion_selectivity_validation": {
+    "n_states": 15,
+    "n_salts": 3,
+    "n_rows": 45,
+    "wall_s": 0.04417166602797806,
+    "median_S_rel_err": 0.0189835270148628,
+    "median_S_abs_err": 0.00011834454997353833,
+    "max_S_abs_err": 0.009740191105503386,
+    "max_S_rel_err": 0.39954796599791886,
+    "median_c_plus_wall_rel_err": 0.00021828374336103657,
+    "max_c_plus_wall_rel_err": 0.008883612012784427,
+    "median_c_minus_wall_rel_err": 0.0003373413064806585,
+    "max_c_minus_wall_rel_err": 0.01066424008267817,
+    "median_dS_dlnq_rel_err": 0.03011260673985961,
+    "median_I_rel_err": 0.00024671840865118406,
+    "max_field_rel_l2_c_plus": 0.0019870125534296183,
+    "max_field_rel_l2_c_minus": 0.001833585936939406,
+    "field_validation": [
+      {
+        "state_index": 186,
+        "field": "c_plus",
+        "rel_l2": 0.00037463955515183565
+      },
+      {
+        "state_index": 186,
+        "field": "c_minus",
+        "rel_l2": 0.00036711041121729803
+      },
+      {
+        "state_index": 172,
+        "field": "c_plus",
+        "rel_l2": 0.00033704428291950965
+      },
+      {
+        "state_index": 172,
+        "field": "c_minus",
+        "rel_l2": 0.00031523793835795265
+      },
+      {
+        "state_index": 147,
+        "field": "c_plus",
+        "rel_l2": 0.0003225844911456218
+      },
+      {
+        "state_index": 147,
+        "field": "c_minus",
+        "rel_l2": 0.0003404561606202074
+      },
+      {
+        "state_index": 151,
+        "field": "c_plus",
+        "rel_l2": 0.00019423413220753447
+      },
+      {
+        "state_index": 151,
+        "field": "c_minus",
+        "rel_l2": 0.000190138285939408
+      },
+      {
+        "state_index": 146,
+        "field": "c_plus",
+        "rel_l2": 0.0005058071191532366
+      },
+      {
+        "state_index": 146,
+        "field": "c_minus",
+        "rel_l2": 0.000464327170943122
+      },
+      {
+        "state_index": 170,
+        "field": "c_plus",
+        "rel_l2": 0.00032097772683662844
+      },
+      {
+        "state_index": 170,
+        "field": "c_minus",
+        "rel_l2": 0.00032142947173948827
+      },
+      {
+        "state_index": 161,
+        "field": "c_plus",
+        "rel_l2": 0.0003324063048201458
+      },
+      {
+        "state_index": 161,
+        "field": "c_minus",
+        "rel_l2": 0.0003312340305375725
+      },
+      {
+        "state_index": 155,
+        "field": "c_plus",
+        "rel_l2": 0.0003602824762405961
+      },
+      {
+        "state_index": 155,
+        "field": "c_minus",
+        "rel_l2": 0.0003865907751315366
+      },
+      {
+        "state_index": 173,
+        "field": "c_plus",
+        "rel_l2": 0.0003717381278179023
+      },
+      {
+        "state_index": 173,
+        "field": "c_minus",
+        "rel_l2": 0.0003854726897846117
+      },
+      {
+        "state_index": 183,
+        "field": "c_plus",
+        "rel_l2": 0.0002657938432636554
+      },
+      {
+        "state_index": 183,
+        "field": "c_minus",
+        "rel_l2": 0.0003081761272686766
+      },
+      {
+        "state_index": 152,
+        "field": "c_plus",
+        "rel_l2": 0.00027988682899280514
+      },
+      {
+        "state_index": 152,
+        "field": "c_minus",
+        "rel_l2": 0.0003662962135870388
+      },
+      {
+        "state_index": 176,
+        "field": "c_plus",
+        "rel_l2": 0.00024627326783927315
+      },
+      {
+        "state_index": 176,
+        "field": "c_minus",
+        "rel_l2": 0.00025484763212668633
+      },
+      {
+        "state_index": 166,
+        "field": "c_plus",
+        "rel_l2": 0.0004338575692923584
+      },
+      {
+        "state_index": 166,
+        "field": "c_minus",
+        "rel_l2": 0.0005602870807949432
+      },
+      {
+        "state_index": 154,
+        "field": "c_plus",
+        "rel_l2": 0.0014614532443032052
+      },
+      {
+        "state_index": 154,
+        "field": "c_minus",
+        "rel_l2": 0.0010814517807658888
+      },
+      {
+        "state_index": 190,
+        "field": "c_plus",
+        "rel_l2": 0.0019870125534296183
+      },
+      {
+        "state_index": 190,
+        "field": "c_minus",
+        "rel_l2": 0.001833585936939406
+      }
+    ]
+  },
+  "positivity_stress_test": {
+    "train_time_s": 29.003793540992774,
+    "wall_s": 0.02907349995803088,
+    "linear_projection": {
+      "min_c_minus": 0.9065965414047241,
+      "n_points": 61488,
+      "n_negative_raw": 0,
+      "fraction_negative_raw": 0.0,
+      "max_abs_identity_mismatch": 1.1920928955078125e-07,
+      "median_abs_identity_mismatch": 3.725290298461914e-08,
+      "max_softplus_bias": 8.940696716308594e-08,
+      "analytic_softplus_bias_at_zero": 0.03465735902799726,
+      "max_curvature_d2c_drho2": 5.0
+    },
+    "hyperbolic": {
+      "min_c_minus": 0.911853862139347,
+      "min_c_plus_times_c_minus": 0.9999246611480428,
+      "max_abs_identity_mismatch": 1.1102230246251565e-16,
+      "median_abs_identity_mismatch": 0.0,
+      "max_curvature_d2c_drho2": 0.2500072817519523,
+      "identity_mismatch_float64": 1.1102230246251565e-16
+    },
+    "analytic_grid": {
+      "fraction_raw_negative": 0.22489550036882222,
+      "max_softplus_bias": 0.03465735902799723,
+      "max_identity_mismatch": 1.350000000000092,
+      "n_grid": 162680
+    }
   }
 }

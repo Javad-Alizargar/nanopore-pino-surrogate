@@ -1,8 +1,8 @@
 # STATUS
 
 Project: `nanopore_pino_surrogate`
-Updated: 2026-10-20 (Stage 11 — four-way constraint benchmark, exact SG/FV Fisher validation, physics-weight sweep; first-appearance renumbering; Figures 3/6 updated; 28/28 audit; v1.2.0 release)
-Completion state: **COMPLETE** (all Stage 1–11 deliverables produced; review is AI-assisted, not expert peer review; DOCX page-rendered via LibreOffice and validated structurally; Zenodo DOI deferred to acceptance)
+Updated: 2026-10-20 (Stage 12 — conductance-identifiability reframing, OOD spatial/parametric decomposition, selectivity validation, positivity stress test; Figures 3D/4 updated; 30/30 audit; v1.3.0 release)
+Completion state: **COMPLETE** (all Stage 1–12 deliverables produced; review is AI-assisted, not expert peer review; DOCX page-rendered via LibreOffice and validated structurally; Zenodo DOI deferred to acceptance)
 
 ## Phase
 Stage 1 — Preflight, Capability & Accounting Bootstrap, Project Brief. **Done.**
@@ -18,6 +18,7 @@ Stage 8 — Literature verification + claim map, figure-only main text, refreshe
 Stage 9 — Native editable-equation DOCX, inline figures, number/symbol hygiene, hosted 3-tab portal at `pino.statwhy.com`, journal suitability assessment, 24/24 audit, v1.0.2 release. **Done.**
 Stage 10 — Trunk ablation, 384-state data-scaling law, Fisher/multi-protocol identifiability; Figures 3/4/6 and Supplement S14–S15 added; manuscript/cover-letter reframed; 24/24 audit; v1.1.0 release. **Done.**
 Stage 11 — Four-way constraint benchmark, exact SG/FV Fisher/Jacobian validation, physics-weight sweep; strict first-appearance reference and 18-table renumbering; equation callouts; Figures 3/6 updated; 28/28 audit; v1.2.0 release. **Done.**
+Stage 12 — Conductance-identifiability reframing (title/abstract/intro/§3.2/§3.3/§3.4/§3.7/§5), mechanistic OOD decomposition, selectivity validation, positivity stress test, bibliography repair, 19-table renumbering; Figures 3D/4 updated; **30/30** audit; v1.3.0 release. **Done.**
 
 ## Progress (Stage 10)
 - [x] **10.1 three experiments** — `scripts/run_stage10_upgrades.py` (with per-experiment caching `results/_stage10_cache_*`). (A) **Trunk ablation** (6 variants, matched capacity, 500 epochs, 3 seeds): the plain MLP trunk gives the best interp net-charge error (0.0914) while radial variants (0.098–0.116) reduce the wall-gradient error by ~7% (radial k=30: 4.83e-3 vs 5.20e-3) and give the best current error (multi-scale 0.274%). (B) **Scaling law** on a new 384-state solve expansion: interp net-charge error 0.3927→0.1299 for N=36→288, fitting alpha=0.552 (psi 0.535); OOD net-charge error is nearly flat (0.317→0.253, alpha=0.13). (C) **Identifiability** (15 states, 3 protocols, 0.2/1/2% noise, 30x30 grid + Nelder–Mead; 18x18 Fisher sweep): single/multi-salt I–V leave q_w unidentifiable (median err 0.77–1.00) while recovering R to <0.7%; the dual I–V+selectivity protocol recovers both below 0.3%. Fisher: kappa(F) median 7.46e8 (99.7% > 1e8), dlnI/dlnR=2.029, |dlnI/dlnq_w| <= 1.6e-3.
@@ -32,6 +33,13 @@ Stage 11 — Four-way constraint benchmark, exact SG/FV Fisher/Jacobian validati
 - [x] **11.3 narrative** — CPC/CPiP framing and DA-PINN context in §3.2; experimental feasibility of the selectivity readout (V_rev/transference, ICR, plasmonic/fluorescence) in the Discussion; §3.10 compressed to one paragraph (UI details moved to Supplement S8); Algorithm 1 plus pinned runtime/dependency versions added to Supplement S2; cover letters gain contribution 7.
 - [x] **11.4 release** — audit extended to **28 checks** and passes **28/28**; DOCX rebuilt (main: 0 tables, 6 inline figures, 266 native equations; supplement: 19 table grids, 0 images, 331 native equations); cover letters regenerated; packages rebuilt (public **152 files / 30.6 MB**, private **834 files / 89.2 MB**); portal scope block updated and redeployed; both repos tagged **v1.2.0** (`results/stage11_release.json`); project-root commit made.
 
+## Progress (Stage 12)
+- [x] **12.1 diagnostics** — `scripts/run_stage12_diagnostics.py` (cached in `results/_stage12_selectivity_cache.json`). OOD spatial shares: DeepONet ψ core 51.3% / wall EDL 38.8% / transitions 9.9%; per-unit wall ψ 2.40%, transitions ρ 40.0%. Parametric exclusive: combined charge+low-salt 94.2% ψ / 93.6% ρ; charge-only 5.5/6.2; narrow R 0.2/0.2; high V 0.0/0.0. Selectivity: 15 states × 3 salts, median absolute S error **1.18e-4** (1.9% relative), wall c± 2.2e-4/3.4e-4 median, field c± ≤0.20%. Positivity: linear projection identity 1.19e-7 (float32), hyperbolic 1.11e-16; analytic Softplus bias ln2/20 = 0.0347 with 22.5% clipped points.
+- [x] **12.2 figures** — Figure 3D legend `_child1` leak removed (`label="_nolegend_"` + filtered handles); Figure 4 Panel B split and a new Panel B2 stacked OOD budget by zone. `verify_figure_layout.py` reports **0 issues**; no `_child` string in scripts or PNG metadata.
+- [x] **12.3 manuscript reframing** — new title; abstract 230 words with the inverse-problem first sentence; highlights revised; Introduction gains inverse/identifiability background and three use cases; §3.2 compressed to one comparison paragraph plus selectivity validation; §3.3 states the decoupling mechanism is the driver and justifies hyperbolic on structural grounds; §3.4 adds the spatial/parametric OOD budget; §3.7 tightened; §5 replaces the positive-result ending with the identifiability limit and the charge-sensitive-observable recommendation.
+- [x] **12.4 bibliography/formatting** — refs 33 (Krishnapriyan et al.) and 57 (Zhang, Xiao, Ghosh 2025, 9(1) 45–64) repaired in `literature_db.json` and the manuscript; DOCX References now render `[1]--[60]` with hanging indent (no Word list numbering); supplement S7c reordered S16–S19 and crosswalk extended; enforcement range updated to 1..19.
+- [x] **12.5 release** — audit extended to **30 checks** (bibliography format; table first-seen order + no stray legend children) and passes **30/30**; DOCX rebuilt (main: 0 tables, 6 inline figures, 287 native equations; supplement: 20 table grids, 0 images, 354 native equations); cover letters retitled/updated; packages rebuilt (public **159 files / 31.1 MB**, private **841 files / 89.8 MB**); portal redeployed (`/api/solve_sg` 196.137225 pA); both repos tagged **v1.3.0** (`results/stage12_release.json`).
+
 ## Stage 11 key results
 ```
 Constraint schemes (interp rho) : reparam 0.2066 ; linear proj 0.2008 ; soft 0.4114 ; direct 0.9334
@@ -40,8 +48,22 @@ Physics weight                  : lambda=1e-3 Pareto (rho 0.2125, wall 5.55e-3, 
 SG/FV vs operator dlnI/dlnR     : 2.00003 vs 1.99997 ; median rel. diff 1.5e-4
 Fisher conditioning (single/multi/dual, exact vs op): 4.9e15/8.2e8 ; 8.7e9/4.5e7 ; 1.8e5/1.8e5
 Numbering                       : refs 1..60 first-appearance ; tables S1..S18 ; Eqs (1)-(8)/(S1)-(S10)
-Audit                           : 28/28 PASS (zero secret hits)
-Public repo                     : Javad-Alizargar/nanopore-pino-surrogate ; tag v1.2.0 ; 152 files, 30.6 MB
+Audit                           : 30/30 PASS (zero secret hits)
+Public repo                     : Javad-Alizargar/nanopore-pino-surrogate ; tag v1.3.0 ; 159 files, 31.1 MB
+```
+
+## Stage 12 key results
+```
+OOD spatial (DeepONet, share psi/rho) : core 51.3/52.4% ; wall EDL 38.8/39.1% ; transitions 9.9/8.4%
+OOD per-unit rel-L2                   : psi wall 2.40% ; rho transitions 40.0% ; I global 0.12% (DN) / 0.23% (FNO)
+OOD parametric (exclusive)            : combined 94.2/93.6% ; charge-only 5.5/6.2% ; narrow R 0.2/0.2% ; high V 0.0/0.0%
+Selectivity validation (45 cases)     : median |S| err 1.18e-4 (1.9%) ; wall c+ 2.2e-4 ; c- 3.4e-4 ; max field 0.20%
+Positivity stress                     : linear 1.19e-7 (float32) ; hyperbolic 1.11e-16 ; Softplus bias 0.0347 (22.5% grid)
+Numbering                              : refs 1..60 ; tables S1..S19 ; supp S7c reordered S16-S19
+Audit                                  : 30/30 PASS (zero secret hits)
+Public repo                            : Javad-Alizargar/nanopore-pino-surrogate ; tag v1.3.0 ; 159 files, 31.1 MB
+Private repo                           : Javad-Alizargar/nanopore-pino-surrogate-private ; tag v1.3.0 ; 841 files, 89.8 MB
+Portal                                 : https://pino.statwhy.com/ ; live API 196.137225 pA
 ```
 
 ## Stage 10 key results

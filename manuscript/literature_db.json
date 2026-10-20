@@ -1047,9 +1047,15 @@
   },
   {
    "title": "Characterizing possible failure modes in physics-informed neural networks",
-   "authors": [],
+   "authors": [
+    "Krishnapriyan, Aditi S.",
+    "Gholami, Amir",
+    "Zhe, Shandian",
+    "Kirby, Robert M.",
+    "Mahoney, Michael W."
+   ],
    "year": 2021,
-   "journal": "arXiv (Cornell University)",
+   "journal": "Advances in Neural Information Processing Systems",
    "doi": "10.48550/arxiv.2109.01050",
    "pmid": null,
    "url": "https://doi.org/10.48550/arxiv.2109.01050",
@@ -1069,7 +1075,9 @@
    },
    "retrieval_date": "2026-10-18",
    "raw_citation": "A. S. Krishnapriyan, A. Gholami, S. Zhe, R. M. Kirby, M. W. Mahoney, Characterizing possible failure modes in physics-informed neural networks, Advances in Neural Information Processing Systems 34 (2021) 26548-26560..",
-   "id": "ref0026"
+   "id": "ref0026",
+   "volume": "34",
+   "pages": "26548--26560"
   },
   {
    "title": "Exact imposition of boundary conditions with distance functions in physics-informed deep neural networks",
@@ -1780,8 +1788,12 @@
   },
   {
    "title": "Physics-informed fourier neural operators: A machine learning method for parametric partial differential equations",
-   "authors": [],
-   "year": 2024,
+   "authors": [
+    "Zhang, Tao",
+    "Xiao, Hui",
+    "Ghosh, Debdulal"
+   ],
+   "year": 2025,
    "journal": "Journal of Nonlinear and Variational Analysis",
    "doi": "10.23952/jnva.9.2025.1.04",
    "pmid": null,
@@ -1802,7 +1814,10 @@
     "title_match": true
    },
    "retrieval_date": "2026-10-18",
-   "id": "ref0036"
+   "id": "ref0036",
+   "volume": "9",
+   "issue": "1",
+   "pages": "45--64"
   },
   {
    "title": "Physics-Informed Neural Operator for Learning Partial Differential Equations",

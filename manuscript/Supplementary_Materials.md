@@ -381,20 +381,9 @@ The expanded dataset used for the scaling study appends 144 new in-distribution 
 
 ---
 
-## S7c. Stage-11 reviewer-upgrade experiments
+## S7c. Reviewer-upgrade experiments (Stages 11--12)
 
-This section documents the three Stage-11 studies. All values are produced by `scripts/run_stage11_reviewer_upgrades.py` and archived in `results/stage11_upgrades.json` and the matching `results/tables/` CSV files.
-
-**Supplementary Table S18.** Exact SG/FV versus neural-operator Fisher and Jacobian validation. Centered finite differences of the float64 Scharfetter--Gummel solver at relative step $10^{-3}$ are compared with the operator Jacobian over 15 held-out states and three protocols (four non-zero biases; salts 10, 30, and 100 mol $m^{-3}$ for the multi-salt and dual protocols). $\kappa(\mathcal{F})$ is the condition number of $\mathcal{F}=J^\top J$ with $J=\partial(\ln|I|,S)/\partial(\ln R,\ln|q_w|)$.
-
-| Quantity | Exact SG/FV | Neural operator |
-|---|---|---|
-| median $\partial\ln I/\partial\ln R$ | 2.00003 | 1.99997 |
-| median relative difference in $\partial\ln I/\partial\ln R$ | $1.5\times10^{-4}$ | -- |
-| median $\vert\partial\ln I/\partial\ln q_w\vert$ | $2.1\times10^{-5}$ | $1.2\times10^{-4}$ |
-| median $\kappa(\mathcal{F})$, single-salt | $4.9\times10^{15}$ | $8.2\times10^{8}$ |
-| median $\kappa(\mathcal{F})$, multi-salt | $8.7\times10^{9}$ | $4.5\times10^{7}$ |
-| median $\kappa(\mathcal{F})$, dual | $1.8\times10^{5}$ | $1.8\times10^{5}$ |
+This section documents the three Stage-11 studies and the Stage-12 OOD decomposition. All values are produced by `scripts/run_stage11_reviewer_upgrades.py` and archived in `results/stage11_upgrades.json` and the matching `results/tables/` CSV files.
 
 **Supplementary Table S16.** Four-way constraint-scheme benchmark on the identical PI-DeepONet backbone (250 epochs, seeds 42/43/44). Errors are three-seed means on the interpolation-test split; consistency mismatch is $\overline{|\rho-\rho_\mathrm{latent}|}$.
 
@@ -415,7 +404,39 @@ This section documents the three Stage-11 studies. All values are produced by `s
 | $10^{-2}$ | 0.2866 | 0.0041 | 0.0058 | $7.90\times10^{-3}$ | 0.188 | 0.028 |
 | $10^{-1}$ | 0.3056 | 0.0046 | 0.0063 | $8.13\times10^{-3}$ | 0.064 | 0.014 |
 
+**Supplementary Table S18.** Out-of-distribution error decomposition (48 OOD states; `deeponet_reparam` and `fno_reparam`, seed 42). Spatial rows partition the $21\times61$ domain into the reservoir transitions ($z\in[0,0.10]\cup[0.90,1.0]$), the charged-wall EDL ($r\ge0.80$, $0.10<z<0.90$) and the pore core ($r<0.80$, $0.10<z<0.90$); their squared-error shares sum to 100\% for each field. Parametric rows use mutually exclusive labels with priority combined $>$ charge $>$ salt $>$ narrow $R$ $>$ high $V$. Relative errors are global area-weighted $L_2$ ratios; $I$ is the axial current.
+
+| Backbone | Decomposition | Category | $n$ | $\psi$ share (\%) | $\rho$ share (\%) | $\psi$ rel. $L_2$ | $\rho$ rel. $L_2$ | $I$ rel. $L_2$ |
+|---|---|---|---|---|---|---|---|---|
+| deeponet | spatial | reservoir transitions | 48 | 9.9 | 8.4 | 0.0114 | 0.4 | 0.00121 |
+| deeponet | spatial | wall EDL | 48 | 38.8 | 39.1 | 0.024 | 0.336 | 0.00121 |
+| deeponet | spatial | pore core | 48 | 51.3 | 52.4 | 0.0225 | 0.383 | 0.00121 |
+| deeponet | parametric | combined charge + low salt | 25 | 94.2 | 93.6 | 0.0388 | 0.372 | 0.0123 |
+| deeponet | parametric | charge only | 9 | 5.5 | 6.2 | 0.00816 | 0.304 | 0.000983 |
+| deeponet | parametric | low salt only | 1 | 0.0 | 0.0 | 0.000942 | 0.0591 | 0.00149 |
+| deeponet | parametric | narrow radius | 7 | 0.2 | 0.2 | 0.0042 | 0.115 | 0.00433 |
+| deeponet | parametric | high voltage | 6 | 0.0 | 0.0 | 0.000622 | 0.0687 | 0.000854 |
+| fno | spatial | reservoir transitions | 48 | 14.0 | 15.5 | 0.00887 | 0.271 | 0.00234 |
+| fno | spatial | wall EDL | 48 | 38.0 | 38.2 | 0.0155 | 0.166 | 0.00234 |
+| fno | spatial | pore core | 48 | 48.0 | 46.3 | 0.0142 | 0.18 | 0.00234 |
+| fno | parametric | combined charge + low salt | 25 | 94.4 | 93.0 | 0.0254 | 0.185 | 0.00841 |
+| fno | parametric | charge only | 9 | 3.0 | 6.6 | 0.00394 | 0.157 | 0.00193 |
+| fno | parametric | low salt only | 1 | 0.0 | 0.0 | 0.000597 | 0.0981 | 0.000595 |
+| fno | parametric | narrow radius | 7 | 2.1 | 0.4 | 0.00831 | 0.0886 | 0.0112 |
+| fno | parametric | high voltage | 6 | 0.6 | 0.0 | 0.00176 | 0.036 | 0.00195 |
+
 ---
+
+**Supplementary Table S19.** Exact SG/FV versus neural-operator Fisher and Jacobian validation. Centered finite differences of the float64 Scharfetter--Gummel solver at relative step $10^{-3}$ are compared with the operator Jacobian over 15 held-out states and three protocols (four non-zero biases; salts 10, 30, and 100 mol $m^{-3}$ for the multi-salt and dual protocols). $\kappa(\mathcal{F})$ is the condition number of $\mathcal{F}=J^\top J$ with $J=\partial(\ln|I|,S)/\partial(\ln R,\ln|q_w|)$.
+
+| Quantity | Exact SG/FV | Neural operator |
+|---|---|---|
+| median $\partial\ln I/\partial\ln R$ | 2.00003 | 1.99997 |
+| median relative difference in $\partial\ln I/\partial\ln R$ | $1.5\times10^{-4}$ | -- |
+| median $\vert\partial\ln I/\partial\ln q_w\vert$ | $2.1\times10^{-5}$ | $1.2\times10^{-4}$ |
+| median $\kappa(\mathcal{F})$, single-salt | $4.9\times10^{15}$ | $8.2\times10^{8}$ |
+| median $\kappa(\mathcal{F})$, multi-salt | $8.7\times10^{9}$ | $4.5\times10^{7}$ |
+| median $\kappa(\mathcal{F})$, dual | $1.8\times10^{5}$ | $1.8\times10^{5}$ |
 
 ## S8. Deployment and parity
 
@@ -506,7 +527,8 @@ The exact command-line defaults for the training suite are seeds 42 43 44, 110 F
 | Supplementary Table S15 | Multi-protocol inverse identifiability | `results/tables/table_s15_fisher_identifiability_protocols.csv` |
 | Supplementary Table S16 | Four-way constraint-scheme benchmark | `results/tables/table_constraint_schemes_4way.csv` |
 | Supplementary Table S17 | Physics-weight sensitivity sweep | `results/tables/table_physics_weight_sensitivity.csv` |
-| Supplementary Table S18 | Exact SG/FV versus operator Fisher/Jacobian validation | `results/tables/table_sgfv_fisher_validation.csv` |
+| Supplementary Table S18 | Out-of-distribution error decomposition | `results/tables/table_ood_mechanistic_breakdown.csv` |
+| Supplementary Table S19 | Exact SG/FV versus operator Fisher/Jacobian validation | `results/tables/table_sgfv_fisher_validation.csv` |
 | Claim map | Claim-to-evidence audit (C01--C38, L01--L60) | `manuscript/claim_evidence.csv` |
 | Statistics | Canonical JSON values | `results/statistics.json` |
 | Inverse demo | Full inverse JSON | `results/inverse_recovery_demo.json` |

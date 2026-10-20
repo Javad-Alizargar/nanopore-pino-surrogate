@@ -272,10 +272,43 @@ def docx_checks() -> dict:
             "raw_dollar": "$" in xml,
             "latex_commands": latex_cmds,
             "equation_or_latex_leak": ("$" in xml) or latex_cmds or ("$$" in txt),
-            "refs_60": sum(1 for t in txt.splitlines() if re.match(r"^\d+\.\s", t)) >= 60
+            "refs_60": sum(1 for t in txt.splitlines()
+                           if re.match(r"^(?:\[\d+\]|\d+\.)\s", t)) >= 60
             or txt.count("Kasianowicz") >= 1,
         }
     return out
+
+
+def bibliography_checks() -> dict:
+    from docx import Document
+
+    path = ROOT / "manuscript" / "Manuscript_PINO_clean.docx"
+    if not path.exists():
+        return {"ok": False, "count": 0, "bad": []}
+    paras = [p.text.strip() for p in Document(path).paragraphs]
+    idx = paras.index("References")
+    bib = [p for p in paras[idx + 1:] if re.match(r"^\[\d+\]\s", p)]
+    nums = [int(re.match(r"^\[(\d+)\]", p).group(1)) for p in bib]
+    bad = [p for p in bib if re.match(r"^\[\d+\]\s+\(\d{4}\)", p)
+           or len(p) < 25 or not re.search(r"\(\d{4}\)", p)]
+    return {"ok": nums == list(range(1, 61)) and not bad,
+            "count": len(bib), "bad": [p[:80] for p in bad][:5]}
+
+
+def stray_figure_checks() -> dict:
+    from PIL import Image
+
+    hits = []
+    for path in sorted((ROOT / "scripts" / "figures").glob("*.py")):
+        if "_child" in path.read_text():
+            hits.append(path.name)
+    meta = []
+    for path in sorted((ROOT / "manuscript" / "figures").glob("*.png")):
+        with Image.open(path) as im:
+            for k, v in (im.info or {}).items():
+                if "_child" in str(v):
+                    meta.append(f"{path.name}:{k}")
+    return {"child_refs": hits, "png_meta": meta}
 
 
 def main() -> None:
@@ -289,6 +322,8 @@ def main() -> None:
     docx = docx_checks()
     seq = sequential_checks()
     s11 = stage11_checks()
+    bib = bibliography_checks()
+    stray = stray_figure_checks()
     summary = json.loads((ROOT / "reproducibility" / "PACKAGE_SUMMARY.json").read_text())
 
     def ok(cond: bool) -> str:
@@ -326,21 +361,26 @@ def main() -> None:
             and docx["Supplementary_Materials_PINO.docx"]["media"] == 0)),
         ("Public package has no private logs/download/literature", ok(not any((PUB / p).exists() for p in ("logs", "download", "literature", "apis", ".git")))),
         ("Private package contains manuscript and reports", ok((PRIV / "manuscript/Manuscript.md").exists() and (PRIV / "reports/STATUS.md").exists())),
-        ("Six figures cited sequentially; no main-text data tables; 18 supplement tables cited",
+        ("Six figures cited sequentially; no main-text data tables; 19 supplement tables cited",
          ok(display["figure_order"] == [1, 2, 3, 4, 5, 6] and display["body_tables"] == 0
-            and display["supp_tables"] == 18 and not display["uncited_supp_tables"])),
+            and display["supp_tables"] == 19 and not display["uncited_supp_tables"])),
         ("Claim-evidence map spans C01--C38 and L01--L60, all supported",
          ok(claims["quant_complete"] and claims["lit_complete"] and claims["all_supported"])),
         ("References are numbered strictly by first appearance 1..60",
          ok(seq["ref_order"] == list(range(1, 61)))),
         ("Supplementary tables and equations are strictly sequential",
-         ok(seq["tab_order"] == list(range(1, 19))
+         ok(seq["tab_order"] == list(range(1, 20))
             and seq["eq_main"]["strict_sequential"] and seq["eq_supp"]["strict_sequential"])),
         ("Figures are placed inline within 1-2 paragraphs of the first mention (Markdown + DOCX)",
          ok(all(v["image_after_mention"] and v["caption_after_image"] for v in seq["figs"].values())
             and seq["figs_docx"].get("all_inline", False))),
         ("Stage-11 reviewer upgrades present (tables, JSON, statistics, script)",
          ok(s11["tables"] and all(s11["json_keys"].values()) and s11["statistics_keys"] and s11["script"])),
+        ("DOCX bibliography is numbered [1]--[60] with authors and years",
+         ok(bib["ok"])),
+        ("Supplementary tables first-seen 1..19; no stray legend children in figures",
+         ok(seq["tab_order"] == list(range(1, 20))
+            and not stray["child_refs"] and not stray["png_meta"])),
     ]
 
     lines = [
