@@ -218,7 +218,7 @@ The twenty display tables are collected here in strict order S1 through S20, mat
 | benchmark | $\psi$ rel. $L_2$ | 0.003298 | 0.001743 |
 | benchmark | $I$ rel. $L_2$ | 0.00634 | 0.003669 |
 
-**Supplementary Table S14.** Out-of-distribution error decomposition (48 OOD states; `deeponet_reparam` and `fno_reparam`, seed 42). Spatial rows partition the $21\times61$ domain into the reservoir transitions ($z\in[0,0.10]\cup[0.90,1.0]$), the charged-wall EDL ($r\ge0.80$, $0.10<z<0.90$) and the pore core ($r<0.80$, $0.10<z<0.90$); their squared-error shares sum to 100\% for each field. Parametric rows use mutually exclusive labels with priority combined $>$ charge $>$ salt $>$ narrow $R$ $>$ high $V$. Relative errors are global area-weighted $L_2$ ratios; $I$ is the axial current.
+**Supplementary Table S14.** Out-of-distribution error decomposition (48 OOD states; `deeponet_reparam` and `fno_reparam`, seed 42). Spatial rows partition the $21\times61$ domain into the reservoir transitions ($z\in[0,0.10]\cup[0.90,1.0]$), the charged-wall EDL ($r\ge0.80$, $0.10<z<0.90$) and the pore core ($r<0.80$, $0.10<z<0.90$); their squared-error shares sum to 100\% for each field. Parametric rows use mutually exclusive labels with priority combined $>$ charge $>$ salt $>$ narrow $R$ $>$ high $V$. Relative errors are global area-weighted $L_2$ ratios; $I$ is the axial current. For the three spatial rows, I rel. L2 reports the global axial current error across all 48 OOD states because axial current is cross-sectionally integrated rather than partitioned by spatial zone.
 
 | Backbone | Decomposition | Category | $n$ | $\psi$ share (\%) | $\rho$ share (\%) | $\psi$ rel. $L_2$ | $\rho$ rel. $L_2$ | $I$ rel. $L_2$ |
 |---|---|---|---|---|---|---|---|---|
@@ -277,7 +277,7 @@ The twenty display tables are collected here in strict order S1 through S20, mat
 | DeepONet break-even vs DA-PINN retrain | 0.2195 | states |
 | FNO break-even vs DA-PINN retrain | 0.3355 | states |
 
-**Supplementary Table S18.** Inverse recovery from five-bias noisy current--voltage curves (1% noise; 400 candidates, 2000 forward evaluations per state). Values are rounded for display; the exact values are in `results/tables/table6_inverse_parameter_recovery.csv`.
+**Supplementary Table S18.** Inverse recovery from five-bias noisy current--voltage curves (1% noise; 400 candidates, 2000 forward evaluations per state). Values are rounded for display; the exact values are in `results/tables/table6_inverse_parameter_recovery.csv`. For near-zero charge states such as state 175 (true q_w = −0.00206, recovered q_w = −0.09816), the absolute error is 0.0961 (slightly more than half of the 0.0982 prior width), which appears as a large relative error (46.69) because the denominator |q_w| is near zero.
 
 | State | $C_0$ (mol $m^{-3}$) | $R$ true (nm) | $R$ recovered (nm) | $R$ rel. error | $q_w$ true | $q_w$ recovered | $q_w$ rel. error |
 |---|---|---|---|---|---|---|---|

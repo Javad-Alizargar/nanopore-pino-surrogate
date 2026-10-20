@@ -144,13 +144,17 @@ def add_table(doc: Document, rows: list[list[str]], size: float = 8.5) -> None:
 
 
 def add_code_block(doc: Document, code_lines: list[str]) -> None:
-    p = doc.add_paragraph(style="No Spacing")
-    p.paragraph_format.left_indent = Inches(0.25)
-    p.paragraph_format.space_before = Pt(3)
-    p.paragraph_format.space_after = Pt(6)
-    run = p.add_run("\n".join(code_lines))
-    run.font.name = "Courier New"
-    run.font.size = Pt(8.5)
+    for index, code_line in enumerate(code_lines):
+        p = doc.add_paragraph(style="No Spacing")
+        p.paragraph_format.left_indent = Inches(0.25)
+        p.paragraph_format.space_before = Pt(3) if index == 0 else Pt(0)
+        p.paragraph_format.space_after = Pt(1)
+        p.paragraph_format.line_spacing = 1.0
+        run = p.add_run(code_line)
+        run.font.name = "Courier New"
+        run.font.size = Pt(8.5)
+    if code_lines:
+        doc.paragraphs[-1].paragraph_format.space_after = Pt(6)
 
 
 def add_figure(doc: Document, path: Path) -> None:

@@ -24,15 +24,15 @@ REPOS = {
         "dir": ROOT / "reproducibility" / "public_repo",
         "name": "Javad-Alizargar/nanopore-pino-surrogate",
         "private": False,
-        "message": "Public release v1.3.4: supplementary table compendium, Fisher notation, and DOCX integrity (Stage 16)",
-        "tag": "v1.3.4",
+        "message": "Public release v1.3.5: final DOCX code breaks, Section 1 prose, abstract range, and table notes (Stage 17)",
+        "tag": "v1.3.5",
     },
     "private": {
         "dir": ROOT / "reproducibility" / "github",
         "name": "Javad-Alizargar/nanopore-pino-surrogate-private",
         "private": True,
-        "message": "Complete private research archive v1.3.4 (Stage 1-16 verified)",
-        "tag": "v1.3.4",
+        "message": "Complete private research archive v1.3.5 (Stage 1-17 verified)",
+        "tag": "v1.3.5",
     },
 }
 
@@ -157,7 +157,7 @@ def main() -> None:
                                  "url": "https://javad-alizargar.github.io/nanopore-pino-surrogate/web_simulator/"}
             out[key]["portal"] = "https://pino.statwhy.com/"
     import json
-    (ROOT / "results" / "stage16_release.json").write_text(json.dumps(out, indent=2))
+    (ROOT / "results" / "stage17_release.json").write_text(json.dumps(out, indent=2))
     print(json.dumps(out, indent=2))
 
 

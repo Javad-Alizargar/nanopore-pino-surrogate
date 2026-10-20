@@ -1,10 +1,10 @@
-# REPORT FOR EXTERNAL REVIEW — Stage 16 final handoff
+# REPORT FOR EXTERNAL REVIEW — Stage 17 final handoff
 
 Project: `nanopore_pino_surrogate` — parameter-conditioned physics-informed
 neural operator for steady axisymmetric Poisson--Nernst--Planck (PNP)
 transport in a charged cylindrical nanopore.
 Root: `/Users/javadalizargar/Google drive MAC/PINN to a Neural Operator`
-Date: 2026-10-20. State: **COMPLETE** (Stage 1–16 done; stop point reached; archived at Zenodo DOI 10.5281/zenodo.23487404).
+Date: 2026-10-20. State: **COMPLETE** (Stage 1–17 done; stop point reached; archived at Zenodo DOI 10.5281/zenodo.23487404).
 
 Stage 8 and Stage 9 were executed on explicit authorization. The fine-grained
 token was used **in-memory only** (`GH_TOKEN` environment for `gh`; a transient
@@ -60,6 +60,49 @@ the `s`/`Σc`/`S` algebra and the Fisher precision, propagated the exact
 caption, added the asymmetric-valence boundary, preserved code underscores in
 the DOCX, and hardened Word tables with repeating headers and
 non-splitting rows; it released **v1.3.4** after a **35/35 audit**.
+**Stage 17** applied the final two-minute submission polish: fenced code blocks now emit one compact monospace paragraph per line (no concatenation), the Section-1 `[34–40]` and matching §2.3 prose were rewritten, the abstract condition-number range was aligned to “six to ten orders of magnitude” at 250 words, and S14/S18 received their clarifying captions; it released **v1.3.5** after a **35/35 audit**.
+
+## Stage 17 deliverables (final micro-polish, v1.3.5)
+
+1. **DOCX code line breaks.** `scripts/export_manuscript_docx.py` now emits
+   every fenced-code line as its own compact Courier New paragraph
+   (`space_after = Pt(1)`, zero inter-line concatenation). `Algorithm 1` in
+   §S2 and the `Reproducibility commands` block in §S9 were verified
+   line-by-line; underscores, `--`, and indentation are preserved.
+2. **Section 1 and §2.3 prose.** The Section-1 paragraph now reads smoothly
+   with the exact first-appearance sequence `34, 35, 36, 37, 38, 39, 40`
+   (benchmark PDEs, wave equations, airflow-field reconstruction, linear
+   free-surface waves, nonlinear consolidation, variational Dirichlet
+   benchmarks, microseismic source imaging), with XPINNs retained at `[41]`.
+   §2.3 now uses the matching grouped wording (`[34, 39]`, `[35, 37]`,
+   `[36]`, `[38]`, `[40]`).
+3. **Abstract and table captions.** The abstract now says the selectivity
+   observable “collapses the conditioning by six to ten orders of magnitude”
+   and remains exactly **250 words**. S14 now explains the global axial-current
+   error for the three spatial rows (48 OOD states, cross-sectional
+   integration), and S18 now explains state 175 (`q_w = −0.00206` recovered as
+   `−0.09816`; absolute error 0.0961, relative error 46.69).
+4. **Release (17.4).** Enforcement, typography, DOCX, covers, packages, and
+   audit were rerun; audit **35/35 PASS**; packages rebuilt (public
+   **165 files / 31,138,757 B**, private **852 files / 89,936,919 B**); portal
+   redeployed and verified (`/api/solve_sg` 196.137225 pA, HTTP 301→HTTPS);
+   both repositories force-pushed and tagged **v1.3.5**
+   (`results/stage17_release.json`).
+
+## Stage 17 key results
+```
+DOCX code           : one compact monospace paragraph per line; Algorithm 1 + S9 verified
+Section 1 [34-40]   : smooth seven-item sequence; duplicate "wave" removed
+Section 2.3         : grouped 34/39, 35/37, 36, 38, 40 wording aligned
+Abstract            : "six to ten orders of magnitude"; 250 words
+S14                 : spatial-row global axial-current note
+S18                 : state-175 near-zero-charge absolute/relative note
+Audit               : 35/35 PASS
+Public repo         : tag v1.3.5, 165 files, 31,138,757 B
+Private repo        : tag v1.3.5, 852 files, 89,936,919 B
+Portal              : https://pino.statwhy.com/ ; live API 196.137225 pA ; HTTP 301 -> HTTPS
+Zenodo              : https://doi.org/10.5281/zenodo.23487404
+```
 
 ## Stage 16 deliverables (supplement compendium, Fisher precision, DOCX integrity)
 
@@ -397,7 +440,8 @@ metadata-only references have no online abstract and are recorded as
 
 ```
 Public repository   : https://github.com/Javad-Alizargar/nanopore-pino-surrogate            (visibility: public)
-  main / tag v1.3.4: b872255c1982a4d9842ffac1eab4237882cbc580 (authoritative: results/stage16_release.json)
+  main / tag v1.3.5: fe23fe204ce54f6cdd0e6362913f2694ef107b7f (authoritative: results/stage17_release.json)
+  tag v1.3.4      : b872255c1982a4d9842ffac1eab4237882cbc580
   tag v1.3.3      : de9e3d01890ffc2effc3c3c04487cb92fe265d73
   tag v1.3.2      : e4ca7330fd2aa477f76ed01998469df526c8507a
   tag v1.3.1      : b2b832192200339f542a6a25e204450ce8fda2dc
@@ -408,23 +452,24 @@ Public repository   : https://github.com/Javad-Alizargar/nanopore-pino-surrogate
   files / size    : 165 files, 31.1 MB (31,138,757 B)
 
 Private repository  : https://github.com/Javad-Alizargar/nanopore-pino-surrogate-private    (visibility: private)
-  main / tag v1.3.4: 5631a61caf454e36b1656c17b56354869cc60699 (authoritative: results/stage16_release.json)
+  main / tag v1.3.5: 4c0408fc00bdafd582b499ed41eb594b4559efae (authoritative: results/stage17_release.json)
+  tag v1.3.4      : 5631a61caf454e36b1656c17b56354869cc60699
   tag v1.3.3      : 36cc073e54b5e589ccf9800d47662bfec3301ebf
   tag v1.3.2      : 3b5d61a62a036b836bf701122a296721b9b0ab6f
   tag v1.3.1      : 518d51875bf8169e53b5f79325e71979423ad6c7
   tag v1.3.0      : 7801333be258d18bfe877efe028bb46cff2613e3
   tag v1.2.0      : 39c0a3d57dd11be40c15d282a6249df8f271b04b
-  files / size    : 851 files, 89.9 MB (89,928,079 B)
+  files / size    : 852 files, 89.9 MB (89,936,919 B)
 
 (Each package embeds a build timestamp in its manifest, so a rebuild advances the
-commit SHA; the exact released SHAs are always recorded in results/stage16_release.json.)
+commit SHA; the exact released SHAs are always recorded in results/stage17_release.json.)
 ```
 
 Hosted portal (primary) and GitHub Pages (mirror):
 ```
 Portal      : https://pino.statwhy.com/            (Operator / Benchmarks / Live solver; live SG/FV API)
 Health      : https://pino.statwhy.com/api/health  ; POST /api/solve_sg -> 196.137225 pA
-TLS         : Let's Encrypt, expires 2027-01-16 ; HTTP->HTTPS redirect active
+TLS         : Let's Encrypt, expires 2027-01-17 ; HTTP->HTTPS redirect active
 Mirror      : https://javad-alizargar.github.io/nanopore-pino-surrogate/web_simulator/
 ```
 
@@ -436,7 +481,7 @@ manuscript/Supplementary_Materials_PINO.docx        (21 table grids, native OMML
 manuscript/Cover_Letter_CPC.docx / Cover_Letter_JCP.docx / Cover_Letter_CPC_JCP.docx  (no LaTeX leakage)
 manuscript/Cover_Letter_CPC.md / Cover_Letter_JCP.md / Cover_Letter_CPC_JCP.md
 manuscript/Manuscript.md, manuscript/Supplementary_Materials.md       (canonical sources)
-manuscript/claim_evidence.csv                        (C01-C33 + L01-L60, 10 columns, all supported)
+manuscript/claim_evidence.csv                        (C01-C38 + L01-L60, 10 columns, all supported)
 manuscript/literature_db.json                        (60 references)
 literature/cache/verified_abstracts_60.json          (API metadata/abstract cache)
 reports/JOURNAL_SUITABILITY_ASSESSMENT.md            (CPC/JCP venue assessment)
@@ -461,6 +506,7 @@ Other Stage 8 work       : $0.00 (editing, DOCX, packages, audit, deploy are loc
 Stage 9 work             : $0.00 (typography, OMML export, portal, hosted deploy, assessment, release are all local/API-free)
 Stage 11 work            : $0.00 (experiments, numbering, DOCX, audit, portal and release are all local/API-free)
 Stage 16 work            : $0.00 (supplement reorder, algebra/Fisher edits, DOCX hardening, audit, and release are all local/API-free)
+Stage 17 work            : $0.00 (DOCX line breaks, prose/caption polish, audit, and release are all local/API-free)
 ```
 
 ## Verified scientific results (unchanged, canonical)
@@ -480,7 +526,7 @@ Inverse demo       : R median rel. err 0.004574 ; q_w not identifiable (median a
 
 ## Audit
 
-`scripts/audit_release_packages.py` → **33/33 PASS** (zero secret hits). The
+`scripts/audit_release_packages.py` → **35/35 PASS** (zero secret hits). The
 Stage-13/14 checks keep the DOCX bibliography `[1]--[60]`, enforce individual
 supplement-table first mentions in strict order 1..20 with no stray `_child`
 legend handles, and verify the official Zenodo DOI in the manuscript, main
