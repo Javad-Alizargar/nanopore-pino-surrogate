@@ -1,10 +1,10 @@
-# REPORT FOR EXTERNAL REVIEW — Stage 11 final handoff
+# REPORT FOR EXTERNAL REVIEW — Stage 13 final handoff
 
 Project: `nanopore_pino_surrogate` — parameter-conditioned physics-informed
 neural operator for steady axisymmetric Poisson--Nernst--Planck (PNP)
 transport in a charged cylindrical nanopore.
 Root: `/Users/javadalizargar/Google drive MAC/PINN to a Neural Operator`
-Date: 2026-10-20. State: **COMPLETE** (Stage 1–11 done; stop point reached).
+Date: 2026-10-20. State: **COMPLETE** (Stage 1–13 done; stop point reached; archived at Zenodo DOI 10.5281/zenodo.23487404).
 
 Stage 8 and Stage 9 were executed on explicit authorization. The fine-grained
 token was used **in-memory only** (`GH_TOKEN` environment for `gh`; a transient
@@ -40,7 +40,41 @@ Algorithm block and dependency pinning, and released **v1.2.0** after a
 identifiability, decomposed the out-of-distribution error spatially and
 parametrically, validated the near-wall selectivity observable against exact
 SG/FV, stress-tested positivity, repaired the bibliography and table ordering,
-and released **v1.3.0** after a **30/30 audit**.
+and released **v1.3.0** after a **30/30 audit**. **Stage 13** integrated the
+official Zenodo DOI, added an exact-SG diffusivity-asymmetry proof (S20) that
+bounds the claim beyond KCl, compressed the DA-PINN/architecture narrative,
+expanded §3.9 into a protocol-design and boundary section, fixed the Figure 1C
+typo, and enforced individual table citations S1–S20. It released **v1.3.1**
+after a **31/31 audit**.
+
+## Stage 13 deliverables (final CPiP polish)
+
+1. **Zenodo DOI.** `10.5281/zenodo.23487404` is in the CPC Program Summary,
+   data-availability statement, supplement header, all three cover letters, the
+   main DOCX, and the public README/BibTeX. Check 31 verifies all four required
+   artifacts.
+2. **Diffusivity proof.** `scripts/run_diffusivity_symmetry_check.py` runs the
+   exact float64 SG/FV solver at four ratios (1.0, 0.966, 0.655, 0.20) and two
+   salinities in 32.5 s. Even D+/D-=0.20 leaves single-salt kappa at 5.9e15
+   (C0=100) / 3.6e12 (C0=20), while the dual observable gives 4.0e6 / 6.3e5.
+   The analytic channel is sigma=(F^2/RT)[Dbar(c+ + c-) + (D+ - D-)rho/2].
+3. **Narrative compression.** §3.2 is now field + selectivity validation with
+   the DA-PINN comparison reduced to one sentence (Table S10); §3.3 states the
+   four-way decoupling and the structural preference for the hyperbolic map;
+   §3.4 gives the measured accuracy and cost budget in three paragraphs; §3.5
+   and §3.6 are tightened. §3.9 now runs inverse demonstration → analytic
+   near-null channel → Fisher → diffusivity → protocol-design workflow/portal →
+   explicit boundary statement. The abstract (247 words) and Conclusion carry
+   the same boundary.
+4. **Figures and ordering.** Figure 1C now reads `s→2, rho→0 at z in {0,1}`;
+   layout verifier **0 issues**. Individual table first citations are strict
+   `S1..S20` (S19 Fisher, S20 diffusivity), with no catch-all ranges.
+5. **Release (13.5).** Audit extended to **31 checks — 31/31 PASS**. DOCX
+   rebuilt (main 0 tables / 6 figures / 332 OMML / 8 numbered equations;
+   supplement 21 table grids / 368 OMML / 0 images); packages rebuilt (public
+   **161 files / 31.0 MB**, private **844 files / 89.8 MB**); portal redeployed
+   (`/api/solve_sg` 196.137225 pA); both repositories tagged **v1.3.1**
+   (`results/stage13_release.json`).
 
 ## Stage 12 deliverables (identifiability reframing)
 
@@ -260,19 +294,21 @@ metadata-only references have no online abstract and are recorded as
 
 ```
 Public repository   : https://github.com/Javad-Alizargar/nanopore-pino-surrogate            (visibility: public)
-  main / tag v1.3.0: e97497f861bd8a71f0cf5c660fa871939531c64a (authoritative: results/stage12_release.json)
+  main / tag v1.3.1: b2b832192200339f542a6a25e204450ce8fda2dc (authoritative: results/stage13_release.json)
+  tag v1.3.0      : e97497f861bd8a71f0cf5c660fa871939531c64a
   tag v1.2.0      : 30ba2f841253ce45c264606af719cb64ba6b13ea
   tag v1.0.2      : 0105f96a0863db8f426ac07c6e08851a6403b3cb
   tag v1.0.0      : af5695f50b073a331a60e46ac7a327c610e9ae9e
-  files / size    : 159 files, 31.1 MB (31,103,168 B)
+  files / size    : 161 files, 31.0 MB (31,003,753 B)
 
 Private repository  : https://github.com/Javad-Alizargar/nanopore-pino-surrogate-private    (visibility: private)
-  main / tag v1.3.0: 7801333be258d18bfe877efe028bb46cff2613e3 (authoritative: results/stage12_release.json)
+  main / tag v1.3.1: 518d51875bf8169e53b5f79325e71979423ad6c7 (authoritative: results/stage13_release.json)
+  tag v1.3.0      : 7801333be258d18bfe877efe028bb46cff2613e3
   tag v1.2.0      : 39c0a3d57dd11be40c15d282a6249df8f271b04b
-  files / size    : 841 files, 89.8 MB (89,767,694 B)
+  files / size    : 844 files, 89.8 MB (89,764,542 B)
 
 (Each package embeds a build timestamp in its manifest, so a rebuild advances the
-commit SHA; the exact released SHAs are always recorded in results/stage12_release.json.)
+commit SHA; the exact released SHAs are always recorded in results/stage13_release.json.)
 ```
 
 Hosted portal (primary) and GitHub Pages (mirror):
@@ -334,10 +370,11 @@ Inverse demo       : R median rel. err 0.004574 ; q_w not identifiable (median a
 
 ## Audit
 
-`scripts/audit_release_packages.py` → **30/30 PASS** (zero secret hits). The
-two new Stage-12 checks are: the DOCX bibliography is numbered `[1]--[60]`
-with authors and years; and supplement tables are first seen in strict order
-1..19 with no stray `_child` legend handles in figure scripts or PNG metadata.
+`scripts/audit_release_packages.py` → **31/31 PASS** (zero secret hits). The
+Stage-13 checks keep the DOCX bibliography `[1]--[60]`, enforce individual
+supplement-table first mentions in strict order 1..20 with no stray `_child`
+legend handles, and verify the official Zenodo DOI in the manuscript, main
+DOCX, CPC cover letter, and public README.
 The Stage-11 checks remain: references numbered strictly by first appearance
 1--60; supplement tables and equations strictly sequential; figures inline
 within 1--2 paragraphs of first mention in both Markdown and DOCX XML; and the
@@ -353,7 +390,7 @@ deploy step creates a `.git` directory in each package tree). Full checklist in
 - The independent review was **AI-assisted** (two providers), not expert peer review.
 - The DOCX uses native OMML and was additionally page-rendered with LibreOffice for visual confirmation; a Word-specific page proof was not available here.
 - `q_w` identifiability is a physical limit of conductance-only inversion (disclosed in the manuscript).
-- A permanent **Zenodo DOI** has not been minted; deposit is deferred to acceptance (no fake DOI was inserted).
+- The archived release is permanently available at Zenodo DOI `10.5281/zenodo.23487404`, verified in the manuscript, main DOCX, CPC cover letter, and public README.
 - Literature claim support rests on retrieved abstracts plus adjudication; 12 references are metadata-only (no online abstract) and are flagged as such in the artifact.
 - The package builder regenerates each package tree, so both histories were force-pushed for each release (`v1.0.1`, `v1.0.2`); the public tags `v1.0.0`, `v1.0.1`, `v1.0.2` are stable.
 - The hosted portal runs on a shared third-party host (`statwhy.com`); uptime and certificate renewal are Let's Encrypt/certbot-managed and outside this repository's control.

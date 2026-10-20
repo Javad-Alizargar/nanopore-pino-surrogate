@@ -1,3 +1,6 @@
+## D-083 · 2026-10-20 · Stage 13: Zenodo DOI, diffusivity proof, CPiP polish; v1.3.1
+Official archive DOI `10.5281/zenodo.23487404` inserted in the manuscript, supplement, cover letters, main DOCX, and public README. Added `scripts/run_diffusivity_symmetry_check.py` (exact float64 SG/FV, four diffusivity ratios at two salinities, 32.5 s) with `table_diffusivity_symmetry_breaking.csv` and a new Supplementary Table S20/§S7d; the analytic decomposition shows equal diffusivities leave only an O(ρ²) charge term while a finite D₊−D₋ adds a linear term. Reframed §3.2–3.6, expanded §3.9 into inverse → analytic → Fisher → diffusivity → protocol-design → boundary, added the boundary statement to abstract/conclusion, fixed the Figure 1C typo, and enforced individual first citations S1–S20 (S20 = diffusivity; S19 = Fisher). Audit extended to **31 checks** (Check 31 verifies the DOI in four artifacts) and passes **31/31**. Packages: public **161 files / 31,003,753 B**, private **844 files / 89,764,542 B**; both repositories force-pushed and tagged **v1.3.1** (public `b2b832192200…`, private `518d51875bf8…`); portal verified (`/api/solve_sg` 196.137225 pA). Record: `results/stage13_release.json`.
+
 # DECISIONS
 
 Scientific and implementation decisions, newest first. This is an append-only log.

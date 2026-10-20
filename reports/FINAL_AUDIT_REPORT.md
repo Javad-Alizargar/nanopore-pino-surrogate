@@ -1,10 +1,10 @@
 # Final audit report
 
-Generated: 2026-10-20T00:40:59Z
+Generated: 2026-10-20T02:14:07Z
 
 Audited packages:
-- Public: 159 files, 31.1 MB
-- Private: 841 files, 89.8 MB
+- Public: 161 files, 31.0 MB
+- Private: 844 files, 89.8 MB
 
 ## Checklist
 
@@ -32,30 +32,31 @@ Audited packages:
 | Supplementary DOCX: native OMML equations, no images | PASS |
 | Public package has no private logs/download/literature | PASS |
 | Private package contains manuscript and reports | PASS |
-| Six figures cited sequentially; no main-text data tables; 19 supplement tables cited | PASS |
+| Six figures cited sequentially; no main-text data tables; 20 supplement tables cited | PASS |
 | Claim-evidence map spans C01--C38 and L01--L60, all supported | PASS |
 | References are numbered strictly by first appearance 1..60 | PASS |
 | Supplementary tables and equations are strictly sequential | PASS |
 | Figures are placed inline within 1-2 paragraphs of the first mention (Markdown + DOCX) | PASS |
 | Stage-11 reviewer upgrades present (tables, JSON, statistics, script) | PASS |
 | DOCX bibliography is numbered [1]--[60] with authors and years | PASS |
-| Supplementary tables first-seen 1..19; no stray legend children in figures | PASS |
+| Supplementary tables first-seen 1..20; no stray legend children in figures | PASS |
+| Official Zenodo DOI present in manuscript, main DOCX, CPC letter, and public README | PASS |
 
 ## Details
 
 - Credential files inspected: 12 (values never printed).
 - Public package secret-value hits: []
 - Private package secret-value hits: []
-- Tracked/unignored files scanned: 200; hits: []
+- Tracked/unignored files scanned: 203; hits: []
 - Public secret-name hits: []
 - Private secret-name hits: []
-- Abstract: 230 words; highlights: 5 (max 84 chars).
+- Abstract: 247 words; highlights: 5 (max 84 chars).
 - References: 60, cited: 60, uncited: [], missing: [], with DOI: 60.
 - Claims: 98 (38 quantitative + 60 literature), statuses: ['supported'].
-- Display items: figure first-citation order [1, 2, 3, 4, 5, 6]; main-text data tables 0; supplement tables 19; uncited supplement tables [].
-- Sequential numbering: references [1, 2, 3, 4, 5]... (n=60); supplementary tables [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]; main equations [1, 2, 3, 4, 5, 6, 7, 8]; supplement equations [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].
+- Display items: figure first-citation order [1, 2, 3, 4, 5, 6]; main-text data tables 0; supplement tables 20; uncited supplement tables [].
+- Sequential numbering: references [1, 2, 3, 4, 5]... (n=60); supplementary tables [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]; main equations [1, 2, 3, 4, 5, 6, 7, 8]; supplement equations [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].
 - Stage-11 upgrades: {"tables": true, "json_keys": {"fisher_sgfv_validation": true, "constraint_schemes_benchmark": true, "physics_weight_sweep": true}, "statistics_keys": true, "script": true}.
-- DOCX: {"Manuscript_PINO_clean.docx": {"exists": true, "tables": 0, "omath": 287, "omathpara": 0, "media": 6, "equation_pngs": [], "n_drawings": 6, "figures_before_references": true, "raw_dollar": false, "latex_commands": false, "equation_or_latex_leak": false, "refs_60": true}, "Supplementary_Materials_PINO.docx": {"exists": true, "tables": 20, "omath": 354, "omathpara": 0, "media": 0, "equation_pngs": [], "n_drawings": 0, "figures_before_references": true, "raw_dollar": false, "latex_commands": false, "equation_or_latex_leak": false, "refs_60": false}}.
+- DOCX: {"Manuscript_PINO_clean.docx": {"exists": true, "tables": 0, "omath": 304, "omathpara": 0, "media": 6, "equation_pngs": [], "n_drawings": 6, "figures_before_references": true, "raw_dollar": false, "latex_commands": false, "equation_or_latex_leak": false, "refs_60": true}, "Supplementary_Materials_PINO.docx": {"exists": true, "tables": 21, "omath": 415, "omathpara": 0, "media": 0, "equation_pngs": [], "n_drawings": 0, "figures_before_references": true, "raw_dollar": false, "latex_commands": false, "equation_or_latex_leak": false, "refs_60": false}}.
 
 ## Scope and limitations
 
@@ -67,5 +68,5 @@ Audited packages:
 - The DOCX was built from the canonical markdown; rendered-page inspection
   is limited to structural checks (tables, embedded figures, equation images,
   and absence of LaTeX leakage).
-- No DOI is invented: the data-availability statement references the GitHub
-  repository and states that a Zenodo deposit will be created at acceptance.
+- The archived DOI is the official Zenodo record 10.5281/zenodo.23487404,
+  checked in the manuscript, main DOCX, CPC cover letter, and public README.

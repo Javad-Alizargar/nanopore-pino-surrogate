@@ -33,6 +33,7 @@ PUBLIC_FILES = [
     "scripts/run_stage10_upgrades.py",
     "scripts/run_stage11_reviewer_upgrades.py",
     "scripts/run_stage12_diagnostics.py",
+    "scripts/run_diffusivity_symmetry_check.py",
     "scripts/enforce_sequential_numbering_and_inline_figures.py",
     "scripts/verify_simulators.py",
     "scripts/verify_live_servers.py",
@@ -129,6 +130,7 @@ python scripts/run_inverse_recovery_demo.py     # five-state inverse demo
 python scripts/run_stage10_upgrades.py          # trunk ablation, scaling law, identifiability
 python scripts/run_stage11_reviewer_upgrades.py # 4-way constraints, physics sweep, exact Fisher
 python scripts/run_stage12_diagnostics.py       # OOD decomposition, selectivity, positivity
+python scripts/run_diffusivity_symmetry_check.py  # exact-SG diffusivity-asymmetry scan
 python scripts/serve_interactive.py             # live SG/FV + operator service
 python scripts/app_gradio.py                    # Gradio comparison app
 ```
@@ -148,9 +150,10 @@ cases, and a live SG/FV reference solver).
 | `scripts/run_stage10_upgrades.py` | trunk ablation, 384-state scaling law, Fisher/multi-protocol identifiability |
 | `scripts/run_stage11_reviewer_upgrades.py` | four-way constraint benchmark, physics-weight sweep, exact SG/FV Fisher validation |
 | `scripts/run_stage12_diagnostics.py` | OOD spatial/parametric decomposition, selectivity validation, positivity stress test |
+| `scripts/run_diffusivity_symmetry_check.py` | exact-SG/FV diffusivity-ratio scan and dual-observable conditioning |
 | `scripts/enforce_sequential_numbering_and_inline_figures.py` | first-appearance reference/table renumbering and inline-figure audit |
 | `scripts/figures/` | figure generation and layout verification |
-| `results/` | statistics, tables 1--6 and S3, S14--S19, verification JSONs, export models |
+| `results/` | statistics, tables 1--6 and S1--S20, verification JSONs, export models |
 | `data/processed/` | 240-state dataset and 384-state scaling expansion |
 | `web_simulator/` | static browser simulator (ONNX + JS SG engine) |
 | `tests/` | smoke and parity tests |
@@ -162,7 +165,21 @@ cases, and a live SG/FV reference solver).
   values; the manuscript reports 3--4 significant figures.
 - Fixed physical settings: $T=298.15$ K, $\\varepsilon_r=78.5$,
   $D_+=1.96\\times10^{-9}$, $D_-=2.03\\times10^{-9}$ m$^2$ s$^{-1}$, $L=30$ nm.
-- License: MIT. Archived copy to be deposited on Zenodo at acceptance.
+- License: MIT. Archived at Zenodo DOI
+  [10.5281/zenodo.23487404](https://doi.org/10.5281/zenodo.23487404).
+
+## Citation
+
+```bibtex
+@software{alizargar2026pino,
+  author  = {Alizargar, Javad},
+  title   = {PINO-Nanopore: parameter-conditioned physics-informed neural operator for axisymmetric Poisson--Nernst--Planck transport},
+  year    = {2026},
+  version = {v1.3.1},
+  doi     = {10.5281/zenodo.23487404},
+  url     = {https://doi.org/10.5281/zenodo.23487404}
+}
+```
 """
 
 ARCH_MAP = """# Architecture map
@@ -176,7 +193,8 @@ ARCH_MAP = """# Architecture map
 | Timing | `scripts/benchmark_sg_m1.py` | models, solver | `results/tables/table4_*.csv` | Figure 6A |
 | Stage-10 upgrades | `scripts/run_stage10_upgrades.py` | 240/384-state datasets, `scripts/operators/` | `results/stage10_upgrades.json`, `results/tables/table_s14_*.csv`, `table_s15_*.csv`, `data/processed/pnp_parametric_384.npz` | Figures 3E,F, 4D; Tables S3, S15 |
 | Stage-11 upgrades | `scripts/run_stage11_reviewer_upgrades.py` | 240-state dataset, ONNX operator, SG/FV solver | `results/stage11_upgrades.json`, `results/tables/table_sgfv_fisher_validation.csv`, `table_constraint_schemes_4way.csv`, `table_physics_weight_sensitivity.csv` | Figures 3A--D, 6C,D; Tables S16--S19 |
-| Stage-12 diagnostics | `scripts/run_stage12_diagnostics.py` | 240-state dataset, ONNX operator, SG/FV solver | `results/stage12_diagnostics.json`, `results/tables/table_ood_mechanistic_breakdown.csv`, `table_inversion_selectivity_validation.csv`, `table_positivity_stress_test.csv` | Figures 4B, 6C,D; Table S18 |
+| Stage-12 diagnostics | `scripts/run_stage12_diagnostics.py` | 240-state dataset, ONNX operator, SG/FV solver | `results/stage12_diagnostics.json`, `results/tables/table_ood_mechanistic_breakdown.csv`, `table_inversion_selectivity_validation.csv`, `table_positivity_stress_test.csv` | Figures 4B, 6C,D; Table S14 |
+| Stage-13 diffusivity scan | `scripts/run_diffusivity_symmetry_check.py` | 240-state dataset, exact SG/FV solver | `results/tables/table_diffusivity_symmetry_breaking.csv`, `results/statistics.json` (`diffusivity_symmetry_breaking`) | Table S20; Section 3.9 |
 | Figures | `scripts/figures/*.py` | `results/*` | `figures/*.png`, `pdf` | Figures 1--6 |
 | Deployment | `scripts/build_web_simulator.py`, `scripts/build_web_bundle.py` | ONNX models | `web_simulator/` | -- |
 | Live apps | `scripts/serve_interactive.py`, `scripts/app_gradio.py` | solver, models | HTTP/Gradio services | -- |

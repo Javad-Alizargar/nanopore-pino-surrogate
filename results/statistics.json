@@ -24073,5 +24073,155 @@
       "max_identity_mismatch": 1.350000000000092,
       "n_grid": 162680
     }
+  },
+  "diffusivity_symmetry_breaking": {
+    "formula": "sigma = (F^2/RT)[Dbar s + (D_+ - D_-) rho / 2], s = sqrt(4 c_+ c_- + rho^2) = 2 + rho^2/4 + O(rho^4)",
+    "state": {
+      "V_app_mV": 50.0,
+      "R_nm": 5.0,
+      "q_w": -0.01,
+      "salts": [
+        100.0,
+        20.0
+      ]
+    },
+    "ratios": [
+      1.0,
+      0.9655,
+      0.655,
+      0.2
+    ],
+    "rows": [
+      {
+        "C0": 100.0,
+        "D_plus_over_D_minus": 1.0,
+        "D_plus": 2.03e-09,
+        "D_minus": 2.03e-09,
+        "delta_over_sum": 0.0,
+        "linear_charge_fraction": 0.0,
+        "dlnI_dlnq_absmean": 7.871756579902467e-07,
+        "dlnI_dlnR_absmean": 1.9999993905521762,
+        "kappa_single": 1.6516604628818592e+17,
+        "kappa_dual": 4036496.915621774,
+        "kappa_reduction": 40918164869.38751,
+        "wall_s": 4.316890917019919,
+        "electrolyte": "ideal symmetric",
+        "state_label": "benchmark_C0100"
+      },
+      {
+        "C0": 100.0,
+        "D_plus_over_D_minus": 0.9655,
+        "D_plus": 1.959965e-09,
+        "D_minus": 2.03e-09,
+        "delta_over_sum": 0.017552785550750433,
+        "linear_charge_fraction": 8.776392775375217e-05,
+        "dlnI_dlnq_absmean": 1.1345793082817579e-05,
+        "dlnI_dlnR_absmean": 2.0000236565413942,
+        "kappa_single": 1.3336541650421285e+17,
+        "kappa_dual": 4036650.542416722,
+        "kappa_reduction": 33038633169.461246,
+        "wall_s": 4.308104458032176,
+        "electrolyte": "KCl",
+        "state_label": "benchmark_C0100"
+      },
+      {
+        "C0": 100.0,
+        "D_plus_over_D_minus": 0.655,
+        "D_plus": 1.3296499999999998e-09,
+        "D_minus": 2.03e-09,
+        "delta_over_sum": 0.20845921450151056,
+        "linear_charge_fraction": 0.0010422960725075528,
+        "dlnI_dlnq_absmean": 0.00014332459175037116,
+        "dlnI_dlnR_absmean": 2.000287614698837,
+        "kappa_single": 3.0159780449577052e+16,
+        "kappa_dual": 4038321.9253539545,
+        "kappa_reduction": 7468394300.172981,
+        "wall_s": 4.360972459078766,
+        "electrolyte": "NaCl",
+        "state_label": "benchmark_C0100"
+      },
+      {
+        "C0": 100.0,
+        "D_plus_over_D_minus": 0.2,
+        "D_plus": 4.06e-10,
+        "D_minus": 2.03e-09,
+        "delta_over_sum": 0.6666666666666667,
+        "linear_charge_fraction": 0.003333333333333334,
+        "dlnI_dlnq_absmean": 0.00046023804112227396,
+        "dlnI_dlnR_absmean": 2.000921442943615,
+        "kappa_single": 5910730192564246.0,
+        "kappa_dual": 4042337.395488718,
+        "kappa_reduction": 1462206049.1933875,
+        "wall_s": 4.987019374966621,
+        "electrolyte": "strongly asymmetric",
+        "state_label": "benchmark_C0100"
+      },
+      {
+        "C0": 20.0,
+        "D_plus_over_D_minus": 1.0,
+        "D_plus": 2.03e-09,
+        "D_minus": 2.03e-09,
+        "delta_over_sum": 0.0,
+        "linear_charge_fraction": 0.0,
+        "dlnI_dlnq_absmean": 1.0585521570405376e-05,
+        "dlnI_dlnR_absmean": 1.999981026306552,
+        "kappa_single": 241605862918327.94,
+        "kappa_dual": 630865.8858040766,
+        "kappa_reduction": 382975000.4795183,
+        "wall_s": 3.311610750039108,
+        "electrolyte": "ideal symmetric",
+        "state_label": "low_salt_C020"
+      },
+      {
+        "C0": 20.0,
+        "D_plus_over_D_minus": 0.9655,
+        "D_plus": 1.959965e-09,
+        "D_minus": 2.03e-09,
+        "delta_over_sum": 0.017552785550750433,
+        "linear_charge_fraction": 8.776392775375217e-05,
+        "dlnI_dlnq_absmean": 4.496984407076354e-05,
+        "dlnI_dlnR_absmean": 2.0000921373520275,
+        "kappa_single": 170870522411597.06,
+        "kappa_dual": 630983.9463442722,
+        "kappa_reduction": 270800110.52827656,
+        "wall_s": 3.1093310830183327,
+        "electrolyte": "KCl",
+        "state_label": "low_salt_C020"
+      },
+      {
+        "C0": 20.0,
+        "D_plus_over_D_minus": 0.655,
+        "D_plus": 1.3296499999999998e-09,
+        "D_minus": 2.03e-09,
+        "delta_over_sum": 0.20845921450151056,
+        "linear_charge_fraction": 0.0010422960725075528,
+        "dlnI_dlnq_absmean": 0.0006495962912023145,
+        "dlnI_dlnR_absmean": 2.0013013936651114,
+        "kappa_single": 22932572876152.062,
+        "kappa_dual": 632269.9047749955,
+        "kappa_reduction": 36270226.849264674,
+        "wall_s": 3.0260546249337494,
+        "electrolyte": "NaCl",
+        "state_label": "low_salt_C020"
+      },
+      {
+        "C0": 20.0,
+        "D_plus_over_D_minus": 0.2,
+        "D_plus": 4.06e-10,
+        "D_minus": 2.03e-09,
+        "delta_over_sum": 0.6666666666666667,
+        "linear_charge_fraction": 0.003333333333333334,
+        "dlnI_dlnq_absmean": 0.0021037888229824553,
+        "dlnI_dlnR_absmean": 2.0042097869691355,
+        "kappa_single": 3608705326308.2026,
+        "kappa_dual": 635370.797238455,
+        "kappa_reduction": 5679683.960913698,
+        "wall_s": 3.0704075830290094,
+        "electrolyte": "strongly asymmetric",
+        "state_label": "low_salt_C020"
+      }
+    ],
+    "n_sg_solves": 20,
+    "note": "Centered finite differences in ln|q_w| and ln R at relative step 1e-3; kappa is the condition number of F=J^T J with rows ln|I| at four non-zero biases (single) plus S at 50 mV (dual)."
   }
 }

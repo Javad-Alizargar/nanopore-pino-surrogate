@@ -24,15 +24,15 @@ REPOS = {
         "dir": ROOT / "reproducibility" / "public_repo",
         "name": "Javad-Alizargar/nanopore-pino-surrogate",
         "private": False,
-        "message": "Public release v1.3.0: conductance identifiability limits, OOD decomposition, selectivity validation (Stage 12)",
-        "tag": "v1.3.0",
+        "message": "Public release v1.3.1: Zenodo DOI, diffusivity-asymmetry proof, CPiP polish (Stage 13)",
+        "tag": "v1.3.1",
     },
     "private": {
         "dir": ROOT / "reproducibility" / "github",
         "name": "Javad-Alizargar/nanopore-pino-surrogate-private",
         "private": True,
-        "message": "Complete private research archive v1.3.0 (Stage 1-12 verified)",
-        "tag": "v1.3.0",
+        "message": "Complete private research archive v1.3.1 (Stage 1-13 verified)",
+        "tag": "v1.3.1",
     },
 }
 
@@ -157,7 +157,7 @@ def main() -> None:
                                  "url": "https://javad-alizargar.github.io/nanopore-pino-surrogate/web_simulator/"}
             out[key]["portal"] = "https://pino.statwhy.com/"
     import json
-    (ROOT / "results" / "stage12_release.json").write_text(json.dumps(out, indent=2))
+    (ROOT / "results" / "stage13_release.json").write_text(json.dumps(out, indent=2))
     print(json.dumps(out, indent=2))
 
 

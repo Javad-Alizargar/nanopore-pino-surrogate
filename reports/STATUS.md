@@ -1,8 +1,8 @@
 # STATUS
 
 Project: `nanopore_pino_surrogate`
-Updated: 2026-10-20 (Stage 12 — conductance-identifiability reframing, OOD spatial/parametric decomposition, selectivity validation, positivity stress test; Figures 3D/4 updated; 30/30 audit; v1.3.0 release)
-Completion state: **COMPLETE** (all Stage 1–12 deliverables produced; review is AI-assisted, not expert peer review; DOCX page-rendered via LibreOffice and validated structurally; Zenodo DOI deferred to acceptance)
+Updated: 2026-10-20 (Stage 13 — Zenodo DOI, diffusivity-asymmetry proof, CPiP/DA-PINN compression, §3.9 boundary statement, S1–S20 ordering; 31/31 audit; v1.3.1 release)
+Completion state: **COMPLETE** (all Stage 1–13 deliverables produced; review is AI-assisted, not expert peer review; DOCX page-rendered via LibreOffice and validated structurally; archived at Zenodo DOI 10.5281/zenodo.23487404)
 
 ## Phase
 Stage 1 — Preflight, Capability & Accounting Bootstrap, Project Brief. **Done.**
@@ -19,6 +19,7 @@ Stage 9 — Native editable-equation DOCX, inline figures, number/symbol hygiene
 Stage 10 — Trunk ablation, 384-state data-scaling law, Fisher/multi-protocol identifiability; Figures 3/4/6 and Supplement S14–S15 added; manuscript/cover-letter reframed; 24/24 audit; v1.1.0 release. **Done.**
 Stage 11 — Four-way constraint benchmark, exact SG/FV Fisher/Jacobian validation, physics-weight sweep; strict first-appearance reference and 18-table renumbering; equation callouts; Figures 3/6 updated; 28/28 audit; v1.2.0 release. **Done.**
 Stage 12 — Conductance-identifiability reframing (title/abstract/intro/§3.2/§3.3/§3.4/§3.7/§5), mechanistic OOD decomposition, selectivity validation, positivity stress test, bibliography repair, 19-table renumbering; Figures 3D/4 updated; **30/30** audit; v1.3.0 release. **Done.**
+Stage 13 — Official Zenodo DOI integrated; exact-SG diffusivity-asymmetry proof (new S20); CPiP positioning, DA-PINN compression, §3.3–3.6 streamlining and §3.9 protocol-design/boundary expansion; Figure 1C typo fix; strict S1–S20 first-citation order; **31/31** audit; v1.3.1 release. **Done.**
 
 ## Progress (Stage 10)
 - [x] **10.1 three experiments** — `scripts/run_stage10_upgrades.py` (with per-experiment caching `results/_stage10_cache_*`). (A) **Trunk ablation** (6 variants, matched capacity, 500 epochs, 3 seeds): the plain MLP trunk gives the best interp net-charge error (0.0914) while radial variants (0.098–0.116) reduce the wall-gradient error by ~7% (radial k=30: 4.83e-3 vs 5.20e-3) and give the best current error (multi-scale 0.274%). (B) **Scaling law** on a new 384-state solve expansion: interp net-charge error 0.3927→0.1299 for N=36→288, fitting alpha=0.552 (psi 0.535); OOD net-charge error is nearly flat (0.317→0.253, alpha=0.13). (C) **Identifiability** (15 states, 3 protocols, 0.2/1/2% noise, 30x30 grid + Nelder–Mead; 18x18 Fisher sweep): single/multi-salt I–V leave q_w unidentifiable (median err 0.77–1.00) while recovering R to <0.7%; the dual I–V+selectivity protocol recovers both below 0.3%. Fisher: kappa(F) median 7.46e8 (99.7% > 1e8), dlnI/dlnR=2.029, |dlnI/dlnq_w| <= 1.6e-3.
@@ -39,6 +40,21 @@ Stage 12 — Conductance-identifiability reframing (title/abstract/intro/§3.2/�
 - [x] **12.3 manuscript reframing** — new title; abstract 230 words with the inverse-problem first sentence; highlights revised; Introduction gains inverse/identifiability background and three use cases; §3.2 compressed to one comparison paragraph plus selectivity validation; §3.3 states the decoupling mechanism is the driver and justifies hyperbolic on structural grounds; §3.4 adds the spatial/parametric OOD budget; §3.7 tightened; §5 replaces the positive-result ending with the identifiability limit and the charge-sensitive-observable recommendation.
 - [x] **12.4 bibliography/formatting** — refs 33 (Krishnapriyan et al.) and 57 (Zhang, Xiao, Ghosh 2025, 9(1) 45–64) repaired in `literature_db.json` and the manuscript; DOCX References now render `[1]--[60]` with hanging indent (no Word list numbering); supplement S7c reordered S16–S19 and crosswalk extended; enforcement range updated to 1..19.
 - [x] **12.5 release** — audit extended to **30 checks** (bibliography format; table first-seen order + no stray legend children) and passes **30/30**; DOCX rebuilt (main: 0 tables, 6 inline figures, 287 native equations; supplement: 20 table grids, 0 images, 354 native equations); cover letters retitled/updated; packages rebuilt (public **159 files / 31.1 MB**, private **841 files / 89.8 MB**); portal redeployed (`/api/solve_sg` 196.137225 pA); both repos tagged **v1.3.0** (`results/stage12_release.json`).
+
+## Stage 13 key results
+```
+Diffusivity scan (exact SG/FV, 32.5 s) : D+/D- 1.0/0.966/0.655/0.20 at C0=100 and 20 mol m^-3
+Single-salt kappa                       : 1.65e17 / 1.33e17 / 3.02e16 / 5.91e15 (C0=100)
+Dual-observable kappa                   : 4.04e6 (C0=100) ; 6.31e5 (C0=20), every ratio
+Analytic channel                        : sigma=(F^2/RT)[Dbar(c+ + c-) + (D+ - D-)rho/2] ; linear term rel. |D+ - D-|/(D+ + D-)
+Ordering                                : refs 1..60 ; tables S1..S20 ; Eqs (1)-(8)/(S1)-(S10)
+DOCX                                    : main 0 tables, 6 figures, 332 OMML ; supplement 21 grids, 368 OMML
+Audit                                   : 31/31 PASS (zero secret hits)
+Public repo                             : Javad-Alizargar/nanopore-pino-surrogate ; tag v1.3.1 ; 161 files, 31.0 MB
+Private repo                            : Javad-Alizargar/nanopore-pino-surrogate-private ; tag v1.3.1 ; 844 files, 89.8 MB
+Portal                                  : https://pino.statwhy.com/ ; live API 196.137225 pA
+Zenodo                                  : https://doi.org/10.5281/zenodo.23487404
+```
 
 ## Stage 11 key results
 ```
@@ -154,7 +170,7 @@ Inverse demo       : R median rel error 0.004574 ; q_w not identifiable (median 
 - Independent review was **AI-assisted** (two providers), not expert peer review.
 - The DOCX is native OMML and was additionally page-rendered via LibreOffice for visual confirmation; a Word-specific proof was not available in this environment.
 - q_w identifiability is a physical limit of conductance-only inversion (confirmed by the Stage-10 Fisher analysis and single/multi-salt protocols); the manuscript shows an independent near-wall selectivity observable resolves it.
-- A permanent **Zenodo DOI** has not been minted; deposit is deferred to acceptance.
-- The package builder regenerates each package tree, so the archive history was force-pushed for each release (v1.0.0–v1.1.0); the public and private tags through `v1.1.0` are stable.
+- The archived release is permanently available at Zenodo DOI `10.5281/zenodo.23487404`; the DOI is recorded in the manuscript, cover letter, DOCX, and public README.
+- The package builder regenerates each package tree, so the archive history was force-pushed for each release (v1.0.0–v1.1.0); the public and private tags through `v1.3.1` are stable.
 - The multi-scale radial trunk is retained as the released default (favorable wall-gradient and current behaviour), but its advantage over a plain MLP trunk is modest and is reported honestly as an ablation rather than as a requirement.
 - Literature claim support was adjudicated with an API-backed abstract audit plus human-style adjudication of flag clusters; 12 references are metadata-only (no online abstract) and are recorded as such.

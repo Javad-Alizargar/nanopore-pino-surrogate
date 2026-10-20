@@ -25,6 +25,7 @@
     <a href="#tab-benchmarks" class="nav-link">Benchmarks</a>
     <a href="#tab-live" class="nav-link">Live solver</a>
     <a href="https://github.com/Javad-Alizargar/nanopore-pino-surrogate" class="nav-link ext" rel="noopener">Code</a>
+    <a href="https://doi.org/10.5281/zenodo.23487404" class="nav-link ext" rel="noopener" title="Permanent Zenodo archive">DOI: 10.5281/zenodo.23487404</a>
   </nav>
 </header>
 
@@ -153,7 +154,12 @@
         below 0.3%). A centered finite-difference Jacobian of the exact float64 solver
         confirms the operator sensitivity: the two agree on the log-log current sensitivity
         to radius to 1.5&times;10<sup>&minus;4</sup> and on the dual-protocol conditioning
-        number to about 1%.
+        number to about 1%. A diffusivity-asymmetry scan at four <i>D</i><sub>+</sub>/<i>D</i><sub>&minus;</sub>
+        ratios (1.00, 0.966, 0.655, 0.20) shows that unequal diffusivities add only a small
+        linear charge channel: even for NaCl the single-salt conditioning remains above
+        10<sup>16</sup>, whereas the near-wall selectivity observable lowers it by six to ten
+        orders of magnitude. The released software is permanently archived at Zenodo DOI
+        <a href="https://doi.org/10.5281/zenodo.23487404" rel="noopener">10.5281/zenodo.23487404</a>.
       </p>
     </div>
   </section>

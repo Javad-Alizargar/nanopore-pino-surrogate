@@ -4,7 +4,7 @@
 
 **Author:** Javad Alizargar
 
-This supplement documents the dataset, constraint derivation, training protocol, extended metrics, out-of-distribution definitions, inverse-recovery protocol, deployment checks, and reproducibility commands. All numerical values are produced by the archived scripts and result files listed in Section S9. It contains all eighteen display tables (Supplementary Tables S1--S18); the main text contains the six multipanel figures only.
+This supplement documents the dataset, constraint derivation, training protocol, extended metrics, out-of-distribution definitions, inverse-recovery protocol, deployment checks, and reproducibility commands. All numerical values are produced by the archived scripts and result files listed in Section S9. It contains all twenty display tables (Supplementary Tables S1--S20); the main text contains the six multipanel figures only. The released software and data are permanently archived at Zenodo DOI https://doi.org/10.5281/zenodo.23487404.
 
 ---
 
@@ -26,7 +26,7 @@ These six tables carry the headline numbers referenced from the main text. They 
 | SG/FV median wall time | 0.2013 s |
 | SG/FV mean wall time | 0.2391 s |
 
-**Supplementary Table S7.** Benchmark state (50 mV, 100 mol $m^{-3}$, $q_w=-0.01$, $R=5$ nm) against the prior fixed-state DA-PINN.
+**Supplementary Table S10.** Benchmark state (50 mV, 100 mol $m^{-3}$, $q_w=-0.01$, $R=5$ nm) against the prior fixed-state DA-PINN.
 
 | Model | Current (pA) | $\psi$ rel. $L_2$ | $c_+$ rel. $L_2$ | $\rho$ rel. $L_2$ | $I$ rel. $L_2$ |
 |---|---|---|---|---|---|
@@ -49,7 +49,7 @@ These six tables carry the headline numbers referenced from the main text. They 
 | DeepONet data-only | interp. | 0.000928 | 0.000488 | 0.07719 | 0.001687 | 0.1203 |
 | FNO data-only | interp. | 0.007958 | 0.002193 | 0.0841 | 0.01393 | 1.126 |
 
-**Supplementary Table S8.** Latency and amortization.
+**Supplementary Table S17.** Latency and amortization.
 
 | Item | Value | Unit |
 |---|---|---|
@@ -69,7 +69,7 @@ These six tables carry the headline numbers referenced from the main text. They 
 | DeepONet break-even vs DA-PINN retrain | 0.2195 | states |
 | FNO break-even vs DA-PINN retrain | 0.3355 | states |
 
-**Supplementary Table S9.** FNO training-budget check (seed 42).
+**Supplementary Table S13.** FNO training-budget check (seed 42).
 
 | Split | Metric | 110 epochs (3-seed mean) | 300 epochs (seed 42) |
 |---|---|---|---|
@@ -80,7 +80,7 @@ These six tables carry the headline numbers referenced from the main text. They 
 | benchmark | $\psi$ rel. $L_2$ | 0.003298 | 0.001743 |
 | benchmark | $I$ rel. $L_2$ | 0.00634 | 0.003669 |
 
-**Supplementary Table S10.** Inverse recovery from five-bias noisy current--voltage curves (1% noise; 400 candidates, 2000 forward evaluations per state). Values are rounded for display; the exact values are in `results/tables/table6_inverse_parameter_recovery.csv`.
+**Supplementary Table S18.** Inverse recovery from five-bias noisy current--voltage curves (1% noise; 400 candidates, 2000 forward evaluations per state). Values are rounded for display; the exact values are in `results/tables/table6_inverse_parameter_recovery.csv`.
 
 | State | $C_0$ (mol $m^{-3}$) | $R$ true (nm) | $R$ recovered (nm) | $R$ rel. error | $q_w$ true | $q_w$ recovered | $q_w$ rel. error |
 |---|---|---|---|---|---|---|---|
@@ -132,7 +132,7 @@ Reference solve cost: median 0.2013 s, mean 0.2391 s on the Apple M1 host. Datas
 | Seeds | 42, 43, 44 | 42, 43, 44 |
 | Training time, seed 42 | 50.59 s | 108.5 s |
 
-A separate FNO was trained for 300 epochs (seed 42, 302.2 s) to check whether the 110-epoch budget limited accuracy. The 300-epoch results are reported in Supplementary Table S9. A data-only ablation removes the physics term while keeping the architecture, data, and optimizer fixed.
+A separate FNO was trained for 300 epochs (seed 42, 302.2 s) to check whether the 110-epoch budget limited accuracy. The 300-epoch results are reported in Supplementary Table S13. A data-only ablation removes the physics term while keeping the architecture, data, and optimizer fixed.
 
 Loss, Eq. (S1):
 
@@ -286,9 +286,9 @@ All values are three-seed means from `results/statistics.json`. The exact seed-l
 
 ## S5. H3 conditioning analysis
 
-Supplementary Tables S11, S12 report the net-charge error conditioned on the surface-charge magnitude and on the Debye ratio. The values are the means over three seeds for the interpolation split.
+Supplementary Tables S15, S16 report the net-charge error conditioned on the surface-charge magnitude and on the Debye ratio. The values are the means over three seeds for the interpolation split.
 
-**Supplementary Table S11.** Net-charge error by $|q_w|$ quartile.
+**Supplementary Table S15.** Net-charge error by $|q_w|$ quartile.
 
 | Model / parameterization | Overall | Q1 | Q2 | Q3 | Q4 |
 |---|---|---|---|---|---|
@@ -297,7 +297,7 @@ Supplementary Tables S11, S12 report the net-charge error conditioned on the sur
 | FNO reparam. | 0.252 | 0.5316 | 0.112 | 0.1482 | 0.216 |
 | FNO direct $c$ | 1.2 | 1.839 | 0.9576 | 0.988 | 1.016 |
 
-**Supplementary Table S12.** Net-charge error by $\lambda_D/R$ quartile.
+**Supplementary Table S16.** Net-charge error by $\lambda_D/R$ quartile.
 
 | Model / parameterization | Q1 | Q2 | Q3 | Q4 |
 |---|---|---|---|---|
@@ -333,7 +333,7 @@ The split is a controlled extrapolation, not an adversarial stress test. It is i
 
 **Interpretation.** Radius is identifiable because the current magnitude and slope constrain the pore cross-section. Fixed charge is not identifiable because the total conductance of a symmetric electrolyte with nearly equal diffusivities is almost invariant to Donnan polarization. This is a property of the measurement, not of the operator. A charge-sensitive observable would break the degeneracy.
 
-**Results.** See Supplementary Table S10 and `results/tables/table6_inverse_parameter_recovery.csv`. Median radius error 0.004574; median $q_w$ error 1.154; median surface-charge-density error 1.146. Grid wall time per state 0.1253 s; equivalent SG/FV time 402.6 s; speed-up 3214.
+**Results.** See Supplementary Table S18 and `results/tables/table6_inverse_parameter_recovery.csv`. Median radius error 0.004574; median $q_w$ error 1.154; median surface-charge-density error 1.146. Grid wall time per state 0.1253 s; equivalent SG/FV time 402.6 s; speed-up 3214.
 
 ---
 
@@ -361,7 +361,7 @@ This section documents the three Stage-10 studies. All values are produced by `s
 
 Fitted power laws $\epsilon=a\,N_\mathrm{train}^{-\alpha}$: $\alpha_\rho=0.552$ and $\alpha_\psi=0.535$ in-distribution, but only $\alpha_\rho=0.130$ and $\alpha_\psi=0.118$ out of distribution and $\alpha_I=0.369$ in-distribution. The interpolation error therefore follows approximately $N^{-1/2}$, whereas OOD error is nearly data-insensitive.
 
-**Supplementary Table S15.** Multi-protocol inverse identifiability. For 15 held-out states, 1\%/2\%/5\%-proxy Gaussian noise levels (implemented as 0.2\%, 1\%, 2\% relative noise), three measurement protocols: single-salt I--V (one salt), multi-salt I--V (three salts, 10--100 mol $m^{-3}$), and the dual protocol that adds the near-wall Donnan selectivity $S=(c_+-c_-)/(c_++c_-)|_{r=1}$ to the multi-salt I--V data. Recovery uses a $30\times30$ candidate grid in $(q_w,R)$ followed by Nelder--Mead refinement. Errors are medians over the 15 states.
+**Supplementary Table S9.** Multi-protocol inverse identifiability. For 15 held-out states, 1\%/2\%/5\%-proxy Gaussian noise levels (implemented as 0.2\%, 1\%, 2\% relative noise), three measurement protocols: single-salt I--V (one salt), multi-salt I--V (three salts, 10--100 mol $m^{-3}$), and the dual protocol that adds the near-wall Donnan selectivity $S=(c_+-c_-)/(c_++c_-)|_{r=1}$ to the multi-salt I--V data. Recovery uses a $30\times30$ candidate grid in $(q_w,R)$ followed by Nelder--Mead refinement. Errors are medians over the 15 states.
 
 | Protocol | Noise | median $q_w$ rel. err | median $R$ rel. err | $q_w$ identifiable ($<$10\%) | $R$ recovered ($<$2\%) |
 |---|---|---|---|---|---|
@@ -385,7 +385,7 @@ The expanded dataset used for the scaling study appends 144 new in-distribution 
 
 This section documents the three Stage-11 studies and the Stage-12 OOD decomposition. All values are produced by `scripts/run_stage11_reviewer_upgrades.py` and archived in `results/stage11_upgrades.json` and the matching `results/tables/` CSV files.
 
-**Supplementary Table S16.** Four-way constraint-scheme benchmark on the identical PI-DeepONet backbone (250 epochs, seeds 42/43/44). Errors are three-seed means on the interpolation-test split; consistency mismatch is $\overline{|\rho-\rho_\mathrm{latent}|}$.
+**Supplementary Table S11.** Four-way constraint-scheme benchmark on the identical PI-DeepONet backbone (250 epochs, seeds 42/43/44). Errors are three-seed means on the interpolation-test split; consistency mismatch is $\overline{|\rho-\rho_\mathrm{latent}|}$.
 
 | Scheme | $\rho$ rel. $L_2$ | OOD $\rho$ | wall-grad. | consistency mismatch | min $c$ |
 |---|---|---|---|---|---|
@@ -394,7 +394,7 @@ This section documents the three Stage-11 studies and the Stage-12 OOD decomposi
 | soft charge penalty ($10\times$) | $0.4114\pm0.1871$ | 0.2835 | $8.19\times10^{-3}$ | 0 (exact) | 0.986 |
 | direct concentration | $0.9334\pm0.0082$ | 0.8606 | $2.22\times10^{-2}$ | 0 (exact) | 0.999 |
 
-**Supplementary Table S17.** Physics-weight sensitivity sweep at seed 42 (interpolation-test split).
+**Supplementary Table S12.** Physics-weight sensitivity sweep at seed 42 (interpolation-test split).
 
 | $\lambda_\mathrm{phys}$ | $\rho$ rel. $L_2$ | $\psi$ rel. $L_2$ | $I$ rel. $L_2$ | wall-grad. | Poisson resid. | continuity resid. |
 |---|---|---|---|---|---|---|
@@ -404,7 +404,7 @@ This section documents the three Stage-11 studies and the Stage-12 OOD decomposi
 | $10^{-2}$ | 0.2866 | 0.0041 | 0.0058 | $7.90\times10^{-3}$ | 0.188 | 0.028 |
 | $10^{-1}$ | 0.3056 | 0.0046 | 0.0063 | $8.13\times10^{-3}$ | 0.064 | 0.014 |
 
-**Supplementary Table S18.** Out-of-distribution error decomposition (48 OOD states; `deeponet_reparam` and `fno_reparam`, seed 42). Spatial rows partition the $21\times61$ domain into the reservoir transitions ($z\in[0,0.10]\cup[0.90,1.0]$), the charged-wall EDL ($r\ge0.80$, $0.10<z<0.90$) and the pore core ($r<0.80$, $0.10<z<0.90$); their squared-error shares sum to 100\% for each field. Parametric rows use mutually exclusive labels with priority combined $>$ charge $>$ salt $>$ narrow $R$ $>$ high $V$. Relative errors are global area-weighted $L_2$ ratios; $I$ is the axial current.
+**Supplementary Table S14.** Out-of-distribution error decomposition (48 OOD states; `deeponet_reparam` and `fno_reparam`, seed 42). Spatial rows partition the $21\times61$ domain into the reservoir transitions ($z\in[0,0.10]\cup[0.90,1.0]$), the charged-wall EDL ($r\ge0.80$, $0.10<z<0.90$) and the pore core ($r<0.80$, $0.10<z<0.90$); their squared-error shares sum to 100\% for each field. Parametric rows use mutually exclusive labels with priority combined $>$ charge $>$ salt $>$ narrow $R$ $>$ high $V$. Relative errors are global area-weighted $L_2$ ratios; $I$ is the axial current.
 
 | Backbone | Decomposition | Category | $n$ | $\psi$ share (\%) | $\rho$ share (\%) | $\psi$ rel. $L_2$ | $\rho$ rel. $L_2$ | $I$ rel. $L_2$ |
 |---|---|---|---|---|---|---|---|---|
@@ -438,9 +438,28 @@ This section documents the three Stage-11 studies and the Stage-12 OOD decomposi
 | median $\kappa(\mathcal{F})$, multi-salt | $8.7\times10^{9}$ | $4.5\times10^{7}$ |
 | median $\kappa(\mathcal{F})$, dual | $1.8\times10^{5}$ | $1.8\times10^{5}$ |
 
+## S7d. Diffusivity asymmetry and the conductance flat direction
+
+**Supplementary Table S20.** Exact SG/FV diffusivity-ratio scan at the benchmark state ($V_\mathrm{app}=50$ mV, $q_w=-0.01$, $R=5$ nm) and at low salt ($C_0=20$ mol $m^{-3}$). The anion diffusivity is fixed at $D_-=2.03\times10^{-9}$ m$^2$ s$^{-1}$ and the cation diffusivity is varied; $\kappa(\mathcal{F})$ is the condition number of $\mathcal{F}=J^\top J$ with $J=\partial(\ln|I|,S)/\partial(\ln R,\ln|q_w|)$, using four non-zero biases for the single-salt protocol and adding $S$ at 50 mV for the dual protocol. Sensitivities are centered finite differences at relative step $10^{-3}$.
+
+| State | Electrolyte | $D_+/D_-$ | $\vert\partial\ln I/\partial\ln\vert q_w\vert\vert$ | $\kappa_\mathrm{single}$ | $\kappa_\mathrm{dual}$ | Reduction |
+|---|---|---|---|---|---|---|
+| $C_0=100$ | ideal symmetric | 1.000 | $7.87\times10^{-7}$ | $1.65\times10^{17}$ | $4.04\times10^{6}$ | $4.1\times10^{10}$ |
+| $C_0=100$ | KCl | 0.9655 | $1.14\times10^{-5}$ | $1.33\times10^{17}$ | $4.04\times10^{6}$ | $3.3\times10^{10}$ |
+| $C_0=100$ | NaCl | 0.655 | $1.43\times10^{-4}$ | $3.02\times10^{16}$ | $4.04\times10^{6}$ | $7.5\times10^{9}$ |
+| $C_0=100$ | strongly asymmetric | 0.200 | $4.60\times10^{-4}$ | $5.91\times10^{15}$ | $4.04\times10^{6}$ | $1.5\times10^{9}$ |
+| $C_0=20$ | ideal symmetric | 1.000 | $1.06\times10^{-5}$ | $2.42\times10^{14}$ | $6.31\times10^{5}$ | $3.8\times10^{8}$ |
+| $C_0=20$ | KCl | 0.9655 | $4.50\times10^{-5}$ | $1.71\times10^{14}$ | $6.31\times10^{5}$ | $2.7\times10^{8}$ |
+| $C_0=20$ | NaCl | 0.655 | $6.50\times10^{-4}$ | $2.29\times10^{13}$ | $6.32\times10^{5}$ | $3.6\times10^{7}$ |
+| $C_0=20$ | strongly asymmetric | 0.200 | $2.10\times10^{-3}$ | $3.61\times10^{12}$ | $6.35\times10^{5}$ | $5.7\times10^{6}$ |
+
+The table tests the algebraic argument in Section 3.9: the local ohmic coefficient is $D_+c_++D_-c_-=\bar D\sqrt{s^2+\rho^2}+\tfrac12(D_+-D_-)\rho$, so equal diffusivities leave only the second-order $\rho^2$ term, whereas a finite $D_+-D_-$ adds a linear charge contribution. Even the strongly asymmetric case keeps $\kappa_\mathrm{single}>3\times10^{12}$, and the near-wall selectivity observable lowers the conditioning by six to ten orders of magnitude at every ratio.
+
+---
+
 ## S8. Deployment and parity
 
-**Supplementary Table S13.** Deployment and parity checks.
+**Supplementary Table S8.** Deployment and parity checks.
 
 | Check | Value |
 |---|---|
@@ -485,6 +504,12 @@ Run from the project root with the virtual environment activated.
 # 7. Stage-11 reviewer upgrades (4-way constraints, physics sweep, SG/FV Fisher)
 .venv/bin/python scripts/run_stage11_reviewer_upgrades.py
 
+# 8. Stage-12 diagnostics (OOD decomposition, selectivity validation, positivity)
+.venv/bin/python scripts/run_stage12_diagnostics.py
+
+# 9. Stage-13 diffusivity-asymmetry scan
+.venv/bin/python scripts/run_diffusivity_symmetry_check.py
+
 # 8. Web bundle and DOM test
 .venv/bin/python scripts/build_web_bundle.py
 node scripts/test_web_simulator_dom.js
@@ -501,7 +526,7 @@ The exact command-line defaults for the training suite are seeds 42 43 44, 110 F
 
 ## S10. Figure, table, and claim crosswalk
 
-**Supplementary Table S14.** Figure, table, and artifact crosswalk.
+**Supplementary Table S7.** Figure, table, and artifact crosswalk.
 
 | Item | Content | Source |
 |---|---|---|
@@ -517,18 +542,19 @@ The exact command-line defaults for the training suite are seeds 42 43 44, 110 F
 | Supplementary Table S4 | Model and training hyperparameters | `results/statistics.json` |
 | Supplementary Table S5 | Three-seed accuracy and ablation metrics | `results/tables/table3_multiseed_h1_h2_h3_ablation.csv` |
 | Supplementary Table S6 | Additional accuracy and residual metrics | `results/statistics.json` |
-| Supplementary Table S7 | Benchmark versus DA-PINN | `results/tables/table2_benchmark_state_vs_dapinn.csv` |
-| Supplementary Table S8 | Timing and break-even | `results/tables/table4_timing_and_amortization.csv` |
-| Supplementary Table S9 | FNO epoch check | `results/tables/table5_fno_epoch_check.csv` |
-| Supplementary Table S10 | Inverse recovery | `results/tables/table6_inverse_parameter_recovery.csv` |
-| Supplementary Table S11 | Net-charge error by charge quartile | `results/tables/table3_multiseed_h1_h2_h3_ablation.csv` |
-| Supplementary Table S12 | Net-charge error by Debye-ratio quartile | `results/tables/table3_multiseed_h1_h2_h3_ablation.csv` |
-| Supplementary Table S13 | Deployment and parity checks | `results/stage5b_live_server_verification.json` |
-| Supplementary Table S15 | Multi-protocol inverse identifiability | `results/tables/table_s15_fisher_identifiability_protocols.csv` |
-| Supplementary Table S16 | Four-way constraint-scheme benchmark | `results/tables/table_constraint_schemes_4way.csv` |
-| Supplementary Table S17 | Physics-weight sensitivity sweep | `results/tables/table_physics_weight_sensitivity.csv` |
-| Supplementary Table S18 | Out-of-distribution error decomposition | `results/tables/table_ood_mechanistic_breakdown.csv` |
+| Supplementary Table S10 | Benchmark versus DA-PINN | `results/tables/table2_benchmark_state_vs_dapinn.csv` |
+| Supplementary Table S17 | Timing and break-even | `results/tables/table4_timing_and_amortization.csv` |
+| Supplementary Table S13 | FNO epoch check | `results/tables/table5_fno_epoch_check.csv` |
+| Supplementary Table S18 | Inverse recovery | `results/tables/table6_inverse_parameter_recovery.csv` |
+| Supplementary Table S15 | Net-charge error by charge quartile | `results/tables/table3_multiseed_h1_h2_h3_ablation.csv` |
+| Supplementary Table S16 | Net-charge error by Debye-ratio quartile | `results/tables/table3_multiseed_h1_h2_h3_ablation.csv` |
+| Supplementary Table S8 | Deployment and parity checks | `results/stage5b_live_server_verification.json` |
+| Supplementary Table S9 | Multi-protocol inverse identifiability | `results/tables/table_s15_fisher_identifiability_protocols.csv` |
+| Supplementary Table S11 | Four-way constraint-scheme benchmark | `results/tables/table_constraint_schemes_4way.csv` |
+| Supplementary Table S12 | Physics-weight sensitivity sweep | `results/tables/table_physics_weight_sensitivity.csv` |
+| Supplementary Table S14 | Out-of-distribution error decomposition | `results/tables/table_ood_mechanistic_breakdown.csv` |
 | Supplementary Table S19 | Exact SG/FV versus operator Fisher/Jacobian validation | `results/tables/table_sgfv_fisher_validation.csv` |
+| Supplementary Table S20 | Exact SG/FV diffusivity-ratio scan | `results/tables/table_diffusivity_symmetry_breaking.csv` |
 | Claim map | Claim-to-evidence audit (C01--C38, L01--L60) | `manuscript/claim_evidence.csv` |
 | Statistics | Canonical JSON values | `results/statistics.json` |
 | Inverse demo | Full inverse JSON | `results/inverse_recovery_demo.json` |

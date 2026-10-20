@@ -233,6 +233,22 @@ def stage11_checks() -> dict:
             "statistics_keys": stats_keys, "script": script}
 
 
+def zendo_doi_check() -> bool:
+    import zipfile
+    doi = "10.5281/zenodo.23487404"
+    md = (ROOT / "manuscript" / "Manuscript.md").read_text()
+    readme = (PUB / "README.md").read_text()
+    letter = (ROOT / "manuscript" / "Cover_Letter_CPC.docx")
+    main = ROOT / "manuscript" / "Manuscript_PINO_clean.docx"
+    if doi not in md or doi not in readme or not letter.exists() or not main.exists():
+        return False
+    for path in (main, letter):
+        with zipfile.ZipFile(path) as zf:
+            if doi not in zf.read("word/document.xml").decode("utf-8"):
+                return False
+    return True
+
+
 def docx_checks() -> dict:
     import zipfile
 
@@ -361,15 +377,15 @@ def main() -> None:
             and docx["Supplementary_Materials_PINO.docx"]["media"] == 0)),
         ("Public package has no private logs/download/literature", ok(not any((PUB / p).exists() for p in ("logs", "download", "literature", "apis", ".git")))),
         ("Private package contains manuscript and reports", ok((PRIV / "manuscript/Manuscript.md").exists() and (PRIV / "reports/STATUS.md").exists())),
-        ("Six figures cited sequentially; no main-text data tables; 19 supplement tables cited",
+        ("Six figures cited sequentially; no main-text data tables; 20 supplement tables cited",
          ok(display["figure_order"] == [1, 2, 3, 4, 5, 6] and display["body_tables"] == 0
-            and display["supp_tables"] == 19 and not display["uncited_supp_tables"])),
+            and display["supp_tables"] == 20 and not display["uncited_supp_tables"])),
         ("Claim-evidence map spans C01--C38 and L01--L60, all supported",
          ok(claims["quant_complete"] and claims["lit_complete"] and claims["all_supported"])),
         ("References are numbered strictly by first appearance 1..60",
          ok(seq["ref_order"] == list(range(1, 61)))),
         ("Supplementary tables and equations are strictly sequential",
-         ok(seq["tab_order"] == list(range(1, 20))
+         ok(seq["tab_order"] == list(range(1, 21))
             and seq["eq_main"]["strict_sequential"] and seq["eq_supp"]["strict_sequential"])),
         ("Figures are placed inline within 1-2 paragraphs of the first mention (Markdown + DOCX)",
          ok(all(v["image_after_mention"] and v["caption_after_image"] for v in seq["figs"].values())
@@ -378,9 +394,11 @@ def main() -> None:
          ok(s11["tables"] and all(s11["json_keys"].values()) and s11["statistics_keys"] and s11["script"])),
         ("DOCX bibliography is numbered [1]--[60] with authors and years",
          ok(bib["ok"])),
-        ("Supplementary tables first-seen 1..19; no stray legend children in figures",
-         ok(seq["tab_order"] == list(range(1, 20))
+        ("Supplementary tables first-seen 1..20; no stray legend children in figures",
+         ok(seq["tab_order"] == list(range(1, 21))
             and not stray["child_refs"] and not stray["png_meta"])),
+        ("Official Zenodo DOI present in manuscript, main DOCX, CPC letter, and public README",
+         ok(zendo_doi_check())),
     ]
 
     lines = [
@@ -436,8 +454,8 @@ def main() -> None:
         "- The DOCX was built from the canonical markdown; rendered-page inspection",
         "  is limited to structural checks (tables, embedded figures, equation images,",
         "  and absence of LaTeX leakage).",
-        "- No DOI is invented: the data-availability statement references the GitHub",
-        "  repository and states that a Zenodo deposit will be created at acceptance.",
+        "- The archived DOI is the official Zenodo record 10.5281/zenodo.23487404,",
+        "  checked in the manuscript, main DOCX, CPC cover letter, and public README.",
     ]
     REPORT.write_text("\n".join(lines) + "\n")
     print("\n".join(f"{res:4} {name}" for name, res in checks))

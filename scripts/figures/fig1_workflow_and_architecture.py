@@ -105,7 +105,7 @@ boxes = [
      r"$=z(1-z)\,G_s$" + "\n"
      r"$\rho_\theta=c_+-c_-$" + "\n"
      r"$=z(1-z)\,G_\rho$",
-     r"$s\to 2e^{\cdot}$ in reservoirs"),
+     r"$s\to2,\ \rho\to0$ at $z\in\{0,1\}$"),
     (0.68, "#E6F2EC", K.C["green"], "hyperbolic\nreconstruction",
      r"$c_{\pm,\theta}=$" + "\n"
      r"$\frac{1}{2}\!\left(\sqrt{s^2+\rho^2}\pm\rho\right)$",

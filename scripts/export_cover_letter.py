@@ -29,6 +29,15 @@ JOURNALS = {
             "repository, trained PyTorch and ONNX models, a serverless browser simulator, and "
             "a full reproducibility package with archived result files. The study is framed explicitly as a computational-physics instrument: its contribution is the elimination of per-state retraining for design, uncertainty-quantification, and inverse workflows, not a claim of superiority over specialized solvers."
         ),
+        "positioning": (
+            "We submit this manuscript for consideration in *Computer Physics Communications* "
+            "under the Computer Programs in Physics (CPiP) category. The software package "
+            "PINO-Nanopore (archived permanently at Zenodo DOI: 10.5281/zenodo.23487404 and "
+            "deployed interactively at https://pino.statwhy.com) provides a validated, "
+            "exact-boundary solution operator for steady axisymmetric Poisson--Nernst--Planck "
+            "transport, whose primary scientific application is high-throughput "
+            "Fisher-information and conductance-identifiability mapping for nanopore experiments."
+        ),
     },
     "JCP": {
         "editors": "Journal of Computational Physics",
@@ -40,6 +49,14 @@ JOURNALS = {
             "backbones against a conservative Scharfetter--Gummel reference, and a Fisher "
             "analysis validated against exact float64 finite-difference Jacobians."
         ),
+        "positioning": (
+            "We submit this manuscript for consideration in the *Journal of Computational "
+            "Physics*. The software package PINO-Nanopore (archived permanently at Zenodo "
+            "DOI: 10.5281/zenodo.23487404 and deployed interactively at "
+            "https://pino.statwhy.com) provides a validated, exact-boundary solution operator "
+            "for steady axisymmetric Poisson--Nernst--Planck transport, together with a "
+            "controlled numerical study and an identifiability analysis for nanopore experiments."
+        ),
     },
     "CPC_JCP": {
         "editors": "Computer Physics Communications / Journal of Computational Physics",
@@ -48,6 +65,16 @@ JOURNALS = {
             "package: a hard-constrained operator ansatz, a controlled accuracy and ablation "
             "study, and a documented, MIT-licensed software release that includes trained "
             "models, verification reports, and an interactive simulator."
+        ),
+        "positioning": (
+            "We submit this manuscript for consideration in *Computer Physics Communications* "
+            "under the Computer Programs in Physics (CPiP) category, jointly with the "
+            "*Journal of Computational Physics*. The software package PINO-Nanopore (archived "
+            "permanently at Zenodo DOI: 10.5281/zenodo.23487404 and deployed interactively at "
+            "https://pino.statwhy.com) provides a validated, exact-boundary solution operator "
+            "for steady axisymmetric Poisson--Nernst--Planck transport, whose primary "
+            "scientific application is high-throughput Fisher-information and "
+            "conductance-identifiability mapping for nanopore experiments."
         ),
     },
 }
@@ -62,6 +89,8 @@ BODY = """# Cover Letter
 **Subject:** Submission of an original research article
 
 Dear Editors,
+
+{positioning}
 
 I am pleased to submit the original research article entitled **"Conductance identifiability limits and physics-constrained neural operators for axisymmetric Poisson--Nernst--Planck transport in charged nanopores"** for consideration at *{editors}*.
 
@@ -85,9 +114,11 @@ This work advances decisively beyond my prior fixed-state deep-adaptive PINN stu
 
 7. **A four-way constraint benchmark and an exact Jacobian validation.** Under an identical PI-DeepONet backbone and three seeds, the hyperbolic reparameterization matches the best projection scheme in accuracy while keeping the charge identity exact to machine precision, and a physics-weight sweep identifies $10^{{-3}}$ as the Pareto point. A centered finite-difference Jacobian of the float64 SG/FV solver validates the operator's Fisher analysis: the two agree on $\\partial\\ln I/\\partial\\ln R$ to $1.5\times10^{{-4}}$, and both collapse the charge-conditioning number by ten orders of magnitude once the near-wall selectivity observable is added.
 
+8. **A diffusivity-asymmetry proof and a protocol-design workflow.** We show analytically that the local ohmic coefficient is $\\bar D\\sqrt{s^2+\\rho^2}+\\tfrac12(D_+-D_-)\\rho$, so equal diffusivities leave only a second-order charge term, and verify with the exact float64 SG/FV solver at four diffusivity ratios ($D_+/D_-=1.0$, 0.966, 0.655, 0.20) and two salinities. Even NaCl leaves the single-salt condition number above $10^{16}$, while adding the near-wall selectivity observable reduces it by six to ten orders of magnitude. The released package and portal expose the Jacobian and Fisher construction so that experimentalists can optimize bias, salinity, and observable combinations before fabricating or measuring a pore.
+
 The manuscript is original, has not been published previously, and is not under consideration elsewhere. All authors have approved the submission, and the author declares no competing interests.
 
-**Data and code availability.** The reproducibility package is available at https://github.com/Javad-Alizargar/nanopore-pino-surrogate under the MIT License, and the interactive simulator is hosted at https://pino.statwhy.com/. A permanent Zenodo DOI will be minted upon acceptance.
+**Data and code availability.** The reproducibility package is available at https://github.com/Javad-Alizargar/nanopore-pino-surrogate under the MIT License, and the interactive simulator is hosted at https://pino.statwhy.com/. The permanently archived release is available at Zenodo DOI: 10.5281/zenodo.23487404.
 
 Thank you for considering this manuscript. I look forward to your response and would be glad to provide any additional information.
 
@@ -120,7 +151,7 @@ def build_docx(text: str, docx_path: Path) -> int:
 
 def main() -> None:
     for key, cfg in JOURNALS.items():
-        letter = BODY.format(editors=cfg["editors"], pitch=cfg["pitch"])
+        letter = BODY.replace("{editors}", cfg["editors"]).replace("{pitch}", cfg["pitch"]).replace("{positioning}", cfg["positioning"])
         md = OUTDIR / f"Cover_Letter_{key}.md"
         docx = OUTDIR / f"Cover_Letter_{key}.docx"
         md.write_text(letter)
