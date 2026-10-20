@@ -16,6 +16,8 @@ from pathlib import Path
 from docx import Document
 from docx.enum.text import WD_TAB_ALIGNMENT
 from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.oxml import OxmlElement
+from docx.oxml.ns import qn
 from docx.shared import Inches, Pt
 from PIL import Image
 
@@ -107,6 +109,17 @@ def add_equation(doc: Document, tex: str, number: str) -> None:
     run.add_text(f"({number})")
 
 
+def _mark_table_row(row, header: bool) -> None:
+    tr_pr = row._tr.get_or_add_trPr()
+    if header:
+        repeat = OxmlElement("w:tblHeader")
+        repeat.set(qn("w:val"), "true")
+        tr_pr.append(repeat)
+    no_split = OxmlElement("w:cantSplit")
+    no_split.set(qn("w:val"), "true")
+    tr_pr.append(no_split)
+
+
 def add_table(doc: Document, rows: list[list[str]], size: float = 8.5) -> None:
     rows = [r for r in rows if not all(re.fullmatch(r":?-{2,}:?", c.strip()) for c in r)]
     if not rows:
@@ -115,7 +128,9 @@ def add_table(doc: Document, rows: list[list[str]], size: float = 8.5) -> None:
     table = doc.add_table(rows=0, cols=cols)
     table.style = "Table Grid"
     for ri, row in enumerate(rows):
-        cells = table.add_row().cells
+        table_row = table.add_row()
+        _mark_table_row(table_row, ri == 0)
+        cells = table_row.cells
         for ci in range(cols):
             text = row[ci] if ci < len(row) else ""
             para = cells[ci].paragraphs[0]
@@ -126,6 +141,16 @@ def add_table(doc: Document, rows: list[list[str]], size: float = 8.5) -> None:
                     run.bold = True
     p = doc.add_paragraph()
     p.paragraph_format.space_after = Pt(6)
+
+
+def add_code_block(doc: Document, code_lines: list[str]) -> None:
+    p = doc.add_paragraph(style="No Spacing")
+    p.paragraph_format.left_indent = Inches(0.25)
+    p.paragraph_format.space_before = Pt(3)
+    p.paragraph_format.space_after = Pt(6)
+    run = p.add_run("\n".join(code_lines))
+    run.font.name = "Courier New"
+    run.font.size = Pt(8.5)
 
 
 def add_figure(doc: Document, path: Path) -> None:
@@ -199,6 +224,16 @@ def build(src: Path, dst: Path, with_figures: bool, numbered_eq: bool) -> dict:
             number = (f"S{eqn}" if not numbered_eq else str(eqn))
             add_equation(doc, "\n".join(buf), number)
             stats["equations"] += 1
+            i = j + 1
+            continue
+        if stripped.startswith("```"):
+            j = i + 1
+            code_lines = []
+            while j < len(lines) and not lines[j].strip().startswith("```"):
+                code_lines.append(lines[j])
+                j += 1
+            add_code_block(doc, code_lines)
+            stats["paragraphs"] += 1
             i = j + 1
             continue
         if stripped.startswith("|"):

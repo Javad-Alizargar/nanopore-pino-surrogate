@@ -195,7 +195,7 @@ cases, and a live SG/FV reference solver).
   author  = {Alizargar, Javad},
   title   = {PINO-Nanopore: parameter-conditioned physics-informed neural operator for axisymmetric Poisson--Nernst--Planck transport},
   year    = {2026},
-  version = {v1.3.3},
+  version = {v1.3.4},
   doi     = {10.5281/zenodo.23487404},
   url     = {https://doi.org/10.5281/zenodo.23487404}
 }

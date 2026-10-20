@@ -224,44 +224,44 @@
   },
   "figures_markdown": {
     "1": {
-      "mention_line": 175,
-      "image_line": 177,
-      "caption_line": 179,
+      "mention_line": 177,
+      "image_line": 179,
+      "caption_line": 181,
       "image_after_mention": true,
       "caption_after_image": true
     },
     "2": {
-      "mention_line": 183,
-      "image_line": 187,
-      "caption_line": 189,
+      "mention_line": 185,
+      "image_line": 189,
+      "caption_line": 191,
       "image_after_mention": true,
       "caption_after_image": true
     },
     "3": {
-      "mention_line": 195,
-      "image_line": 197,
-      "caption_line": 199,
+      "mention_line": 197,
+      "image_line": 199,
+      "caption_line": 201,
       "image_after_mention": true,
       "caption_after_image": true
     },
     "4": {
-      "mention_line": 207,
-      "image_line": 211,
-      "caption_line": 213,
+      "mention_line": 211,
+      "image_line": 215,
+      "caption_line": 217,
       "image_after_mention": true,
       "caption_after_image": true
     },
     "5": {
-      "mention_line": 217,
-      "image_line": 219,
-      "caption_line": 221,
+      "mention_line": 221,
+      "image_line": 223,
+      "caption_line": 225,
       "image_after_mention": true,
       "caption_after_image": true
     },
     "6": {
-      "mention_line": 229,
-      "image_line": 233,
-      "caption_line": 235,
+      "mention_line": 233,
+      "image_line": 237,
+      "caption_line": 239,
       "image_after_mention": true,
       "caption_after_image": true
     }
@@ -270,32 +270,32 @@
     "available": true,
     "figures": {
       "1": {
-        "caption_index": 84,
+        "caption_index": 78,
         "drawing_near_caption": true,
         "drawing_offset": -1
       },
       "2": {
-        "caption_index": 89,
+        "caption_index": 83,
         "drawing_near_caption": true,
         "drawing_offset": -1
       },
       "3": {
-        "caption_index": 94,
+        "caption_index": 88,
         "drawing_near_caption": true,
         "drawing_offset": -1
       },
       "4": {
-        "caption_index": 101,
+        "caption_index": 96,
         "drawing_near_caption": true,
         "drawing_offset": -1
       },
       "5": {
-        "caption_index": 105,
+        "caption_index": 100,
         "drawing_near_caption": true,
         "drawing_offset": -1
       },
       "6": {
-        "caption_index": 112,
+        "caption_index": 107,
         "drawing_near_caption": true,
         "drawing_offset": -1
       }

@@ -1,10 +1,10 @@
 # Final audit report
 
-Generated: 2026-10-20T03:16:36Z
+Generated: 2026-10-20T06:59:35Z
 
 Audited packages:
 - Public: 165 files, 31.1 MB
-- Private: 852 files, 89.9 MB
+- Private: 851 files, 89.9 MB
 
 ## Checklist
 
@@ -43,6 +43,8 @@ Audited packages:
 | Official Zenodo DOI present in manuscript, main DOCX, CPC letter, and public README | PASS |
 | Zero non-citation square brackets in prose; no 28,200 typo | PASS |
 | Figure 1--6 panel labels present/spaced; official CPC template and test_run pass | PASS |
+| Supplementary tables physically ordered S1--S20; Word headers repeat and rows cannot split | PASS |
+| Stage-16 title, algebra, code filename, and single-absolute Fisher notation | PASS |
 
 ## Details
 
@@ -52,7 +54,7 @@ Audited packages:
 - Tracked/unignored files scanned: 210; hits: []
 - Public secret-name hits: []
 - Private secret-name hits: []
-- Abstract: 247 words; highlights: 5 (max 84 chars).
+- Abstract: 248 words; highlights: 5 (max 84 chars).
 - References: 60, cited: 60, uncited: [], missing: [], with DOI: 60.
 - Claims: 98 (38 quantitative + 60 literature), statuses: ['supported'].
 - Display items: figure first-citation order [1, 2, 3, 4, 5, 6]; main-text data tables 0; supplement tables 20; uncited supplement tables [].
@@ -60,7 +62,7 @@ Audited packages:
 - Stage-11 upgrades: {"tables": true, "json_keys": {"fisher_sgfv_validation": true, "constraint_schemes_benchmark": true, "physics_weight_sweep": true}, "statistics_keys": true, "script": true}.
 - Prose bracket integrity: {"ok": true, "bad_brackets": [], "bad_count": 0, "typo_28_200": false}.
 - CPC template/test run: {"panels_ok": true, "panel_detail": {"fig1_workflow_and_architecture": {"expected": "ABCD", "found": "ABCD", "set_ok": true, "all_in_bounds": true, "min_gap_px": 24.9, "ok": true}, "fig2_benchmark_and_field_reconstruction": {"expected": "ABCDEF", "found": "ABCDEF", "set_ok": true, "all_in_bounds": true, "min_gap_px": 20.4, "ok": true}, "fig3_h3_charge_reparameterization_ablation": {"expected": "ABCDEF", "found": "ABCDEF", "set_ok": true, "all_in_bounds": true, "min_gap_px": 25.4, "ok": true}, "fig4_h1_h2_interp_vs_ood_regimes": {"expected": "ABCD", "found": "ABCD", "set_ok": true, "all_in_bounds": true, "min_gap_px": 15.0, "ok": true}, "fig5_parametric_physics_sweeps": {"expected": "ABC", "found": "ABC", "set_ok": true, "all_in_bounds": true, "min_gap_px": 17.0, "ok": true}, "fig6_h4_timing_and_amortization_breakeven": {"expected": "ABCD", "found": "ABCD", "set_ok": true, "all_in_bounds": true, "min_gap_px": 18.7, "ok": true}}, "cpc_ok": true, "files_ok": true, "test_ok": true, "test_output": "CPC TEST RUN PASSED \u2014 deeponet_reparam_seed42.onnx, mu=[50.0, 100.0, -0.009999999776482582, 5.0], 5 fields, max |delta| <= 1e-05"}.
-- DOCX: {"Manuscript_PINO_clean.docx": {"exists": true, "tables": 0, "omath": 299, "omathpara": 0, "media": 6, "equation_pngs": [], "n_drawings": 6, "figures_before_references": true, "raw_dollar": false, "latex_commands": false, "equation_or_latex_leak": false, "refs_60": true}, "Supplementary_Materials_PINO.docx": {"exists": true, "tables": 21, "omath": 415, "omathpara": 0, "media": 0, "equation_pngs": [], "n_drawings": 0, "figures_before_references": true, "raw_dollar": false, "latex_commands": false, "equation_or_latex_leak": false, "refs_60": false}}.
+- DOCX: {"Manuscript_PINO_clean.docx": {"exists": true, "tables": 0, "omath": 337, "omathpara": 0, "media": 6, "equation_pngs": [], "n_drawings": 6, "figures_before_references": true, "raw_dollar": false, "latex_commands": false, "equation_or_latex_leak": false, "refs_60": true}, "Supplementary_Materials_PINO.docx": {"exists": true, "tables": 21, "omath": 420, "omathpara": 0, "media": 0, "equation_pngs": [], "n_drawings": 0, "figures_before_references": true, "raw_dollar": false, "latex_commands": false, "equation_or_latex_leak": false, "refs_60": false}}.
 
 ## Scope and limitations
 

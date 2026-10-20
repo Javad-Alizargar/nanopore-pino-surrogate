@@ -1,10 +1,10 @@
-# REPORT FOR EXTERNAL REVIEW — Stage 15 final handoff
+# REPORT FOR EXTERNAL REVIEW — Stage 16 final handoff
 
 Project: `nanopore_pino_surrogate` — parameter-conditioned physics-informed
 neural operator for steady axisymmetric Poisson--Nernst--Planck (PNP)
 transport in a charged cylindrical nanopore.
 Root: `/Users/javadalizargar/Google drive MAC/PINN to a Neural Operator`
-Date: 2026-10-20. State: **COMPLETE** (Stage 1–15 done; stop point reached; archived at Zenodo DOI 10.5281/zenodo.23487404).
+Date: 2026-10-20. State: **COMPLETE** (Stage 1–16 done; stop point reached; archived at Zenodo DOI 10.5281/zenodo.23487404).
 
 Stage 8 and Stage 9 were executed on explicit authorization. The fine-grained
 token was used **in-memory only** (`GH_TOKEN` environment for `gh`; a transient
@@ -52,7 +52,55 @@ it released **v1.3.2** after a **31/31 audit**. **Stage 15** restored the
 missing Figure 1B label and spaced all panel letters, resolved the 72 external
 StatWhy citation-integrity flags, aligned the CPC Program Summary with the
 official template, added a self-contained `test_run/`, and released **v1.3.3**
-after a **33/33 audit**.
+after a **33/33 audit**. **Stage 16** repaired the remaining supplementary
+consistency issues: it moved all twenty display tables into strict S1–S20
+physical order in an S0 compendium, synchronized the supplement title, fixed
+the `s`/`Σc`/`S` algebra and the Fisher precision, propagated the exact
+18×18 conditioning numbers, corrected the S20 absolute-value header and
+caption, added the asymmetric-valence boundary, preserved code underscores in
+the DOCX, and hardened Word tables with repeating headers and
+non-splitting rows; it released **v1.3.4** after a **35/35 audit**.
+
+## Stage 16 deliverables (supplement compendium, Fisher precision, DOCX integrity)
+
+1. **Strict S1–S20 order.** Supplement Section S0 is now a summary index plus
+   compendium that physically lists Supplementary Tables S1–S20 in order;
+   captions, Markdown first-seen order, and DOCX caption order all read
+   S1, S2, …, S20.
+2. **Algebra and notation.** `s=2√(c₊c₋)>0` is defined as the positive
+   geometric salt scale and `Σc=c₊+c₋=√(s²+ρ²)>0` as the total ion
+   concentration; the incorrect `√(s²+ρ²)=s` identity is gone, and the capital
+   `S` is reserved for the near-wall selectivity observable.
+3. **Fisher precision.** The 18×18 plane is now reported consistently
+   (minimum κ=9.9×10⁷, median 7.5×10⁸, 99.7% above 10⁸) in §1, §3.3, §3.9,
+   §4, and §5; the abstract/highlight use κ≳10⁸; the §3.9 inverse text gives
+   the absolute 0.0526 against the 0.0982 prior width; and the S20 header is
+   `|∂lnI/∂ln q_w|` with the unrounded-float64 reduction-ratio caption note.
+4. **DOCX integrity.** All 21 supplement table grids repeat their header row
+   (`<w:tblHeader/>`) and forbid row splitting (`<w:cantSplit/>`); fenced code
+   blocks render in Courier New with `_` and `--` preserved; the supplement
+   title exactly matches the main title.
+5. **Release (16.5).** Enforcement, typography, DOCX, and cover letters were
+   rerun; audit **35/35 PASS** (checks 34–35 added); packages rebuilt
+   (public **165 files / 31,138,757 B**, private **851 files / 89,928,079 B**);
+   the portal was redeployed and verified (`/api/solve_sg` 196.137225 pA,
+   HTTP 301→HTTPS); both repositories were force-pushed and tagged **v1.3.4**
+   (`results/stage16_release.json`).
+
+## Stage 16 key results
+```
+Supplement tables   : S1-S20 in strict physical order; S0 summary index plus compendium
+Algebra             : s=2 sqrt(c+ c-) > 0 ; Sigma c=c+ + c-=sqrt(s^2+rho^2)>0
+Fisher precision    : kappa(F) min 9.9e7, median 7.5e8, 99.7% above 1e8 (18x18 plane)
+S20                 : |dlnI/dln q_w| header; unrounded-float64 reduction-ratio note
+DOCX                : 21 table grids; every header repeats; every row cantSplit; underscores preserved
+Title               : supplement title matches the main title exactly
+Audit               : 35/35 PASS (checks 34-35 added)
+Public repo         : tag v1.3.4, 165 files, 31,138,757 B
+Private repo        : tag v1.3.4, 851 files, 89,928,079 B
+Portal              : https://pino.statwhy.com/ ; live API 196.137225 pA ; HTTP 301 -> HTTPS
+Zenodo              : https://doi.org/10.5281/zenodo.23487404
+```
 
 ## Stage 15 deliverables (citation integrity, figure labels, CPC template)
 
@@ -349,32 +397,34 @@ metadata-only references have no online abstract and are recorded as
 
 ```
 Public repository   : https://github.com/Javad-Alizargar/nanopore-pino-surrogate            (visibility: public)
-  main / tag v1.3.3: de9e3d01890ffc2effc3c3c04487cb92fe265d73 (authoritative: results/stage15_release.json)
+  main / tag v1.3.4: b872255c1982a4d9842ffac1eab4237882cbc580 (authoritative: results/stage16_release.json)
+  tag v1.3.3      : de9e3d01890ffc2effc3c3c04487cb92fe265d73
   tag v1.3.2      : e4ca7330fd2aa477f76ed01998469df526c8507a
   tag v1.3.1      : b2b832192200339f542a6a25e204450ce8fda2dc
   tag v1.3.0      : e97497f861bd8a71f0cf5c660fa871939531c64a
   tag v1.2.0      : 30ba2f841253ce45c264606af719cb64ba6b13ea
   tag v1.0.2      : 0105f96a0863db8f426ac07c6e08851a6403b3cb
   tag v1.0.0      : af5695f50b073a331a60e46ac7a327c610e9ae9e
-  files / size    : 165 files, 31.1 MB (31,138,758 B)
+  files / size    : 165 files, 31.1 MB (31,138,757 B)
 
 Private repository  : https://github.com/Javad-Alizargar/nanopore-pino-surrogate-private    (visibility: private)
-  main / tag v1.3.3: 36cc073e54b5e589ccf9800d47662bfec3301ebf (authoritative: results/stage15_release.json)
+  main / tag v1.3.4: 5631a61caf454e36b1656c17b56354869cc60699 (authoritative: results/stage16_release.json)
+  tag v1.3.3      : 36cc073e54b5e589ccf9800d47662bfec3301ebf
   tag v1.3.2      : 3b5d61a62a036b836bf701122a296721b9b0ab6f
   tag v1.3.1      : 518d51875bf8169e53b5f79325e71979423ad6c7
   tag v1.3.0      : 7801333be258d18bfe877efe028bb46cff2613e3
   tag v1.2.0      : 39c0a3d57dd11be40c15d282a6249df8f271b04b
-  files / size    : 852 files, 89.9 MB (89,889,029 B)
+  files / size    : 851 files, 89.9 MB (89,928,079 B)
 
 (Each package embeds a build timestamp in its manifest, so a rebuild advances the
-commit SHA; the exact released SHAs are always recorded in results/stage15_release.json.)
+commit SHA; the exact released SHAs are always recorded in results/stage16_release.json.)
 ```
 
 Hosted portal (primary) and GitHub Pages (mirror):
 ```
 Portal      : https://pino.statwhy.com/            (Operator / Benchmarks / Live solver; live SG/FV API)
 Health      : https://pino.statwhy.com/api/health  ; POST /api/solve_sg -> 196.137225 pA
-TLS         : Let's Encrypt, expires 2027-01-17 ; HTTP->HTTPS redirect active
+TLS         : Let's Encrypt, expires 2027-01-16 ; HTTP->HTTPS redirect active
 Mirror      : https://javad-alizargar.github.io/nanopore-pino-surrogate/web_simulator/
 ```
 
@@ -382,7 +432,7 @@ Mirror      : https://javad-alizargar.github.io/nanopore-pino-surrogate/web_simu
 
 ```
 manuscript/Manuscript_PINO_clean.docx               (0 tables, 6 inline figures, native OMML, 0 equation images)
-manuscript/Supplementary_Materials_PINO.docx        (16 tables, native OMML, 0 images)
+manuscript/Supplementary_Materials_PINO.docx        (21 table grids, native OMML, 0 images)
 manuscript/Cover_Letter_CPC.docx / Cover_Letter_JCP.docx / Cover_Letter_CPC_JCP.docx  (no LaTeX leakage)
 manuscript/Cover_Letter_CPC.md / Cover_Letter_JCP.md / Cover_Letter_CPC_JCP.md
 manuscript/Manuscript.md, manuscript/Supplementary_Materials.md       (canonical sources)
@@ -410,6 +460,7 @@ Stage 8 literature tasks : stage8_literature_verification $0.0630572 ; _v2 $0.00
 Other Stage 8 work       : $0.00 (editing, DOCX, packages, audit, deploy are local/API only)
 Stage 9 work             : $0.00 (typography, OMML export, portal, hosted deploy, assessment, release are all local/API-free)
 Stage 11 work            : $0.00 (experiments, numbering, DOCX, audit, portal and release are all local/API-free)
+Stage 16 work            : $0.00 (supplement reorder, algebra/Fisher edits, DOCX hardening, audit, and release are all local/API-free)
 ```
 
 ## Verified scientific results (unchanged, canonical)

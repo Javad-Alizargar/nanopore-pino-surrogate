@@ -401,6 +401,64 @@ def cpc_and_test_run_checks() -> dict:
                             (proc.stderr.strip()[-300:] if proc else "missing test_run"))}
 
 
+def stage16_checks() -> dict:
+    from docx import Document
+    from docx.oxml.ns import qn
+    from docx.table import Table
+    from docx.text.paragraph import Paragraph
+
+    man = (ROOT / "manuscript" / "Manuscript.md").read_text()
+    sup = (ROOT / "manuscript" / "Supplementary_Materials.md").read_text()
+    md_caps = [int(m.group(1)) for m in
+               re.finditer(r"^\*\*Supplementary Table S(\d+)\.", sup, re.M)]
+    doc = Document(ROOT / "manuscript" / "Supplementary_Materials_PINO.docx")
+    body_caps: list[int] = []
+    tables: list[Table] = []
+    for item in doc.iter_inner_content():
+        if isinstance(item, Paragraph):
+            m = re.match(r"^Supplementary Table S(\d+)\.", item.text.strip())
+            if m:
+                body_caps.append(int(m.group(1)))
+        elif isinstance(item, Table):
+            tables.append(item)
+    header_ok = all(
+        t.rows[0]._tr.trPr is not None
+        and t.rows[0]._tr.trPr.find(qn("w:tblHeader")) is not None
+        for t in tables
+    )
+    no_split_ok = all(
+        row._tr.trPr is not None
+        and row._tr.trPr.find(qn("w:cantSplit")) is not None
+        for t in tables for row in t.rows
+    )
+    exact_title = (
+        "Conductance identifiability limits and physics-constrained neural operators "
+        "for axisymmetric Poisson--Nernst--Planck transport in charged nanopores"
+    )
+    docx_text = "\n".join(p.text for p in doc.paragraphs)
+    filename = "scripts/generate_parametric_dataset.py"
+    double_abs = [
+        re.compile(r"\\ln\s*\|\s*q_w\s*\|\s*\|"),
+        re.compile(r"\\ln\s*\\vert\s*q_w\s*\\vert\s*\\vert"),
+    ]
+    bad_abs = any(p.search(man + "\n" + sup + "\n" + docx_text) for p in double_abs)
+    bad_algebra = bool(re.search(
+        r"\\sqrt\{s\^2\s*\+\s*\\rho\^2\}\s*=\s*s", man + "\n" + sup))
+    return {
+        "md_table_order": md_caps,
+        "docx_table_order": body_caps,
+        "docx_table_count": len(tables),
+        "table_order_ok": md_caps == list(range(1, 21)) and body_caps == list(range(1, 21)),
+        "header_repeat_ok": header_ok and len(tables) > 0,
+        "rows_no_split_ok": no_split_ok and len(tables) > 0,
+        "title_ok": man.splitlines()[0].strip() == "# " + exact_title
+                    and f"**Manuscript:** {exact_title}" in sup,
+        "code_filename_ok": filename in sup and filename in docx_text,
+        "algebra_ok": not bad_algebra,
+        "double_abs_ok": not bad_abs,
+    }
+
+
 def main() -> None:
     tokens, apis_names = secret_tokens()
     public = scan_tree(PUB, tokens)
@@ -416,6 +474,7 @@ def main() -> None:
     stray = stray_figure_checks()
     brackets = bracket_integrity_check()
     cpc = cpc_and_test_run_checks()
+    s16 = stage16_checks()
     summary = json.loads((ROOT / "reproducibility" / "PACKAGE_SUMMARY.json").read_text())
 
     def ok(cond: bool) -> str:
@@ -479,6 +538,11 @@ def main() -> None:
          ok(brackets["ok"])),
         ("Figure 1--6 panel labels present/spaced; official CPC template and test_run pass",
          ok(cpc["panels_ok"] and cpc["cpc_ok"] and cpc["files_ok"] and cpc["test_ok"])),
+        ("Supplementary tables physically ordered S1--S20; Word headers repeat and rows cannot split",
+         ok(s16["table_order_ok"] and s16["header_repeat_ok"] and s16["rows_no_split_ok"])),
+        ("Stage-16 title, algebra, code filename, and single-absolute Fisher notation",
+         ok(s16["title_ok"] and s16["algebra_ok"] and s16["code_filename_ok"]
+            and s16["double_abs_ok"])),
     ]
 
     lines = [

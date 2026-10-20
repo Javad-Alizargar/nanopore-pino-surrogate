@@ -1,8 +1,8 @@
 # STATUS
 
 Project: `nanopore_pino_surrogate`
-Updated: 2026-10-20 (Stage 15 — Figure 1B label/cleared A–D spacing, 72-flag citation-integrity repair, official CPC template + test_run, 33/33 audit; v1.3.3 release)
-Completion state: **COMPLETE** (all Stage 1–15 deliverables produced; review is AI-assisted, not expert peer review; DOCX page-rendered via LibreOffice and validated structurally; archived at Zenodo DOI 10.5281/zenodo.23487404)
+Updated: 2026-10-20 (Stage 16 — S1–S20 supplement compendium, Fisher/notation repair, DOCX table/code integrity, 35/35 audit; v1.3.4 release)
+Completion state: **COMPLETE** (all Stage 1–16 deliverables produced; review is AI-assisted, not expert peer review; DOCX page-rendered via LibreOffice and validated structurally; archived at Zenodo DOI 10.5281/zenodo.23487404)
 
 ## Phase
 Stage 1 — Preflight, Capability & Accounting Bootstrap, Project Brief. **Done.**
@@ -22,6 +22,7 @@ Stage 12 — Conductance-identifiability reframing (title/abstract/intro/§3.2/�
 Stage 13 — Official Zenodo DOI integrated; exact-SG diffusivity-asymmetry proof (new S20); CPiP positioning, DA-PINN compression, §3.3–3.6 streamlining and §3.9 protocol-design/boundary expansion; Figure 1C typo fix; strict S1–S20 first-citation order; **31/31** audit; v1.3.1 release. **Done.**
 Stage 14 — Explicit CPiP statement at the end of §1; DA-PINN comparison contextualized with both error values and fold improvements; §3.6 compressed and §3.7 final paragraph reduced to one sentence; Section-1 first citations now progress monotonically 1..60; **31/31** audit; v1.3.2 release. **Done.**
 Stage 15 — Figure 1B label restored and A–D letters given ≥14 px clearance; all six figures pass exact panel-set/in-bounds/clearance checks; 72 StatWhy citation-integrity flags resolved with individualized clause attribution; prose square brackets restricted to citations; CPC Program Summary aligned to the official field order; self-contained `test_run/` added; **33/33** audit; v1.3.3 release. **Done.**
+Stage 16 — Supplement S1–S20 collected in strict physical order under an S0 summary index; title synchronized; `s`/`Σc`/`S` algebra and Fisher precision corrected; S20 header/caption fixed; asymmetric-valence boundary added; DOCX tables repeat headers and forbid row splitting; fenced code underscores preserved; **35/35** audit; v1.3.4 release. **Done.**
 
 ## Progress (Stage 10)
 - [x] **10.1 three experiments** — `scripts/run_stage10_upgrades.py` (with per-experiment caching `results/_stage10_cache_*`). (A) **Trunk ablation** (6 variants, matched capacity, 500 epochs, 3 seeds): the plain MLP trunk gives the best interp net-charge error (0.0914) while radial variants (0.098–0.116) reduce the wall-gradient error by ~7% (radial k=30: 4.83e-3 vs 5.20e-3) and give the best current error (multi-scale 0.274%). (B) **Scaling law** on a new 384-state solve expansion: interp net-charge error 0.3927→0.1299 for N=36→288, fitting alpha=0.552 (psi 0.535); OOD net-charge error is nearly flat (0.317→0.253, alpha=0.13). (C) **Identifiability** (15 states, 3 protocols, 0.2/1/2% noise, 30x30 grid + Nelder–Mead; 18x18 Fisher sweep): single/multi-salt I–V leave q_w unidentifiable (median err 0.77–1.00) while recovering R to <0.7%; the dual I–V+selectivity protocol recovers both below 0.3%. Fisher: kappa(F) median 7.46e8 (99.7% > 1e8), dlnI/dlnR=2.029, |dlnI/dlnq_w| <= 1.6e-3.
@@ -43,6 +44,21 @@ Stage 15 — Figure 1B label restored and A–D letters given ≥14 px clearance
 - [x] **12.4 bibliography/formatting** — refs 33 (Krishnapriyan et al.) and 57 (Zhang, Xiao, Ghosh 2025, 9(1) 45–64) repaired in `literature_db.json` and the manuscript; DOCX References now render `[1]--[60]` with hanging indent (no Word list numbering); supplement S7c reordered S16–S19 and crosswalk extended; enforcement range updated to 1..19.
 - [x] **12.5 release** — audit extended to **30 checks** (bibliography format; table first-seen order + no stray legend children) and passes **30/30**; DOCX rebuilt (main: 0 tables, 6 inline figures, 287 native equations; supplement: 20 table grids, 0 images, 354 native equations); cover letters retitled/updated; packages rebuilt (public **159 files / 31.1 MB**, private **841 files / 89.8 MB**); portal redeployed (`/api/solve_sg` 196.137225 pA); both repos tagged **v1.3.0** (`results/stage12_release.json`).
 
+## Stage 16 key results
+```
+Supplement tables            : S1-S20 strict physical order; S0 summary index + compendium
+Algebra                      : s=2 sqrt(c+ c-) > 0 ; Sigma c=c+ + c-=sqrt(s^2+rho^2)>0
+Fisher precision             : min 9.9e7 ; median 7.5e8 ; 99.7% above 1e8 (18x18 plane)
+S20                          : |dlnI/dln q_w| header ; unrounded-float64 reduction-ratio note
+DOCX integrity               : 21 grids ; every header repeats ; every row cantSplit ; underscores preserved
+Title                        : supplement matches main title exactly
+Audit                        : 35/35 PASS (checks 34-35 added)
+Public repo                  : Javad-Alizargar/nanopore-pino-surrogate ; tag v1.3.4 ; 165 files, 31,138,757 B
+Private repo                 : Javad-Alizargar/nanopore-pino-surrogate-private ; tag v1.3.4 ; 851 files, 89,928,079 B
+Portal                       : https://pino.statwhy.com/ ; live API 196.137225 pA ; HTTP 301 -> HTTPS
+Zenodo                       : https://doi.org/10.5281/zenodo.23487404
+```
+
 ## Stage 15 key results
 ```
 Figure 1                     : Panel B restored; A/B/C/D at x=-0.06, y=1.08; min gap 24.9 px
@@ -52,8 +68,8 @@ Non-citation brackets        : 0; 28,200 typo absent
 CPC Program Summary          : official 11-field order, Python 3.10+/MIT/Code Ocean N/A
 test_run/                    : sample input + expected output + script; CPC TEST RUN PASSED (<1 s)
 Audit                        : 33/33 PASS (zero secret hits)
-Public repo                  : Javad-Alizargar/nanopore-pino-surrogate ; tag v1.3.3 ; 165 files, 31.1 MB
-Private repo                 : Javad-Alizargar/nanopore-pino-surrogate-private ; tag v1.3.3 ; 852 files, 89.9 MB
+Public repo                  : Javad-Alizargar/nanopore-pino-surrogate ; tag v1.3.3 ; 165 files, 31,138,758 B
+Private repo                 : Javad-Alizargar/nanopore-pino-surrogate-private ; tag v1.3.3 ; 852 files, 89,889,029 B
 Portal                       : https://pino.statwhy.com/ ; live API 196.137225 pA
 Zenodo                       : https://doi.org/10.5281/zenodo.23487404
 ```
@@ -202,6 +218,6 @@ Inverse demo       : R median rel error 0.004574 ; q_w not identifiable (median 
 - The DOCX is native OMML and was additionally page-rendered via LibreOffice for visual confirmation; a Word-specific proof was not available in this environment.
 - q_w identifiability is a physical limit of conductance-only inversion (confirmed by the Stage-10 Fisher analysis and single/multi-salt protocols); the manuscript shows an independent near-wall selectivity observable resolves it.
 - The archived release is permanently available at Zenodo DOI `10.5281/zenodo.23487404`; the DOI is recorded in the manuscript, cover letter, DOCX, and public README.
-- The package builder regenerates each package tree, so the archive history was force-pushed for each release (v1.0.0–v1.1.0); the public and private tags through `v1.3.3` are stable.
+- The package builder regenerates each package tree, so the archive history was force-pushed for each release (v1.0.0–v1.1.0); the public and private tags through `v1.3.4` are stable.
 - The multi-scale radial trunk is retained as the released default (favorable wall-gradient and current behaviour), but its advantage over a plain MLP trunk is modest and is reported honestly as an ablation rather than as a requirement.
 - Literature claim support was adjudicated with an API-backed abstract audit plus human-style adjudication of flag clusters; 12 references are metadata-only (no online abstract) and are recorded as such.
