@@ -1,0 +1,20 @@
+{
+  "public": {
+    "repo": "Javad-Alizargar/nanopore-pino-surrogate",
+    "sha": "e4ca7330fd2aa477f76ed01998469df526c8507a",
+    "visibility": "public",
+    "visibility_ok": true,
+    "pages": {
+      "html_url": "https://javad-alizargar.github.io/nanopore-pino-surrogate/",
+      "status": "building",
+      "url": "https://javad-alizargar.github.io/nanopore-pino-surrogate/web_simulator/"
+    },
+    "portal": "https://pino.statwhy.com/"
+  },
+  "private": {
+    "repo": "Javad-Alizargar/nanopore-pino-surrogate-private",
+    "sha": "3b5d61a62a036b836bf701122a296721b9b0ab6f",
+    "visibility": "private",
+    "visibility_ok": true
+  }
+}

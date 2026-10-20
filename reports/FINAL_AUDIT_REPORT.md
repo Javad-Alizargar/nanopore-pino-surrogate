@@ -1,10 +1,10 @@
 # Final audit report
 
-Generated: 2026-10-20T02:14:07Z
+Generated: 2026-10-20T02:28:48Z
 
 Audited packages:
-- Public: 161 files, 31.0 MB
-- Private: 844 files, 89.8 MB
+- Public: 161 files, 31.1 MB
+- Private: 845 files, 89.8 MB
 
 ## Checklist
 
@@ -47,7 +47,7 @@ Audited packages:
 - Credential files inspected: 12 (values never printed).
 - Public package secret-value hits: []
 - Private package secret-value hits: []
-- Tracked/unignored files scanned: 203; hits: []
+- Tracked/unignored files scanned: 204; hits: []
 - Public secret-name hits: []
 - Private secret-name hits: []
 - Abstract: 247 words; highlights: 5 (max 84 chars).
@@ -56,7 +56,7 @@ Audited packages:
 - Display items: figure first-citation order [1, 2, 3, 4, 5, 6]; main-text data tables 0; supplement tables 20; uncited supplement tables [].
 - Sequential numbering: references [1, 2, 3, 4, 5]... (n=60); supplementary tables [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]; main equations [1, 2, 3, 4, 5, 6, 7, 8]; supplement equations [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].
 - Stage-11 upgrades: {"tables": true, "json_keys": {"fisher_sgfv_validation": true, "constraint_schemes_benchmark": true, "physics_weight_sweep": true}, "statistics_keys": true, "script": true}.
-- DOCX: {"Manuscript_PINO_clean.docx": {"exists": true, "tables": 0, "omath": 304, "omathpara": 0, "media": 6, "equation_pngs": [], "n_drawings": 6, "figures_before_references": true, "raw_dollar": false, "latex_commands": false, "equation_or_latex_leak": false, "refs_60": true}, "Supplementary_Materials_PINO.docx": {"exists": true, "tables": 21, "omath": 415, "omathpara": 0, "media": 0, "equation_pngs": [], "n_drawings": 0, "figures_before_references": true, "raw_dollar": false, "latex_commands": false, "equation_or_latex_leak": false, "refs_60": false}}.
+- DOCX: {"Manuscript_PINO_clean.docx": {"exists": true, "tables": 0, "omath": 302, "omathpara": 0, "media": 6, "equation_pngs": [], "n_drawings": 6, "figures_before_references": true, "raw_dollar": false, "latex_commands": false, "equation_or_latex_leak": false, "refs_60": true}, "Supplementary_Materials_PINO.docx": {"exists": true, "tables": 21, "omath": 415, "omathpara": 0, "media": 0, "equation_pngs": [], "n_drawings": 0, "figures_before_references": true, "raw_dollar": false, "latex_commands": false, "equation_or_latex_leak": false, "refs_60": false}}.
 
 ## Scope and limitations
 

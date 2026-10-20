@@ -168,8 +168,8 @@
       "16": 16,
       "17": 17,
       "18": 18,
-      "20": 19,
-      "19": 20
+      "19": 19,
+      "20": 20
     }
   },
   "equations_main": {
@@ -270,12 +270,12 @@
     "available": true,
     "figures": {
       "1": {
-        "caption_index": 83,
+        "caption_index": 84,
         "drawing_near_caption": true,
         "drawing_offset": -1
       },
       "2": {
-        "caption_index": 88,
+        "caption_index": 89,
         "drawing_near_caption": true,
         "drawing_offset": -1
       },
@@ -285,17 +285,17 @@
         "drawing_offset": -1
       },
       "4": {
-        "caption_index": 103,
+        "caption_index": 101,
         "drawing_near_caption": true,
         "drawing_offset": -1
       },
       "5": {
-        "caption_index": 107,
+        "caption_index": 105,
         "drawing_near_caption": true,
         "drawing_offset": -1
       },
       "6": {
-        "caption_index": 115,
+        "caption_index": 112,
         "drawing_near_caption": true,
         "drawing_offset": -1
       }

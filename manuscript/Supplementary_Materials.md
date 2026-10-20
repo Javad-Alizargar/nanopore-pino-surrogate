@@ -440,7 +440,7 @@ This section documents the three Stage-11 studies and the Stage-12 OOD decomposi
 
 ## S7d. Diffusivity asymmetry and the conductance flat direction
 
-**Supplementary Table S20.** Exact SG/FV diffusivity-ratio scan at the benchmark state ($V_\mathrm{app}=50$ mV, $q_w=-0.01$, $R=5$ nm) and at low salt ($C_0=20$ mol $m^{-3}$). The anion diffusivity is fixed at $D_-=2.03\times10^{-9}$ m$^2$ s$^{-1}$ and the cation diffusivity is varied; $\kappa(\mathcal{F})$ is the condition number of $\mathcal{F}=J^\top J$ with $J=\partial(\ln|I|,S)/\partial(\ln R,\ln|q_w|)$, using four non-zero biases for the single-salt protocol and adding $S$ at 50 mV for the dual protocol. Sensitivities are centered finite differences at relative step $10^{-3}$.
+**Supplementary Table S20.** Exact SG/FV diffusivity-ratio scan at the benchmark state ($V_\mathrm{app}=50$ mV, $q_w=-0.01$, $R=5$ nm) and at low salt ($C_0=20$ mol $m^{-3}$). The anion diffusivity is fixed at $D_-=2.03\times10^{-9}$ $m^2$ $s^{-1}$ and the cation diffusivity is varied; $\kappa(\mathcal{F})$ is the condition number of $\mathcal{F}=J^\top J$ with $J=\partial(\ln|I|,S)/\partial(\ln R,\ln|q_w|)$, using four non-zero biases for the single-salt protocol and adding $S$ at 50 mV for the dual protocol. Sensitivities are centered finite differences at relative step $10^{-3}$.
 
 | State | Electrolyte | $D_+/D_-$ | $\vert\partial\ln I/\partial\ln\vert q_w\vert\vert$ | $\kappa_\mathrm{single}$ | $\kappa_\mathrm{dual}$ | Reduction |
 |---|---|---|---|---|---|---|
