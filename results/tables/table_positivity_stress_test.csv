@@ -1,0 +1,16 @@
+scheme,metric,value
+linear_projection,min_c_minus,0.9065965414047241
+linear_projection,n_points,61488
+linear_projection,n_negative_raw,0
+linear_projection,fraction_negative_raw,0.0
+linear_projection,max_abs_identity_mismatch,1.1920928955078125e-07
+linear_projection,median_abs_identity_mismatch,3.725290298461914e-08
+linear_projection,max_softplus_bias,8.940696716308594e-08
+linear_projection,analytic_softplus_bias_at_zero,0.03465735902799726
+linear_projection,max_curvature_d2c_drho2,5.0
+hyperbolic,min_c_minus,0.911853862139347
+hyperbolic,min_c_plus_times_c_minus,0.9999246611480428
+hyperbolic,max_abs_identity_mismatch,1.1102230246251565e-16
+hyperbolic,median_abs_identity_mismatch,0.0
+hyperbolic,max_curvature_d2c_drho2,0.2500072817519523
+hyperbolic,identity_mismatch_float64,1.1102230246251565e-16
