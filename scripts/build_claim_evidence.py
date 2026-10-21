@@ -5,7 +5,7 @@ The map has a uniform 10-column schema and two claim families:
 
   * C01--C28: quantitative manuscript claims, each tied to an archived result
     artifact (evidence_basis = archived_result_artifact).
-  * L01--L60: literature-support claims, one per cited reference, each tied to
+  * L01--L61: literature-support claims, one per cited reference, each tied to
     the API-backed abstract/metadata audit (evidence_basis from
     `results/literature_claim_verification.json`).
 

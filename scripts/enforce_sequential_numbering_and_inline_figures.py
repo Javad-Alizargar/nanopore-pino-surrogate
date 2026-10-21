@@ -7,7 +7,7 @@ What it does (deterministic, idempotent):
      the main text are reassigned so that the first time a citation appears the
      integer is 1, then 2, ... 60.  Bracketed groups are sorted, de-duplicated,
      and collapsed to an en-dash for runs of three or more.  The reference list,
-     ``manuscript/literature_db.json``, the L01--L60 rows of
+     ``manuscript/literature_db.json``, the L01--L61 rows of
      ``manuscript/claim_evidence.csv``, and
      ``results/literature_claim_verification.json`` are permuted to match.
   2. Supplementary-table renumbering by first citation in the main text, so the
@@ -134,8 +134,8 @@ def read_doc(path: Path) -> tuple[str, str, object]:
 def renumber_references() -> dict:
     body, refs, _ = read_doc(MAN)
     order = first_appearance(body, REF_RE, "citation")
-    if sorted(order) != list(range(1, 61)):
-        raise SystemExit(f"reference first-appearance is not a permutation of 1..60: {sorted(order)}")
+    if sorted(order) != list(range(1, 62)):
+        raise SystemExit(f"reference first-appearance is not a permutation of 1..61: {sorted(order)}")
     perm = {old: i + 1 for i, old in enumerate(order)}
 
     old_entries = {}
@@ -143,12 +143,12 @@ def renumber_references() -> dict:
         m = REF_LINE.match(line.strip())
         if m:
             old_entries[int(m.group(1))] = m.group(2)
-    if sorted(old_entries) != list(range(1, 61)):
-        raise SystemExit(f"reference list is not 1..60: {sorted(old_entries)}")
+    if sorted(old_entries) != list(range(1, 62)):
+        raise SystemExit(f"reference list is not 1..61: {sorted(old_entries)}")
 
     new_body = rewrite_refs(body, perm)
     new_lines = ["## References", ""]
-    for n in range(1, 61):
+    for n in range(1, 62):
         new_lines.append(f"{n}. {old_entries[order[n - 1]]}")
     new_refs = "\n".join(new_lines) + "\n"
     new_text = new_body + new_refs
@@ -169,7 +169,7 @@ def renumber_references() -> dict:
     if len(l_rows) != 60:
         raise SystemExit(f"expected 60 L rows, found {len(l_rows)}")
     new_l = []
-    for old in range(1, 61):
+    for old in range(1, 62):
         row = l_rows[old - 1]
         row = list(row)
         row[1] = rewrite_refs(row[1], perm)
@@ -335,7 +335,7 @@ def main() -> None:
     REPORT.parent.mkdir(parents=True, exist_ok=True)
     REPORT.write_text(json.dumps(report, indent=2) + "\n")
     print(json.dumps({
-        "references_strict": report["references"]["first_appearance"] == list(range(1, 61)),
+        "references_strict": report["references"]["first_appearance"] == list(range(1, 62)),
         "tables_strict": report["supplementary_tables"]["first_appearance"] == list(range(1, 23)),
         "equations_main_strict": report["equations_main"]["strict_sequential"],
         "equations_supp_strict": report["equations_supp"]["strict_sequential"],

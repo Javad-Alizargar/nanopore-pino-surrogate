@@ -79,6 +79,16 @@ class ConservativePNP:
         psi.ravel()[self.free] = values
         return psi
 
+    def poisson_from_concentrations(self, cp, cm):
+        rhs = self.load.copy()
+        rhs[:, 1:-1] += self.beta * (cp - cm)[:, 1:-1]
+        return self.poisson_lu.solve(rhs.ravel()).reshape(self.grid.shape)
+
+    def gummel_step(self, psi):
+        cp = self.ions(psi, 1)
+        cm = self.ions(psi, -1)
+        return self.poisson_from_concentrations(cp, cm), cp, cm
+
     def residual(self, values):
         psi = self.unpack(values)
         cp, cm = self.ions(psi, 1), self.ions(psi, -1)

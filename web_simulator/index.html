@@ -137,28 +137,19 @@
       </p>
       <h2>Scope and validation</h2>
       <p class="hint">
-        This release adds a trunk ablation, a data-scaling study on a 384-state solve
-        expansion, a multi-protocol identifiability analysis, and a Stage-11
-        reviewer-upgrade study. The multi-scale radial trunk is a modest near-wall
-        inductive bias rather than a necessity (a plain MLP trunk matches the net-charge
-        field; the radial basis lowers the wall-gradient error by about 7%).
-        In-distribution error follows an <i>N</i><sup>&minus;0.55</sup> scaling law, while
-        out-of-distribution error is nearly flat in the number of training states. A
-        four-way constraint benchmark shows that the hyperbolic reparameterization matches
-        the best projection scheme while keeping the charge identity exact to machine
-        precision, and a physics-weight sweep places the default 10<sup>&minus;3</sup> at
-        the Pareto point. A Fisher analysis and a 15-state, three-protocol inverse study
-        show that the pore radius is recovered from a current&ndash;voltage curve to
-        0.46%, whereas wall charge is a flat direction below the noise floor unless an
-        independent near-wall selectivity observable is added (then both are recovered to
-        below 0.3%). A centered finite-difference Jacobian of the exact float64 solver
-        confirms the operator sensitivity: the two agree on the log-log current sensitivity
-        to radius to 1.5&times;10<sup>&minus;4</sup> and on the dual-protocol conditioning
-        number to about 1%. A diffusivity-asymmetry scan at four <i>D</i><sub>+</sub>/<i>D</i><sub>&minus;</sub>
-        ratios (1.00, 0.966, 0.655, 0.20) shows that unequal diffusivities add only a small
-        linear charge channel: even for NaCl the single-salt conditioning remains above
-        10<sup>16</sup>, whereas the near-wall selectivity observable lowers it by six to ten
-        orders of magnitude. The released software is permanently archived at Zenodo DOI
+        This release adds a reference-free warm-started hybrid controller and a
+        blind 2,700-realization inverse benchmark. The controller reproduces the
+        cold SG/FV current to 3&times;10<sup>&minus;12</sup> at 0.165&nbsp;s per state,
+        9.5-fold below a full 21&times;61 solve. The blind study uses shared noisy
+        observations and shows that dual current-plus-selectivity inversion reaches
+        1.7% median charge error but only 68% 95% coverage at 1% noise, because a
+        roughly 2% surrogate bias floor remains; the reversal potential is strongly
+        state dependent (263% median error for weak charge versus 7.3% for strong
+        charge). Single- and multi-salt current&ndash;voltage data still leave charge
+        unidentifiable. The hyperbolic reparameterization keeps the charge identity
+        exact to machine precision, and the exact float64 SG/FV Jacobian confirms the
+        operator's log-log current sensitivity to radius to about 1.5&times;10<sup>&minus;4</sup>.
+        The released software is permanently archived at Zenodo DOI
         <a href="https://doi.org/10.5281/zenodo.23487404" rel="noopener">10.5281/zenodo.23487404</a>.
       </p>
     </div>

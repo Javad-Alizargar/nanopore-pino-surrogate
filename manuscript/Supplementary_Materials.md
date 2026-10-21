@@ -148,7 +148,7 @@ The twenty-two display tables are collected here in strict order S1 through S22,
 | Supplementary Table S20 | Exact SG/FV diffusivity-ratio scan | `results/tables/table_diffusivity_symmetry_breaking.csv` |
 | Supplementary Table S21 | Interpreted baselines and strong-charge benchmark | `results/tables/table_analytic_pod_baselines.csv`; `results/tables/table_strong_charge_benchmark.csv` |
 | Supplementary Table S22 | Sensitivity-controlled hybrid solver and reversal-potential inverse benchmark | `results/tables/table_s22_hybrid_controller_and_reversal.csv`; `results/stage19_hybrid_controller.json` |
-| Claim map | Claim-to-evidence audit (C01--C44, L01--L60) | `manuscript/claim_evidence.csv` |
+| Claim map | Claim-to-evidence audit (C01--C44, L01--L61) | `manuscript/claim_evidence.csv` |
 | Statistics | Canonical JSON values | `results/statistics.json` |
 | Inverse study | Stage-18 inverse, nesting, and SG/FV-in-the-loop results | `results/stage18_final_evidence.json` |
 | Literature verification | API-backed abstract and support audit | `results/literature_claim_verification.json` |
@@ -342,27 +342,30 @@ The twenty-two display tables are collected here in strict order S1 through S22,
 
 
 
-**Supplementary Table S22.** Sensitivity-controlled hybrid solver and unequal-reservoir reversal-potential benchmark on 120 states (40 weak, 40 transitional, 40 strong). (A) Median current and reversal-potential errors with median wall time for eight methods. The Pino-Controller uses the Weyl gate and one conservative SG/FV correction; full SG/FV is the reference. (B) Hybrid inverse recovery at 0.2\%, 1\%, and 2\% noise for the reversal-potential and dual protocols (5 states, 20 realizations). The reversal-potential protocol is better than the dual hybrid for charge but does not reach the projected sub-percent error; the Stage-18 dual-selectivity result remains the best inverse protocol.
+**Supplementary Table S22.** Sensitivity-controlled hybrid solver and blind unequal-reservoir reversal-potential benchmark. (A) Median current and reversal-potential errors with median wall time for eight methods on 120 states (40 weak, 40 transitional, 40 strong). The Pino-Controller warm-starts the conservative SG/FV solve from the operator and is reference-free; full SG/FV is the reference. (B) Blind Stage-20 inversion with shared noisy observations, 15 states, and 20 realizations per protocol and noise level; B is the residual-controlled SG/FV Gauss--Newton estimator. Errors are medians over all states and over the weak, transitional, and strong charge bands; coverage is the fraction of 95\% intervals containing the truth. The dual protocol reaches 1.7\% median charge error at 1\% noise but its intervals are undercovered (68\%), while the reversal potential is strongly state dependent (263\% weak-charge versus 7.3\% strong-charge). Single-salt conductance remains unidentifiable.
 
 | Method | Median $I$ rel. error | Median $V_\mathrm{rev}$ abs. error (mV) | Median time (s) |
 |---|---|---|---|
-| Ohmic bulk | $8.06\times10^{-5}$ | 1.252 | $<10^{-3}$ |
-| Linearized PB | $3.21\times10^{-6}$ | 1.252 | $<10^{-3}$ |
-| POD--RBF | $3.56\times10^{-4}$ | 1.252 | $<10^{-3}$ |
-| PI-DeepONet | $1.06\times10^{-3}$ | 0.0352 | 0.002 |
-| Calibrated DINO-style | $8.51\times10^{-4}$ | 0.131 | 0.003 |
-| One-step Gummel | $1.91\times10^{-4}$ | 0.0352 | 0.151 |
-| Full SG/FV | 0 | 0 | 1.527 |
-| Pino-Controller (Weyl-gated) | $1.91\times10^{-4}$ | 0.0352 | 0.201 |
+| Ohmic bulk | $8.06\times10^{-5}$ | 0.03907 | $9.21\times10^{-6}$ |
+| Linearized PB | $3.21\times10^{-6}$ | 0.03907 | $5.21\times10^{-4}$ |
+| POD--RBF | $3.56\times10^{-4}$ | 0.03907 | $2.22\times10^{-3}$ |
+| PI-DeepONet | $1.06\times10^{-3}$ | 0.03838 | $2.07\times10^{-4}$ |
+| Calibrated DINO-style | $8.51\times10^{-4}$ | 0.1384 | $1.09\times10^{-3}$ |
+| One-step Gummel | $1.80\times10^{-4}$ | 0.03838 | $1.02\times10^{-2}$ |
+| Full SG/FV | 0 | 0 | 1.575 |
+| Pino-Controller (warm SG/FV) | $3.03\times10^{-12}$ | 0.03838 | $1.65\times10^{-1}$ |
 
-| Protocol | Noise | $q_w$ median rel. error | $R$ median rel. error | $q_w$ coverage 95\% | $R$ coverage 95\% |
-|---|---|---|---|---|---|
-| reversal potential | 0.2\% | 9.74\% | 0.168\% | 100\% | 96\% |
-| reversal potential | 1\% | 16.9\% | 0.232\% | 100\% | 89\% |
-| reversal potential | 2\% | 21.8\% | 0.350\% | 98\% | 62\% |
-| dual + selectivity | 0.2\% | 39.2\% | 0.169\% | 18\% | 96\% |
-| dual + selectivity | 1\% | 39.2\% | 0.233\% | 9\% | 89\% |
-| dual + selectivity | 2\% | 31.4\% | 0.349\% | 11\% | 62\% |
+| Protocol | Noise | $q_w$ all | $q_w$ weak | $q_w$ trans. | $q_w$ strong | $R$ all | $q_w$ cov. all | weak | trans. | strong |
+|---|---|---|---|---|---|---|---|---|---|---|
+| single salt | 0.2\% | 140.71\% | 997.51\% | 486.04\% | 70.48\% | 0.34\% | 100\% | 100\% | 100\% | 100\% |
+| single salt | 1\% | 140.41\% | 1605.31\% | 485.20\% | 77.31\% | 0.30\% | 100\% | 100\% | 100\% | 100\% |
+| single salt | 2\% | 138.44\% | 940.83\% | 206.11\% | 67.67\% | 0.49\% | 100\% | 100\% | 100\% | 100\% |
+| reversal potential | 0.2\% | 31.92\% | 94.03\% | 72.22\% | 6.09\% | 0.05\% | 62\% | 58\% | 49\% | 78\% |
+| reversal potential | 1\% | 20.67\% | 263.41\% | 37.65\% | 7.29\% | 0.20\% | 56\% | 44\% | 46\% | 78\% |
+| reversal potential | 2\% | 24.18\% | 382.51\% | 44.42\% | 7.72\% | 0.33\% | 52\% | 35\% | 40\% | 80\% |
+| dual + selectivity | 0.2\% | 1.47\% | 1.41\% | 1.36\% | 2.62\% | 0.03\% | 4\% | 13\% | 0\% | 0\% |
+| dual + selectivity | 1\% | 1.72\% | 1.38\% | 1.40\% | 2.41\% | 0.17\% | 68\% | 89\% | 70\% | 44\% |
+| dual + selectivity | 2\% | 2.29\% | 2.55\% | 1.80\% | 2.74\% | 0.39\% | 87\% | 87\% | 91\% | 83\% |
 
 
 ---

@@ -1,8 +1,8 @@
 # STATUS
 
 Project: `nanopore_pino_surrogate`
-Updated: 2026-10-21 (Stage 19 — Weyl-gated hybrid solver, unequal-reservoir reversal potential, honest inverse limits, S1–S22, 35/35 audit; v1.5.0 release)
-Completion state: **COMPLETE** (all Stage 1–19 deliverables produced; review is AI-assisted, not expert peer review; DOCX page-rendered via LibreOffice and validated structurally; archived at Zenodo DOI 10.5281/zenodo.23487404)
+Updated: 2026-10-21 (Stage 20 — reference-free warm-started hybrid controller, blind 2,700-realization inverse benchmark, equal-diffusivity and TMS checks, S1–S22, 36/36 audit; v1.6.0 release)
+Completion state: **COMPLETE** (all Stage 1–20 deliverables produced; review is AI-assisted, not expert peer review; DOCX page-rendered via LibreOffice and validated structurally; archived at Zenodo DOI 10.5281/zenodo.23487404)
 
 ## Phase
 Stage 1 — Preflight, Capability & Accounting Bootstrap, Project Brief. **Done.**
@@ -26,6 +26,7 @@ Stage 16 — Supplement S1–S20 collected in strict physical order under an S0 
 Stage 17 — DOCX fenced code emits one compact monospace paragraph per line (Algorithm 1 and S9 verified); Section 1 `[34–40]` and §2.3 prose polished; abstract aligned to six to ten orders at 250 words; S14/S18 clarifying notes added; **35/35** audit; v1.3.5 release. **Done.**
 Stage 18 — Final evidence: exact-SG/FV Fisher validation, matched-loss and strong-charge benchmarks, protocol coverage; dual 4.83%/0.0999%, kappa 1.174e9, 22.84x strong-charge; v1.4.0. **Done.**
 Stage 19 — Weyl-gated hybrid controller and unequal-reservoir reversal potential; 120-state benchmark, 1.907e-4 current error at 7.60x lower cost; reversal inverse q 16.88% at 1% noise; manuscript/supplement S1–S22 and Figures 1C/6D updated; **35/35** audit; v1.5.0. **Done.**
+Stage 20 — Reference-free warm-started controller (3.03e-12 current error, 0.165 s, 9.5x); blind 2,700-realization inverse with shared noisy observations; dual 1.7% median charge but 68% coverage at 1% noise, reversal 7.3% strong versus 263% weak; equal-diffusivity and TMS checks; **36/36** audit; v1.6.0. **Done.**
 
 ## Progress (Stage 10)
 - [x] **10.1 three experiments** — `scripts/run_stage10_upgrades.py` (with per-experiment caching `results/_stage10_cache_*`). (A) **Trunk ablation** (6 variants, matched capacity, 500 epochs, 3 seeds): the plain MLP trunk gives the best interp net-charge error (0.0914) while radial variants (0.098–0.116) reduce the wall-gradient error by ~7% (radial k=30: 4.83e-3 vs 5.20e-3) and give the best current error (multi-scale 0.274%). (B) **Scaling law** on a new 384-state solve expansion: interp net-charge error 0.3927→0.1299 for N=36→288, fitting alpha=0.552 (psi 0.535); OOD net-charge error is nearly flat (0.317→0.253, alpha=0.13). (C) **Identifiability** (15 states, 3 protocols, 0.2/1/2% noise, 30x30 grid + Nelder–Mead; 18x18 Fisher sweep): single/multi-salt I–V leave q_w unidentifiable (median err 0.77–1.00) while recovering R to <0.7%; the dual I–V+selectivity protocol recovers both below 0.3%. Fisher: kappa(F) median 7.46e8 (99.7% > 1e8), dlnI/dlnR=2.029, |dlnI/dlnq_w| <= 1.6e-3.
@@ -46,6 +47,25 @@ Stage 19 — Weyl-gated hybrid controller and unequal-reservoir reversal potenti
 - [x] **12.3 manuscript reframing** — new title; abstract 230 words with the inverse-problem first sentence; highlights revised; Introduction gains inverse/identifiability background and three use cases; §3.2 compressed to one comparison paragraph plus selectivity validation; §3.3 states the decoupling mechanism is the driver and justifies hyperbolic on structural grounds; §3.4 adds the spatial/parametric OOD budget; §3.7 tightened; §5 replaces the positive-result ending with the identifiability limit and the charge-sensitive-observable recommendation.
 - [x] **12.4 bibliography/formatting** — refs 33 (Krishnapriyan et al.) and 57 (Zhang, Xiao, Ghosh 2025, 9(1) 45–64) repaired in `literature_db.json` and the manuscript; DOCX References now render `[1]--[60]` with hanging indent (no Word list numbering); supplement S7c reordered S16–S19 and crosswalk extended; enforcement range updated to 1..19.
 - [x] **12.5 release** — audit extended to **30 checks** (bibliography format; table first-seen order + no stray legend children) and passes **30/30**; DOCX rebuilt (main: 0 tables, 6 inline figures, 287 native equations; supplement: 20 table grids, 0 images, 354 native equations); cover letters retitled/updated; packages rebuilt (public **159 files / 31.1 MB**, private **841 files / 89.8 MB**); portal redeployed (`/api/solve_sg` 196.137225 pA); both repos tagged **v1.3.0** (`results/stage12_release.json`).
+
+## Stage 20 key results
+```
+Controller            : median I err 3.027e-12 ; 0.16544 s ; full 1.57507 s ; 9.5x
+One-step Gummel       : 1.805e-4 ; 0.01020 s
+Reversal / S errors   : 0.03838 mV ; 8.998e-11
+Blind inverse         : 2,700 realizations ; 15 states x 3 protocols x 3 noise x 20
+Dual q at 1% noise    : 1.72% median ; weak 1.38 / trans 1.40 / strong 2.41
+Dual coverage         : 68% overall ; 89/70/44% by band ; 4% at 0.2% noise
+Single-salt q         : 140.4% median ; weak 1605 / trans 485 / strong 77.3
+Vrev q                : 20.67% ; weak 263.4 / trans 37.7 / strong 7.29
+Corrector             : dpsi < 3e-11 ; dc = 0 ; nonuniformity < 2e-12
+Equal-D reversal      : -5.666446 mV
+TMS (q=0, ratio 5)    : +0.725449 mV
+Audit                 : 36/36 PASS
+Public package        : 176 files, 32.2 MB
+Private package       : 870 files, 93.0 MB
+Release               : v1.6.0 ; public + private tagged ; Pages built ; portal HTTP 200
+```
 
 ## Stage 19 key results
 ```

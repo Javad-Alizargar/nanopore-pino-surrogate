@@ -159,7 +159,7 @@ def claim_checks() -> dict:
             "all_supported": len(supported) == len(rows) and len(rows) > 0,
             "all_resolved": all((r.get("status") or r.get("support_status")) in {"supported", "superseded"} for r in rows) and len(rows) > 0,
             "quant_complete": [f"C{i:02d}" for i in range(1, 45)] == [r["claim_id"] for r in quant],
-            "lit_complete": [f"L{i:02d}" for i in range(1, 61)] == [r["claim_id"] for r in lit],
+            "lit_complete": [f"L{i:02d}" for i in range(1, 62)] == [r["claim_id"] for r in lit],
             "all_evidenced": all(r.get("artifact") for r in rows)}
 
 
@@ -309,7 +309,7 @@ def bibliography_checks() -> dict:
     nums = [int(re.match(r"^\[(\d+)\]", p).group(1)) for p in bib]
     bad = [p for p in bib if re.match(r"^\[\d+\]\s+\(\d{4}\)", p)
            or len(p) < 25 or not re.search(r"\(\d{4}\)", p)]
-    return {"ok": nums == list(range(1, 61)) and not bad,
+    return {"ok": nums == list(range(1, 62)) and not bad,
             "count": len(bib), "bad": [p[:80] for p in bad][:5]}
 
 
@@ -331,7 +331,7 @@ def stray_figure_checks() -> dict:
 
 
 def bracket_integrity_check() -> dict:
-    """Every prose square bracket must be a bibliographic citation 1..60."""
+    """Every prose square bracket must be a bibliographic citation 1..61."""
     text = (ROOT / "manuscript" / "Manuscript.md").read_text()
     body = re.sub(r"!\[[^\]]*\]\([^)]*\)", "", text)
     bad = []
@@ -344,7 +344,7 @@ def bracket_integrity_check() -> dict:
             bad.append(token)
             continue
         nums = [int(x) for x in re.findall(r"\d+", token)]
-        if not nums or min(nums) < 1 or max(nums) > 60:
+        if not nums or min(nums) < 1 or max(nums) > 61:
             bad.append(token)
     typo = bool(re.search(r"28\s*,\s*200", body))
     return {"ok": not bad and not typo, "bad_brackets": bad[:20],
@@ -460,6 +460,35 @@ def stage16_checks() -> dict:
     }
 
 
+def stage20_checks() -> dict:
+    path = ROOT / "results" / "stage20_hybrid_verification.json"
+    if not path.exists():
+        return {"ok": False, "reason": "missing stage20 verification"}
+    d = json.loads(path.read_text())
+    corr = d.get("corrector_preserves_reference", {})
+    eq = d.get("equal_diffusivity_reversal", {})
+    tms = d.get("tms_sign_check", {})
+    records = d.get("n_inverse_realizations", 0)
+    hybrid = (ROOT / "scripts" / "operators" / "hybrid_controller.py").read_text()
+    man = (ROOT / "manuscript" / "Manuscript.md").read_text()
+    no_refs = "ref[" not in hybrid
+    no_hardcoded = not re.search(r"(?:runtime|wall_time|elapsed)\s*=\s*[0-9]+\.[0-9]+", hybrid)
+    no_bad_debye = "k_B T / (2 F^2" not in man and "k_BT/(2F^2" not in man
+    no_bad_pct = "54--99%" not in man and "54–99%" not in man
+    cases = corr.get("cases", [])
+    corr_ok = bool(corr.get("pass")) and bool(cases) and all(
+        float(c.get("dpsi", 1e9)) < 1e-9 and float(c.get("dc", 1e9)) < 1e-9
+        and float(c.get("current_nonuniformity", 1e9)) < 1e-11 for c in cases)
+    eq_ok = bool(eq.get("converged")) and -5.7 < float(eq.get("V_rev_mV", 0)) < -5.6
+    tms_ok = abs(float(tms.get("q0_ratio5_mV", 0)) - 0.7254493141463998) < 1e-6
+    return {"ok": corr_ok and eq_ok and tms_ok and records == 2700
+            and no_refs and no_hardcoded and no_bad_debye and no_bad_pct,
+            "corrector": corr_ok, "equal_diffusivity": eq_ok,
+            "tms": tms_ok, "records": records,
+            "reference_free": no_refs, "no_hardcoded_runtime": no_hardcoded,
+            "debye": no_bad_debye, "physics_wording": no_bad_pct}
+
+
 def main() -> None:
     tokens, apis_names = secret_tokens()
     public = scan_tree(PUB, tokens)
@@ -476,6 +505,7 @@ def main() -> None:
     brackets = bracket_integrity_check()
     cpc = cpc_and_test_run_checks()
     s16 = stage16_checks()
+    s20 = stage20_checks()
     summary = json.loads((ROOT / "reproducibility" / "PACKAGE_SUMMARY.json").read_text())
 
     def ok(cond: bool) -> str:
@@ -516,10 +546,10 @@ def main() -> None:
         ("Six figures cited sequentially; no main-text data tables; 22 supplement tables cited",
          ok(display["figure_order"] == [1, 2, 3, 4, 5, 6] and display["body_tables"] == 0
             and display["supp_tables"] == 22 and not display["uncited_supp_tables"])),
-        ("Claim-evidence map spans C01--C44 and L01--L60, all resolved",
+        ("Claim-evidence map spans C01--C44 and L01--L61, all resolved",
          ok(claims["quant_complete"] and claims["lit_complete"] and claims["all_resolved"])),
-        ("References are numbered strictly by first appearance 1..60",
-         ok(seq["ref_order"] == list(range(1, 61)))),
+        ("References are numbered strictly by first appearance 1..61",
+         ok(seq["ref_order"] == list(range(1, 62)))),
         ("Supplementary tables and equations are strictly sequential",
          ok(seq["tab_order"] == list(range(1, 23))
             and seq["eq_main"]["strict_sequential"] and seq["eq_supp"]["strict_sequential"])),
@@ -528,7 +558,7 @@ def main() -> None:
             and seq["figs_docx"].get("all_inline", False))),
         ("Stage-11 reviewer upgrades present (tables, JSON, statistics, script)",
          ok(s11["tables"] and all(s11["json_keys"].values()) and s11["statistics_keys"] and s11["script"])),
-        ("DOCX bibliography is numbered [1]--[60] with authors and years",
+        ("DOCX bibliography is numbered [1]--[61] with authors and years",
          ok(bib["ok"])),
         ("Supplementary tables first-seen 1..22; no stray legend children in figures",
          ok(seq["tab_order"] == list(range(1, 23))
@@ -544,6 +574,8 @@ def main() -> None:
         ("Final title, algebra, code filename, and single-absolute Fisher notation",
          ok(s16["title_ok"] and s16["algebra_ok"] and s16["code_filename_ok"]
             and s16["double_abs_ok"])),
+        ("Stage-20 corrector, equal-diffusivity reversal, TMS sign, blind 2,700-realization inverse, and honest physics wording",
+         ok(s20["ok"])),
     ]
 
     lines = [

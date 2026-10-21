@@ -24,15 +24,15 @@ REPOS = {
         "dir": ROOT / "reproducibility" / "public_repo",
         "name": "Javad-Alizargar/nanopore-pino-surrogate",
         "private": False,
-        "message": "Public release v1.5.0: sensitivity-controlled hybrid solver, reversal-potential limits, and Stage 18/19 evidence (Stages 18-19)",
-        "tag": "v1.5.0",
+        "message": "Public release v1.6.0: reference-free warm-started hybrid controller and blind 2,700-realization inverse benchmark (Stages 18-20)",
+        "tag": "v1.6.0",
     },
     "private": {
         "dir": ROOT / "reproducibility" / "github",
         "name": "Javad-Alizargar/nanopore-pino-surrogate-private",
         "private": True,
-        "message": "Complete private research archive v1.5.0 (Stage 1-19 verified)",
-        "tag": "v1.5.0",
+        "message": "Complete private research archive v1.6.0 (Stage 1-20 verified)",
+        "tag": "v1.6.0",
     },
 }
 
@@ -178,7 +178,7 @@ def main() -> None:
             out[key]["portal"] = portal
             out[key]["portal_verified_http"] = http_code(portal)
     import json
-    (ROOT / "results" / "stage19_release.json").write_text(json.dumps(out, indent=2))
+    (ROOT / "results" / "stage20_release.json").write_text(json.dumps(out, indent=2))
     print(json.dumps(out, indent=2))
 
 

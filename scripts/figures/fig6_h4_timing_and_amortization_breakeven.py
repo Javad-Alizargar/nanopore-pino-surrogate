@@ -107,17 +107,12 @@ axC.legend(frameon=False, fontsize=6.2, loc="upper left")
 K.panel_label(axC, "C", x=-0.16, y=1.02)
 
 axD = fig.add_subplot(gs[1, 1])
-inv = stat["stage18_inverse_sgfv"]["summary"]
-inv19 = stat["stage19_hybrid_controller"]["inverse"]["summary"]
-protos = ["single", "multi", "dual", "vrev_hybrid", "dual_hybrid"]
-q_med = np.array([inv[f"{p}_noise0.01"]["median_q_rel_err"] for p in protos[:3]]
-                 + [inv19[f"{p}_noise0.01"]["median_q_rel_err"] for p in protos[3:]])
-q_err = np.array([inv[f"{p}_noise0.01"]["q_iqr"] for p in protos[:3]]
-                 + [inv19[f"{p}_noise0.01"]["q_iqr"] for p in protos[3:]])
-r_med = np.array([inv[f"{p}_noise0.01"]["median_R_rel_err"] for p in protos[:3]]
-                 + [inv19[f"{p}_noise0.01"]["median_R_rel_err"] for p in protos[3:]])
-r_err = np.array([inv[f"{p}_noise0.01"]["R_iqr"] for p in protos[:3]]
-                 + [inv19[f"{p}_noise0.01"]["R_iqr"] for p in protos[3:]])
+inv20 = stat["stage20_hybrid_verification"]["inverse_by_band"]
+protos = ["single", "vrev", "dual"]
+q_med = np.array([inv20[f"{p}_B_noise0.01_all"]["median_q_rel_err"] for p in protos])
+q_err = np.array([inv20[f"{p}_B_noise0.01_all"]["q_iqr"] for p in protos])
+r_med = np.array([inv20[f"{p}_B_noise0.01_all"]["median_R_rel_err"] for p in protos])
+r_err = np.array([inv20[f"{p}_B_noise0.01_all"]["R_iqr"] for p in protos])
 xp = np.arange(len(protos)); w = 0.38
 axD.bar(xp - w / 2, q_med, w, yerr=q_err / 2, capsize=2.4,
         color=K.C["orange"], edgecolor="0.35", linewidth=0.3,
@@ -133,11 +128,10 @@ for xi, v in zip(xp, r_med):
              rotation=90)
 axD.set_yscale("log"); axD.set_ylim(1e-4, 10.0)
 axD.set_xticks(xp)
-axD.set_xticklabels(["single\nsalt I-V", "multi\nsalt I-V", "dual\n+selectivity",
-                     "reversal\nhybrid", "dual\nhybrid"], fontsize=6.4)
+axD.set_xticklabels(["single\nsalt I-V", "reversal\npotential", "dual\n+S"], fontsize=6.4)
 axD.set_ylabel("median relative error")
-axD.set_title("inversion at 1% noise (Stage 18 exact; Stage 19 hybrid)\n"
-              "15 or 5 states x 20 realizations", fontsize=8.0)
+axD.set_title("blind inversion at 1% noise (Stage 20, B)\n"
+              "15 states x 20 realizations", fontsize=8.0)
 axD.legend(frameon=False, fontsize=6.3, loc="upper right")
 
 K.panel_label(axD, "D", x=-0.16, y=1.10)
@@ -151,5 +145,6 @@ sdata = {"labels": np.array(labels, dtype=object), "latency_ms": np.array(vals),
          "sgfv_dlnq": dq_s, "op_dlnq": dq_o,
          "inverse_q_median": q_med, "inverse_q_iqr": q_err,
          "inverse_R_median": r_med, "inverse_R_iqr": r_err,
-         "fisher_protocols": np.array(protos, dtype=object)}
+         "fisher_protocols": np.array(protos, dtype=object),
+         "inverse_stage20": np.array(protos, dtype=object)}
 K.save_fig(fig, "fig6_h4_timing_and_amortization_breakeven", sdata)

@@ -1,44 +1,56 @@
-# REPORT FOR EXTERNAL REVIEW — Stage 19 final handoff
+# REPORT FOR EXTERNAL REVIEW — Stage 20 final handoff
 
 Project: `nanopore_pino_surrogate` — parameter-conditioned physics-informed
 neural operator for steady axisymmetric Poisson--Nernst--Planck (PNP)
 transport in a charged cylindrical nanopore.
 Root: `/Users/javadalizargar/Google drive MAC/PINN to a Neural Operator`
-Date: 2026-10-21. State: **COMPLETE** (Stages 1–19 done; archived at Zenodo DOI 10.5281/zenodo.23487404).
+Date: 2026-10-21. State: **COMPLETE** (Stages 1–20 done; archived at Zenodo DOI 10.5281/zenodo.23487404).
+
+## Stage 20 deliverables (blind inverse, reference-free controller, v1.6.0)
+
+1. **Reference-free warm-started controller.** `scripts/operators/hybrid_controller.py`
+   and `scripts/run_stage19_hybrid_solver_and_reversal.py` now reproduce the cold
+   conservative SG/FV current to **3.027e-12** median relative error at **0.16544 s**
+   per state, versus **1.57507 s** for the full `21x61` solve (**9.5x** lower cost).
+   One-step Gummel alone gives **1.805e-4** at **0.01020 s**. The controller never
+   reads a reference state: it warm-starts `solve_reference` from the operator and
+   selects the warm start by a residual test.
+2. **Blind 2,700-realization inverse benchmark.** The benchmark covers 15 states,
+   three protocols (single-salt, reversal potential, dual current-plus-selectivity),
+   three noise levels (0.2/1/2%), and 20 realizations, with one shared noisy
+   observation per realization. Truth is `41x121`; estimators are `21x61`; no truth
+   enters any estimator. Records are archived in
+   `results/stage20_complete_records.npz/.csv`.
+3. **Inverse result, honestly bounded.** At 1% noise, dual inversion reaches
+   **1.72%** median charge error (weak/transitional/strong **1.38/1.40/2.41%**),
+   but 95% coverage is only **68%** (89/70/44% by band), and **4%** at 0.2% noise,
+   revealing a roughly **2% surrogate bias floor**. Single-salt charge error is
+   **140.4%** (weak **1605%**, transitional **485%**, strong **77.3%**); reversal
+   charge error is **20.67%** overall (**263.4/37.7/7.29%** by band). The paper
+   therefore claims a bias-limited ~2% dual recovery and a strong-exclusion ~7%
+   reversal recovery, not calibrated sub-percent charge identification.
+4. **Corrector and physics checks.** The conservative corrector preserves a
+   converged SG/FV reference: `dpsi < 3e-11`, `dc = 0`, current nonuniformity
+   `< 2e-12`. Equal diffusivities with `q_w=-1`, `R=5 nm`, `C0=20`,
+   `c_L/c_R=5` give **-5.666446 mV**. The TMS check (`q_w=0`, `c_L/c_R=5`,
+   `C0=100`, `R=5 nm`) gives **+0.725449 mV**.
+5. **Manuscript and supplement.** New abstract, §3.10, Discussion/Conclusion
+   caveats, Figure 6D, and Table S22 now use the blind Stage-20 results. A new
+   derivative-informed reference [61] is integrated; the bibliography is
+   `[1]--[61]`. The audit is **36/36 PASS**; packages contain **176 public files /
+   32.2 MB** and **870 private files / 93.0 MB**.
+6. **Release.** Both repositories are tagged **v1.6.0**; GitHub Pages rebuilt, the
+   web simulator returns HTTP 200, and `https://pino.statwhy.com/` returns HTTP 200.
+   The authoritative SHA record is `results/stage20_release.json`.
 
 ## Stage 19 deliverables (hybrid solver, reversal potential, v1.5.0)
 
-1. **Weyl-gated hybrid controller.** `scripts/run_stage19_hybrid_solver_and_reversal.py`
-   benchmarks eight methods on 120 states (40 weak, 40 transitional, 40 strong).
-   The Pino-Controller applies the operator and one conservative SG/FV correction
-   only when the Weyl singular-value gate accepts the local sensitivity
-   (`epsK = min(0.19*smin, (0.01+0.2*ierr)*smax)`); the gate accepts 10% of
-   observable checks and 20% of sensitivity checks.
-2. **Measured accuracy and cost.** Median current error is **1.907e-4**,
-   reversal-potential error **0.0352 mV**, and wall time **0.2008 s**, against
-   **1.5267 s** for the full `21x61` SG/FV reference: **7.60-fold** lower cost.
-   One-step Gummel has the same current error at 0.1508 s. POD-RBF reaches
-   3.56e-4. The strong-charge band degrades to 2.65e-2 median current error;
-   this band limitation is reported rather than hidden.
-3. **Unequal-reservoir reversal potential.** The exact-boundary ansatz and the
-   SG/FV baseline now support `c_L != c_R`. The exact zero-current reversal
-   potential is only ~0.6–1.3 mV because equal diffusivities cancel the neutral
-   salt diffusion current; the earlier 41 mV Nernst estimate is not applicable.
-4. **Inverse result, honestly bounded.** Hybrid reversal-potential inversion
-   gives q errors **9.74/16.88/21.78%** and R errors **0.168/0.232/0.350%** at
-   0.2/1/2% noise, with q coverage **100/100/98%** and R coverage **96/89/62%**.
-   Dual hybrid gives q errors **39.23/39.23/31.44%** and coverage **18/9/11%**.
-   Neither reaches sub-percent charge recovery; the manuscript therefore retains
-   the Stage-18 dual-selectivity **4.83%** charge result and states the reversal
-   protocol's identifiability limit explicitly.
-5. **Manuscript and supplement.** New title, abstract, sixth highlight, new
-   §3.10, Discussion/Conclusion caveat, Table S22, and Figures 1C/6D updated.
-   Supplement now has S1–S22. The audit is **35/35 PASS**; packages contain
-   **175 public files / 32.1 MB** and **864 private files / 91.0 MB**.
-6. **Release.** Both repositories are public/private as intended and tagged
-   **v1.5.0**; GitHub Pages rebuilt, the web simulator returns HTTP 200, and the
-   portal `https://pino.statwhy.com/` returns HTTP 200. The authoritative SHA
-   record is `results/stage19_release.json`.
+The Stage-19 study established the Weyl-gated controller and unequal-reservoir
+reversal potential on 120 states, with 1.907e-4 current error at 7.60x lower cost
+and a 16.88% reversal charge error at 1% noise. Stage 20 supersedes those inverse
+numbers with the blind 2,700-realization benchmark and the reference-free
+warm-started controller; the Stage-19 hybrid benchmark remains the source for the
+timing comparison and the gate statistics.
 
 ## Stage 18 deliverables (final evidence, v1.4.0)
 

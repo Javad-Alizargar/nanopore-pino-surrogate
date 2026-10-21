@@ -5,18 +5,18 @@
   "web_assets": {
     "web_simulator/index.html": {
       "exists": true,
-      "bytes": 4947,
-      "sha256": "68bb2660ca523550847b8b6a9769b66b2a41a83f2affe9e0c24aeb095be2c23c"
+      "bytes": 8962,
+      "sha256": "a4440e2743462468ddffcefb2805f54d9389deee682f0522275c482af6dc29a1"
     },
     "web_simulator/style.css": {
       "exists": true,
-      "bytes": 4191,
-      "sha256": "e9db730d8f937ba89be502203f654cb0a16680136b5814e04ad01259a52cb013"
+      "bytes": 6218,
+      "sha256": "befc7506a901438fd60ad0a767c8231f246f781d5e3c99b2ed3c54433aca1724"
     },
     "web_simulator/app.js": {
       "exists": true,
-      "bytes": 12170,
-      "sha256": "6c7e67244056bba2c35b2c0ed93c8e29db9dbe9ed7701bf5a7d857eca6199cf2"
+      "bytes": 16777,
+      "sha256": "8dcacd05e78a5f906105008f3e6817105b7e7553e08df7fde76a42d58e834d90"
     },
     "web_simulator/data/model_meta.json": {
       "exists": true,
@@ -135,10 +135,10 @@
   },
   "gradio_app": {
     "deeponet_mean_I_pA": 196.13211998653415,
-    "deeponet_infer_ms": 0.75683300383389,
+    "deeponet_infer_ms": 0.25633303448557854,
     "fno_mean_I_pA": 196.4517998371323,
-    "fno_infer_ms": 2.363833016715944,
-    "live_reference_wall_s": 0.20569012500345707,
+    "fno_infer_ms": 4.889957956038415,
+    "live_reference_wall_s": 0.24814649997279048,
     "live_reference_method": "direct",
     "live_reference_iterations": 4,
     "live_reference_residual": 2.4219382055434835e-10,
@@ -146,7 +146,7 @@
     "deeponet_vs_live_rho_rel_l2": 0.0946895782336638,
     "deeponet_vs_live_I_rel_l2": 0.0007364054767019306,
     "sgfv_mean_I_pA": 196.13722469169713,
-    "headless_total_s": 0.2912321250187233,
+    "headless_total_s": 0.3136461670510471,
     "source": "scripts/app_gradio.py (functions imported; same code path as UI)"
   }
 }

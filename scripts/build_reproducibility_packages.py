@@ -127,7 +127,7 @@ expansion, a multi-scale radial physics-informed DeepONet, a real-DFT Fourier
 neural operator, the inverse recovery demo, a trunk ablation, a data-scaling
 study, a Fisher-information and multi-protocol identifiability analysis, a
 four-way constraint-scheme benchmark, an exact SG/FV Fisher validation, a
-physics-weight sweep, and a static browser simulator.
+physics-weight sweep, a reference-free warm-started hybrid controller, a blind 2,700-realization inverse benchmark, and a static browser simulator.
 
 ## Quick start
 
@@ -140,6 +140,7 @@ python scripts/run_inverse_recovery_demo.py     # five-state inverse demo
 python scripts/run_stage10_upgrades.py          # trunk ablation, scaling law, identifiability
 python scripts/run_stage11_reviewer_upgrades.py # 4-way constraints, physics sweep, exact Fisher
 python scripts/run_stage12_diagnostics.py       # OOD decomposition, selectivity, positivity
+python scripts/run_stage19_hybrid_solver_and_reversal.py  # hybrid controller, reversal, blind inverse
 python scripts/run_diffusivity_symmetry_check.py  # exact-SG diffusivity-asymmetry scan
 python scripts/serve_interactive.py             # live SG/FV + operator service
 python scripts/app_gradio.py                    # Gradio comparison app
@@ -174,6 +175,7 @@ cases, and a live SG/FV reference solver).
 | `scripts/run_stage11_reviewer_upgrades.py` | four-way constraint benchmark, physics-weight sweep, exact SG/FV Fisher validation |
 | `scripts/run_stage12_diagnostics.py` | OOD spatial/parametric decomposition, selectivity validation, positivity stress test |
 | `scripts/run_stage18_final_evidence.py` | corrected conductance Fisher, exact SG/FV sensitivities, inverse protocols, baselines, matched loss, strong charge |
+| `scripts/run_stage19_hybrid_solver_and_reversal.py` | warm-started hybrid controller, unequal-reservoir reversal potential, blind 2,700-realization inverse |
 | `scripts/run_diffusivity_symmetry_check.py` | exact-SG/FV diffusivity-ratio scan and dual-observable conditioning |
 | `scripts/run_cpc_test_case.py` | self-contained CPC verification run against `test_run/` |
 | `scripts/enforce_sequential_numbering_and_inline_figures.py` | first-appearance reference/table renumbering and inline-figure audit |
@@ -201,7 +203,7 @@ cases, and a live SG/FV reference solver).
   author  = {Alizargar, Javad},
   title   = {PINO-Nanopore: parameter-conditioned physics-informed neural operator for axisymmetric Poisson--Nernst--Planck transport},
   year    = {2026},
-  version = {v1.5.0},
+  version = {v1.6.0},
   doi     = {10.5281/zenodo.23487404},
   url     = {https://doi.org/10.5281/zenodo.23487404}
 }
