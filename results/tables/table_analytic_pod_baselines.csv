@@ -1,0 +1,11 @@
+split,method,psi_rel_l2,rho_rel_l2,S_rel_l2,I_rel_l2
+interp_test,Ohmic bulk,0.0103088,1,1,4.86523e-05
+interp_test,Linearized radial PB,0.000968645,0.0939431,0.0796047,8.24948e-06
+interp_test,POD-RBF (30 modes),0.001022,0.43307,0.0881621,4.84113e-05
+interp_test,PI-DeepONet,0.000891363,0.0824816,0.0177036,0.00109304
+interp_test,FNO-2D,0.00549521,0.0930981,0.0263629,0.00851086
+ood_test,Ohmic bulk,0.152745,1,1,0.000832804
+ood_test,Linearized radial PB,0.0202812,0.112734,0.101686,0.000529494
+ood_test,POD-RBF (30 modes),0.0463072,0.333246,0.308944,0.00475671
+ood_test,PI-DeepONet,0.0202388,0.367782,0.316154,0.00136292
+ood_test,FNO-2D,0.0207906,0.224113,0.178911,0.00912288

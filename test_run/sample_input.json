@@ -1,0 +1,7 @@
+{
+  "case": "benchmark_0_heldout_interpolation",
+  "mu": [50.0, 100.0, -0.01, 5.0],
+  "mu_order": ["V_app_mV", "C0_mol_m3", "q_w", "R_nm"],
+  "model": "results/models/deeponet_reparam_seed42.onnx",
+  "tolerance": 1e-05
+}
