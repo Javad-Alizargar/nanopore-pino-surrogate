@@ -147,7 +147,9 @@
       17,
       18,
       19,
-      20
+      20,
+      21,
+      22
     ],
     "permutation": {
       "1": 1,
@@ -169,7 +171,9 @@
       "17": 17,
       "18": 18,
       "19": 19,
-      "20": 20
+      "20": 20,
+      "21": 21,
+      "22": 22
     }
   },
   "equations_main": {
@@ -224,44 +228,44 @@
   },
   "figures_markdown": {
     "1": {
-      "mention_line": 177,
-      "image_line": 179,
-      "caption_line": 181,
+      "mention_line": 178,
+      "image_line": 180,
+      "caption_line": 182,
       "image_after_mention": true,
       "caption_after_image": true
     },
     "2": {
-      "mention_line": 185,
-      "image_line": 189,
-      "caption_line": 191,
+      "mention_line": 186,
+      "image_line": 190,
+      "caption_line": 192,
       "image_after_mention": true,
       "caption_after_image": true
     },
     "3": {
-      "mention_line": 197,
-      "image_line": 199,
-      "caption_line": 201,
+      "mention_line": 198,
+      "image_line": 200,
+      "caption_line": 202,
       "image_after_mention": true,
       "caption_after_image": true
     },
     "4": {
-      "mention_line": 211,
-      "image_line": 215,
-      "caption_line": 217,
+      "mention_line": 212,
+      "image_line": 216,
+      "caption_line": 218,
       "image_after_mention": true,
       "caption_after_image": true
     },
     "5": {
-      "mention_line": 221,
-      "image_line": 223,
-      "caption_line": 225,
+      "mention_line": 222,
+      "image_line": 224,
+      "caption_line": 226,
       "image_after_mention": true,
       "caption_after_image": true
     },
     "6": {
-      "mention_line": 233,
-      "image_line": 237,
-      "caption_line": 239,
+      "mention_line": 234,
+      "image_line": 238,
+      "caption_line": 240,
       "image_after_mention": true,
       "caption_after_image": true
     }

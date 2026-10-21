@@ -33,6 +33,8 @@ PUBLIC_FILES = [
     "scripts/run_stage10_upgrades.py",
     "scripts/run_stage11_reviewer_upgrades.py",
     "scripts/run_stage12_diagnostics.py",
+    "scripts/run_stage18_final_evidence.py",
+    "scripts/run_stage19_hybrid_solver_and_reversal.py",
     "scripts/run_cpc_test_case.py",
     "scripts/run_diffusivity_symmetry_check.py",
     "scripts/enforce_sequential_numbering_and_inline_figures.py",
@@ -48,6 +50,9 @@ PUBLIC_FILES = [
     "results/stage11_upgrades.json",
     "results/stage11_numbering_report.json",
     "results/stage12_diagnostics.json",
+    "results/stage18_final_evidence.json",
+    "results/stage19_hybrid_controller.json",
+    "results/tables/table_s22_hybrid_controller_and_reversal.csv",
     "results/_stage12_selectivity_cache.json",
     "results/stage2_sg_baseline_verification.json",
     "results/stage3_operator_smoke.json",
@@ -168,11 +173,12 @@ cases, and a live SG/FV reference solver).
 | `scripts/run_stage10_upgrades.py` | trunk ablation, 384-state scaling law, Fisher/multi-protocol identifiability |
 | `scripts/run_stage11_reviewer_upgrades.py` | four-way constraint benchmark, physics-weight sweep, exact SG/FV Fisher validation |
 | `scripts/run_stage12_diagnostics.py` | OOD spatial/parametric decomposition, selectivity validation, positivity stress test |
+| `scripts/run_stage18_final_evidence.py` | corrected conductance Fisher, exact SG/FV sensitivities, inverse protocols, baselines, matched loss, strong charge |
 | `scripts/run_diffusivity_symmetry_check.py` | exact-SG/FV diffusivity-ratio scan and dual-observable conditioning |
 | `scripts/run_cpc_test_case.py` | self-contained CPC verification run against `test_run/` |
 | `scripts/enforce_sequential_numbering_and_inline_figures.py` | first-appearance reference/table renumbering and inline-figure audit |
 | `scripts/figures/` | figure generation and layout verification |
-| `results/` | statistics, tables 1--6 and S1--S20, verification JSONs, export models |
+| `results/` | statistics, tables 1--6 and S1--S22, verification JSONs, export models |
 | `data/processed/` | 240-state dataset and 384-state scaling expansion |
 | `web_simulator/` | static browser simulator (ONNX + JS SG engine) |
 | `tests/` | smoke and parity tests |
@@ -195,7 +201,7 @@ cases, and a live SG/FV reference solver).
   author  = {Alizargar, Javad},
   title   = {PINO-Nanopore: parameter-conditioned physics-informed neural operator for axisymmetric Poisson--Nernst--Planck transport},
   year    = {2026},
-  version = {v1.3.5},
+  version = {v1.5.0},
   doi     = {10.5281/zenodo.23487404},
   url     = {https://doi.org/10.5281/zenodo.23487404}
 }
@@ -215,6 +221,8 @@ ARCH_MAP = """# Architecture map
 | Stage-11 upgrades | `scripts/run_stage11_reviewer_upgrades.py` | 240-state dataset, ONNX operator, SG/FV solver | `results/stage11_upgrades.json`, `results/tables/table_sgfv_fisher_validation.csv`, `table_constraint_schemes_4way.csv`, `table_physics_weight_sensitivity.csv` | Figures 3A--D, 6C,D; Tables S16--S19 |
 | Stage-12 diagnostics | `scripts/run_stage12_diagnostics.py` | 240-state dataset, ONNX operator, SG/FV solver | `results/stage12_diagnostics.json`, `results/tables/table_ood_mechanistic_breakdown.csv`, `table_inversion_selectivity_validation.csv`, `table_positivity_stress_test.csv` | Figures 4B, 6C,D; Table S14 |
 | Stage-13 diffusivity scan | `scripts/run_diffusivity_symmetry_check.py` | 240-state dataset, exact SG/FV solver | `results/tables/table_diffusivity_symmetry_breaking.csv`, `results/statistics.json` (`diffusivity_symmetry_breaking`) | Table S20; Section 3.9 |
+| Stage-18 final evidence | `scripts/run_stage18_final_evidence.py` | 240-state dataset, ONNX operator, exact SG/FV solver | `results/stage18_final_evidence.json`, `results/tables/table_s15b_*.csv`, `table_sgfv_operator_fisher_8x8.csv`, `table_analytic_pod_baselines.csv` | Figures 3F, 6C,D; Tables S15, S18--S21 |
+| Stage-19 hybrid solver | `scripts/run_stage19_hybrid_solver_and_reversal.py` | 240-state dataset, ONNX operator, unequal-reservoir SG/FV solver | `results/stage19_hybrid_controller.json`, `results/tables/table_s22_hybrid_controller_and_reversal.csv` | Figures 1C, 6D; Table S22 |
 | Figures | `scripts/figures/*.py` | `results/*` | `figures/*.png`, `pdf` | Figures 1--6 |
 | Deployment | `scripts/build_web_simulator.py`, `scripts/build_web_bundle.py` | ONNX models | `web_simulator/` | -- |
 | Live apps | `scripts/serve_interactive.py`, `scripts/app_gradio.py` | solver, models | HTTP/Gradio services | -- |

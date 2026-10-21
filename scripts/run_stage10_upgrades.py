@@ -530,7 +530,7 @@ class OnnxOperator:
         return s.mean(axis=1)
 
 
-ALPHA = 0.20  # relative step for finite differences
+ALPHA = 1e-3  # relative step for finite differences
 FIM_BIASES = np.array([-50.0, -25.0, 25.0, 50.0])  # exclude V=0 (I=0 by symmetry)
 
 
@@ -549,36 +549,31 @@ def fisher_analysis(op, C0, q_w, R_nm, v_biases=FIM_BIASES):
     dI_dlnq = (logabs(q_w * (1 + ALPHA), R_nm) - logabs(q_w * (1 - ALPHA), R_nm)) / (2 * ALPHA)
     dI_dlnR = (logabs(q_w, R_nm * (1 + ALPHA)) - logabs(q_w, R_nm * (1 - ALPHA))) / (2 * ALPHA)
     J = np.column_stack([dI_dlnR, dI_dlnq])
-    F = J.T @ J
+    F = (J.T @ J) / (0.01 ** 2)
     ev = np.sort(np.abs(np.linalg.eigvalsh(F)))[::-1]
-    cond = float(ev[0] / max(ev[-1], 1e-30))
+    cond = float(ev[0] / max(ev[-1], 1e-300))
     return {"J": J.tolist(), "F": F.tolist(),
-            "eig": ev.tolist(), "cond": cond,
+            "eig": ev.tolist(), "cond": cond, "kappa_q": cond,
             "dlnI_dlnR": float(np.mean(dI_dlnR)),
             "dlnI_dlnq": float(np.mean(dI_dlnq))}
 
 
 def fisher_plane(op, n=18):
-    """Condition number and sensitivities across a (lambda_D/R, |q_w|) grid."""
+    """Noise-whitened Fisher conditioning over negative q_w and C0 at R=5 nm."""
     from operators.constants import A_LAMBDA_M2
-    lam = np.linspace(0.05, 0.55, n)
-    qw = np.linspace(0.005, 0.05, n)
-    C0_grid = np.logspace(np.log10(200.0), np.log10(10.0), n)  # thin -> thick EDL
     R_nm = 5.0
+    C0_grid = np.logspace(np.log10(200.0), np.log10(20.0), n)
+    qw = -np.geomspace(0.002, 0.05, n)
     grid = []
-    for i, c0 in enumerate(C0_grid):
-        # lambda_D/R target -> C0 = A_LAMBDA_M2/(lambda*R)^2 ; solve for lambda
-        lam_d_over_r = lam[i]
-        lamd = lam_d_over_r * R_nm * 1e-9
-        c0 = A_LAMBDA_M2 / lamd ** 2
-        for j, q in enumerate(qw):
+    for c0 in C0_grid:
+        lam_d_over_r = float(np.sqrt(A_LAMBDA_M2 / c0) / (R_nm * 1e-9))
+        for q in qw:
             fa = fisher_analysis(op, float(c0), float(q), R_nm)
-            grid.append({"lambda_D_over_R": float(lam_d_over_r),
+            grid.append({"lambda_D_over_R": lam_d_over_r,
                          "C0": float(c0), "q_w": float(q),
-                         "cond": fa["cond"],
+                         "cond": fa["cond"], "kappa_q": fa["cond"],
                          "dlnI_dlnR": fa["dlnI_dlnR"], "dlnI_dlnq": fa["dlnI_dlnq"]})
     return grid
-
 
 def grid_candidates(q_lo, q_hi, r_lo, r_hi, nq=28, nr=28, seed=20261020):
     rng = np.random.default_rng(seed)

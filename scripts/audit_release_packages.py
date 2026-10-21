@@ -157,7 +157,8 @@ def claim_checks() -> dict:
     return {"claims": len(rows), "quant": len(quant), "lit": len(lit),
             "statuses": sorted({(r.get("status") or r.get("support_status") or "") for r in rows}),
             "all_supported": len(supported) == len(rows) and len(rows) > 0,
-            "quant_complete": [f"C{i:02d}" for i in range(1, 39)] == [r["claim_id"] for r in quant],
+            "all_resolved": all((r.get("status") or r.get("support_status")) in {"supported", "superseded"} for r in rows) and len(rows) > 0,
+            "quant_complete": [f"C{i:02d}" for i in range(1, 45)] == [r["claim_id"] for r in quant],
             "lit_complete": [f"L{i:02d}" for i in range(1, 61)] == [r["claim_id"] for r in lit],
             "all_evidenced": all(r.get("artifact") for r in rows)}
 
@@ -386,7 +387,7 @@ def cpc_and_test_run_checks() -> dict:
     cpc_ok = all(p >= 0 for p in positions) and positions == sorted(positions)
     cpc_ok = cpc_ok and "Python 3.10+ (tested on 3.14)" in man
     cpc_ok = cpc_ok and "Not applicable" in man and "MIT License (MIT)" in man
-    cpc_ok = cpc_ok and "Supplementary Sections S0--S10 and Supplementary Tables S1--S20" in man
+    cpc_ok = cpc_ok and "Supplementary Sections S0--S10 and Supplementary Tables S1--S22" in man
     run_files = [PUB / "test_run" / "sample_input.json",
                  PUB / "test_run" / "expected_output.json",
                  PUB / "test_run" / "README.md",
@@ -432,8 +433,8 @@ def stage16_checks() -> dict:
         for t in tables for row in t.rows
     )
     exact_title = (
-        "Conductance identifiability limits and physics-constrained neural operators "
-        "for axisymmetric Poisson--Nernst--Planck transport in charged nanopores"
+        "Sensitivity-controlled physics-constrained neural operators and conductance identifiability "
+        "limits for Poisson--Nernst--Planck transport in charged nanopores"
     )
     docx_text = "\n".join(p.text for p in doc.paragraphs)
     filename = "scripts/generate_parametric_dataset.py"
@@ -448,7 +449,7 @@ def stage16_checks() -> dict:
         "md_table_order": md_caps,
         "docx_table_order": body_caps,
         "docx_table_count": len(tables),
-        "table_order_ok": md_caps == list(range(1, 21)) and body_caps == list(range(1, 21)),
+        "table_order_ok": md_caps == list(range(1, 23)) and body_caps == list(range(1, 23)),
         "header_repeat_ok": header_ok and len(tables) > 0,
         "rows_no_split_ok": no_split_ok and len(tables) > 0,
         "title_ok": man.splitlines()[0].strip() == "# " + exact_title
@@ -512,15 +513,15 @@ def main() -> None:
             and docx["Supplementary_Materials_PINO.docx"]["media"] == 0)),
         ("Public package has no private logs/download/literature", ok(not any((PUB / p).exists() for p in ("logs", "download", "literature", "apis", ".git")))),
         ("Private package contains manuscript and reports", ok((PRIV / "manuscript/Manuscript.md").exists() and (PRIV / "reports/STATUS.md").exists())),
-        ("Six figures cited sequentially; no main-text data tables; 20 supplement tables cited",
+        ("Six figures cited sequentially; no main-text data tables; 22 supplement tables cited",
          ok(display["figure_order"] == [1, 2, 3, 4, 5, 6] and display["body_tables"] == 0
-            and display["supp_tables"] == 20 and not display["uncited_supp_tables"])),
-        ("Claim-evidence map spans C01--C38 and L01--L60, all supported",
-         ok(claims["quant_complete"] and claims["lit_complete"] and claims["all_supported"])),
+            and display["supp_tables"] == 22 and not display["uncited_supp_tables"])),
+        ("Claim-evidence map spans C01--C44 and L01--L60, all resolved",
+         ok(claims["quant_complete"] and claims["lit_complete"] and claims["all_resolved"])),
         ("References are numbered strictly by first appearance 1..60",
          ok(seq["ref_order"] == list(range(1, 61)))),
         ("Supplementary tables and equations are strictly sequential",
-         ok(seq["tab_order"] == list(range(1, 21))
+         ok(seq["tab_order"] == list(range(1, 23))
             and seq["eq_main"]["strict_sequential"] and seq["eq_supp"]["strict_sequential"])),
         ("Figures are placed inline within 1-2 paragraphs of the first mention (Markdown + DOCX)",
          ok(all(v["image_after_mention"] and v["caption_after_image"] for v in seq["figs"].values())
@@ -529,8 +530,8 @@ def main() -> None:
          ok(s11["tables"] and all(s11["json_keys"].values()) and s11["statistics_keys"] and s11["script"])),
         ("DOCX bibliography is numbered [1]--[60] with authors and years",
          ok(bib["ok"])),
-        ("Supplementary tables first-seen 1..20; no stray legend children in figures",
-         ok(seq["tab_order"] == list(range(1, 21))
+        ("Supplementary tables first-seen 1..22; no stray legend children in figures",
+         ok(seq["tab_order"] == list(range(1, 23))
             and not stray["child_refs"] and not stray["png_meta"])),
         ("Official Zenodo DOI present in manuscript, main DOCX, CPC letter, and public README",
          ok(zendo_doi_check())),
@@ -538,9 +539,9 @@ def main() -> None:
          ok(brackets["ok"])),
         ("Figure 1--6 panel labels present/spaced; official CPC template and test_run pass",
          ok(cpc["panels_ok"] and cpc["cpc_ok"] and cpc["files_ok"] and cpc["test_ok"])),
-        ("Supplementary tables physically ordered S1--S20; Word headers repeat and rows cannot split",
+        ("Supplementary tables physically ordered S1--S22; Word headers repeat and rows cannot split",
          ok(s16["table_order_ok"] and s16["header_repeat_ok"] and s16["rows_no_split_ok"])),
-        ("Stage-16 title, algebra, code filename, and single-absolute Fisher notation",
+        ("Final title, algebra, code filename, and single-absolute Fisher notation",
          ok(s16["title_ok"] and s16["algebra_ok"] and s16["code_filename_ok"]
             and s16["double_abs_ok"])),
     ]

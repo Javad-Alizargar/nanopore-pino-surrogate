@@ -207,7 +207,7 @@ def renumber_references() -> dict:
 def renumber_tables() -> dict:
     body, _, _ = read_doc(MAN)
     order = first_appearance(body, TAB_RE, "table")
-    if sorted(order) != list(range(1, 21)):
+    if sorted(order) != list(range(1, 23)):
         raise SystemExit(
             f"supplementary-table first-appearance is not a permutation of 1..20: {sorted(order)}")
     perm = {old: i + 1 for i, old in enumerate(order)}
@@ -336,7 +336,7 @@ def main() -> None:
     REPORT.write_text(json.dumps(report, indent=2) + "\n")
     print(json.dumps({
         "references_strict": report["references"]["first_appearance"] == list(range(1, 61)),
-        "tables_strict": report["supplementary_tables"]["first_appearance"] == list(range(1, 21)),
+        "tables_strict": report["supplementary_tables"]["first_appearance"] == list(range(1, 23)),
         "equations_main_strict": report["equations_main"]["strict_sequential"],
         "equations_supp_strict": report["equations_supp"]["strict_sequential"],
         "figures_inline": all(v["image_after_mention"] and v["caption_after_image"]

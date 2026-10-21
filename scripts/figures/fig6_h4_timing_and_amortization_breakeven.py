@@ -78,53 +78,68 @@ axB.text(0.66, 0.105, "browser ONNX (0.072 ms)\n+ Gradio live SG/FV compare",
          transform=axB.transAxes, ha="center", fontsize=5.9)
 K.panel_label(axB, "B", x=-0.12, y=1.15)
 
-# ---- Panels C/D: exact SG/FV vs operator Fisher/Jacobian agreement ------
-fv = stat["stage11_fisher_sgfv_validation"]
-frecs = fv["records"]
+# ---- Panels C/D: exact SG/FV sensitivities and inverse recovery ---------
+fp = stat["stage18_fisher_plane_corrected"]
+ex = fp["exact_8x8"]
 
 axC = fig.add_subplot(gs[1, 0])
-dR_s = np.array([r["sgfv_single"]["dlnI_dlnR"] for r in frecs])
-dR_o = np.array([r["op_single"]["dlnI_dlnR"] for r in frecs])
-dq_s = np.array([r["sgfv_single"]["dlnI_dlnq_absmean"] for r in frecs])
-dq_o = np.array([r["op_single"]["dlnI_dlnq_absmean"] for r in frecs])
-lims = (1e-6, 1e1)
+dR_s = np.array([r["exact_dlnI_dlnR"] for r in ex])
+dR_o = np.array([r["op_dlnI_dlnR"] for r in ex])
+dq_s = np.abs(np.array([r["exact_dlnI_dlnq"] for r in ex]))
+dq_o = np.abs(np.array([r["op_dlnI_dlnq"] for r in ex]))
+lims = (1e-6, 3.0)
 axC.plot(lims, lims, color="0.5", lw=0.9, ls="--")
-axC.scatter(dR_s, dR_o, s=26, facecolor=K.C["blue"], marker="o",
-            edgecolor="white", lw=0.4, label=r"$\partial\ln I/\partial\ln R$")
-axC.scatter(dq_s, dq_o, s=26, facecolor=K.C["orange"], marker="s",
-            edgecolor="white", lw=0.4,
-            label=r"$|\partial\ln I/\partial\ln q_w|$ (abs.)")
+axC.scatter(dR_s, dR_o, s=24, facecolor=K.C["blue"], marker="o",
+            edgecolor="white", lw=0.35,
+            label=r"$\partial\ln I/\partial\ln R$")
+axC.scatter(dq_s, dq_o, s=24, facecolor=K.C["orange"], marker="s",
+            edgecolor="white", lw=0.35,
+            label=r"$|\partial\ln I/\partial\ln q_w|$")
 axC.set_xscale("log"); axC.set_yscale("log")
 axC.set_xlim(*lims); axC.set_ylim(*lims)
 axC.set_xlabel("exact SG/FV finite-difference sensitivity")
 axC.set_ylabel("neural-operator sensitivity")
-axC.set_title("Jacobian agreement, 15 states\n"
-              + rf"$\partial\ln I/\partial\ln R$: median rel. diff "
-              + f"{fv['summary']['median_dlnI_dlnR_rel_agreement']:.1e}", fontsize=8.0)
+relR = np.median(np.abs(dR_o - dR_s) / np.abs(dR_s))
+axC.set_title("noise-whitened sensitivities, 8x8 states\n"
+              + rf"$\partial\ln I/\partial\ln R$: median rel. diff {relR:.1e}",
+              fontsize=8.0)
 axC.legend(frameon=False, fontsize=6.2, loc="upper left")
 K.panel_label(axC, "C", x=-0.16, y=1.02)
 
 axD = fig.add_subplot(gs[1, 1])
-protos = ["single", "multi", "dual"]
-sg_med = [fv["summary"][f"median_sgfv_cond_{p}"] for p in protos]
-op_med = [fv["summary"][f"median_op_cond_{p}"] for p in protos]
-xp = np.arange(len(protos))
-axD.bar(xp - 0.19, sg_med, 0.36, color=K.C["purple"], edgecolor="0.35",
-        linewidth=0.3, label="exact SG/FV")
-axD.bar(xp + 0.19, op_med, 0.36, color=K.C["green"], edgecolor="0.35",
-        linewidth=0.3, label="neural operator")
-for xi in xp:
-    axD.text(xi - 0.19, sg_med[xi] * 1.4, f"{sg_med[xi]:.1e}", ha="center",
-             fontsize=5.6, rotation=90)
-    axD.text(xi + 0.19, op_med[xi] * 1.4, f"{op_med[xi]:.1e}", ha="center",
-             fontsize=5.6, rotation=90)
-axD.set_yscale("log")
+inv = stat["stage18_inverse_sgfv"]["summary"]
+inv19 = stat["stage19_hybrid_controller"]["inverse"]["summary"]
+protos = ["single", "multi", "dual", "vrev_hybrid", "dual_hybrid"]
+q_med = np.array([inv[f"{p}_noise0.01"]["median_q_rel_err"] for p in protos[:3]]
+                 + [inv19[f"{p}_noise0.01"]["median_q_rel_err"] for p in protos[3:]])
+q_err = np.array([inv[f"{p}_noise0.01"]["q_iqr"] for p in protos[:3]]
+                 + [inv19[f"{p}_noise0.01"]["q_iqr"] for p in protos[3:]])
+r_med = np.array([inv[f"{p}_noise0.01"]["median_R_rel_err"] for p in protos[:3]]
+                 + [inv19[f"{p}_noise0.01"]["median_R_rel_err"] for p in protos[3:]])
+r_err = np.array([inv[f"{p}_noise0.01"]["R_iqr"] for p in protos[:3]]
+                 + [inv19[f"{p}_noise0.01"]["R_iqr"] for p in protos[3:]])
+xp = np.arange(len(protos)); w = 0.38
+axD.bar(xp - w / 2, q_med, w, yerr=q_err / 2, capsize=2.4,
+        color=K.C["orange"], edgecolor="0.35", linewidth=0.3,
+        label=r"$q_w$ rel. error")
+axD.bar(xp + w / 2, r_med, w, yerr=r_err / 2, capsize=2.4,
+        color=K.C["blue"], edgecolor="0.35", linewidth=0.3,
+        label=r"$R$ rel. error")
+for xi, v in zip(xp, q_med):
+    axD.text(xi - w / 2, v * 1.35, f"{v:.2g}", ha="center", fontsize=5.6,
+             rotation=90)
+for xi, v in zip(xp, r_med):
+    axD.text(xi + w / 2, v * 1.35, f"{v:.1e}", ha="center", fontsize=5.6,
+             rotation=90)
+axD.set_yscale("log"); axD.set_ylim(1e-4, 10.0)
 axD.set_xticks(xp)
-axD.set_xticklabels(["single\nsalt I-V", "multi\nsalt I-V", "dual\n+selectivity"],
-                    fontsize=7.5)
-axD.set_ylabel(r"median  $\kappa(\mathcal{F})$")
-axD.set_title("observable choice collapses conditioning", fontsize=9)
-axD.legend(frameon=False, fontsize=6.4, loc="upper right")
+axD.set_xticklabels(["single\nsalt I-V", "multi\nsalt I-V", "dual\n+selectivity",
+                     "reversal\nhybrid", "dual\nhybrid"], fontsize=6.4)
+axD.set_ylabel("median relative error")
+axD.set_title("inversion at 1% noise (Stage 18 exact; Stage 19 hybrid)\n"
+              "15 or 5 states x 20 realizations", fontsize=8.0)
+axD.legend(frameon=False, fontsize=6.3, loc="upper right")
+
 K.panel_label(axD, "D", x=-0.16, y=1.10)
 
 sdata = {"labels": np.array(labels, dtype=object), "latency_ms": np.array(vals),
@@ -132,8 +147,9 @@ sdata = {"labels": np.array(labels, dtype=object), "latency_ms": np.array(vals),
          "sg_m1": 0.2013 * N, "sg_xeon": 0.44 * N, "dapinn": 500.0 * N,
          "break_even": np.array([amort[k]["n_break_even"] for k in amort]),
          "break_even_keys": np.array(list(amort.keys()), dtype=object),
-         "fisher_sgfv_dlnR": dR_s, "fisher_op_dlnR": dR_o,
-         "fisher_sgfv_dlnq": dq_s, "fisher_op_dlnq": dq_o,
-         "fisher_sgfv_cond": np.array(sg_med), "fisher_op_cond": np.array(op_med),
+         "sgfv_dlnR": dR_s, "op_dlnR": dR_o,
+         "sgfv_dlnq": dq_s, "op_dlnq": dq_o,
+         "inverse_q_median": q_med, "inverse_q_iqr": q_err,
+         "inverse_R_median": r_med, "inverse_R_iqr": r_err,
          "fisher_protocols": np.array(protos, dtype=object)}
 K.save_fig(fig, "fig6_h4_timing_and_amortization_breakeven", sdata)

@@ -1,155 +1,24 @@
 {
   "task_id": "stage6b_independent_review",
   "task_allowance_usd": 0.15,
-  "dry_run": true,
+  "dry_run": false,
   "reviewers": {
-    "reviewer2_deepseek": {
-      "provider": "deepseek",
-      "model": "deepseek-v4-pro",
-      "role": "Reviewer 2 - CPC Software, Reproducibility & Physical Electrochemistry Reviewer",
-      "est_input_tokens": 25414,
-      "max_output_tokens": 5000,
-      "estimated_reserved_cost_usd": 0.05837845,
-      "reserved_cost_usd": 0.05837845,
-      "status": "ok",
-      "calc_cost_usd": 0.02111868,
-      "usage": {
-        "prompt_tokens": 22173,
-        "completion_tokens": 3275,
-        "total_tokens": 25448,
-        "prompt_tokens_details": {
-          "cached_tokens": 0
-        },
-        "prompt_cache_hit_tokens": 0,
-        "prompt_cache_miss_tokens": 22173
-      },
-      "raw_response": "{\n  \"reviewer\": \"Reviewer 2 - CPC Software, Reproducibility & Physical Electrochemistry Reviewer\",\n  \"recommendation\": \"minor revision\",\n  \"summary\": \"The manuscript presents a well-executed physics-informed neural operator for axisymmetric PNP transport with a genuinely useful charge-balanced parameterization. The software deliverables (dataset, ONNX models, browser/Gradio deployment, reproducibility scripts) are strong and the claim-evidence map is largely consistent. However, the narrative is marred by pervasive raw 15-17 digit floats in prose, the CPC Program Summary is incomplete, and the inverse-problem identifiability finding needs more careful physical caveats. The charge-balanced ansatz is mathematically sound but the reservoir limit claim is slightly overstated. These are fixable without new experiments.\",\n  \"issues\": [\n    {\n      \"id\": \"R1-1\",\n      \"severity\": \"major\",\n      \"location\": \"Throughout narrative (Abstract, Highlights, Sections 2-4, Tables 1-5)\",\n      \"evidence\": \"0.0008913628923944445, 0.0010930409497258563, 50.59363783302251 s, 459.2494577697552 states, 0.07165499962866306 ms, 9.936325096049359e-10, 0.8033685088157654, 196.137225 pA, 0.0045737918517061785, 1.1539643805520952, etc.\",\n      \"problem\": \"Raw 15-17 digit Python floats are used in prose, highlights, abstract, and table bodies. This is inappropriate for narrative text and impairs readability. Machine-precision values belong in JSON/CSV archives, not in the human-readable manuscript.\",\n      \"fix\": \"Round all narrative values to 3-4 significant figures (e.g., 0.000891, 0.00109, 50.6 s, 459 states, 0.0717 ms, 9.94e-10, 0.803, 196 pA, 0.46%, 1.15). Keep full precision only in results/tables/*.csv and results/statistics.json. Table 6 already does this correctly; apply the same standard to Tables 1-5 and all prose.\"\n    },\n    {\n      \"id\": \"R1-2\",\n      \"severity\": \"major\",\n      \"location\": \"CPC Program Summary block\",\n      \"evidence\": \"Missing fields: 'Program obtainable from', 'Distribution format', 'Nature of physical problem' (present but merged), 'Method of solution' (present), 'Typical running time' (present), 'Unusual features' (present), 'Operating system', 'RAM required', 'Number of processors used', 'Has the code been vectorized or parallelized?', 'Keywords', 'Classification'.\",\n      \"problem\": \"The CPC Program Summary is incomplete for a Computer Physics Communications submission. Several mandatory fields are absent, which will delay editorial processing and makes the software less discoverable.\",\n      \"fix\": \"Add the missing CPC Program Summary fields: Program obtainable from, Distribution format, Operating system, RAM, Number of processors, Parallelization status, Keywords, and PACS/ACM classification codes.\"\n    },\n    {\n      \"id\": \"R1-3\",\n      \"severity\": \"major\",\n      \"location\": \"Section 2.3, Supplementary S3, and inverse-problem interpretation (Section 3.8, Discussion)\",\n      \"evidence\": \"The reservoir limit claim: 'which vanish at both reservoirs and therefore approach the neutral bulk value $s\\\\to2C_0$ through the reconstructed concentrations' and 'it forces neutrality and lets the network represent the Donnan potential.'\",\n      \"problem\": \"The ansatz $s_\\\\theta=z(1-z)G_s$, $\\\\rho_\\\\theta=z(1-z)G_\\\\rho$ forces $s\\\\to0$ and $\\\\rho\\\\to0$ at the reservoirs, which gives $c_+\\\\to0$ and $c_-\\\\to0$, NOT $c_\\\\pm\\\\to C_0$. The manuscript acknowledges this in S3 ('does not force $c_\\\\pm=C_0$ at the reservoirs') but the main text wording 'approach the neutral bulk value' is misleading. The physical interpretation of the inverse-problem flat direction also needs a caveat: the near-invariance of conductance to fixed wall charge is specific to the symmetric electrolyte with nearly equal diffusivities ($D_+/D_-\\\\approx0.965$) and the modest $|q_w|\\\\le0.05$ range; it is not a general theorem for all PNP systems.\",\n      \"problem\": \"The reservoir limit is mathematically incorrect as stated in the main text. The ansatz forces concentrations to zero at the reservoir faces, not to $C_0$. This is a sign error in the physical interpretation, not in the code, but it must be corrected.\",\n      \"fix\": \"Revise the main text to state that the ansatz forces $s\\\\to0$ and $\\\\rho\\\\to0$ at the reservoirs (neutrality), and that the reconstructed concentrations approach zero there, with the bulk value $C_0$ being enforced only through the data loss on the latent fields. Clarify that the reservoir Dirichlet condition on concentration is not exactly imposed by the ansatz, only the neutrality condition. Add a caveat to the identifiability discussion that the flat direction in $q_w$ depends on the near-equal diffusivities and the limited charge range.\"\n    },\n    {\n      \"id\": \"R1-4\",\n      \"severity\": \"minor\",\n      \"location\": \"Section 2.1, dimensionless form\",\n      \"evidence\": \"The Poisson coupling becomes $\\\\beta=(L/\\\\lambda_D)^2/2$, with $\\\\lambda_D=\\\\sqrt{\\\\varepsilon_r\\\\varepsilon_0 V_T/(F C_0)}$, and the geometric anisotropy is $\\\\alpha_r=(L/R)^2$.\",\n      \"problem\": \"The dimensionless Poisson equation is not written out explicitly. The reader cannot verify the factor of 1/2 in $\\\\beta$ or the scaling of the wall charge boundary condition without reconstructing the non-dimensionalization. The wall charge relation $\\\\sigma=q_w\\\\varepsilon_r\\\\varepsilon_0 V_T/R$ is given but its dimensionless form is not shown.\",\n      \"fix\": \"Add the full dimensionless PNP system (Poisson equation with $\\\\beta$ and $\\\\alpha_r$, Nernst-Planck fluxes, and boundary conditions) to Section 2.1 or Supplementary S3. This is essential for reproducibility of the physics loss.\"\n    },\n    {\n      \"id\": \"R1-5\",\n      \"severity\": \"minor\",\n      \"location\": \"Section 2.4, physics loss definition\",\n      \"evidence\": \"The physics term penalizes the Poisson residual and the continuity residuals. The total loss is $\\\\mathcal{L}=\\\\mathcal{L}_\\\\mathrm{data}+10^{-3}\\\\,\\\\mathcal{L}_\\\\mathrm{phys}$.\",\n      \"problem\": \"The exact form of $\\\\mathcal{L}_\\\\mathrm{phys}$ is not specified. Which collocation points are used? How are the residuals normalized? Are the boundary residuals included? This is a reproducibility gap for the central training objective.\",\n      \"fix\": \"Provide the explicit formula for $\\\\mathcal{L}_\\\\mathrm{phys}$ in the main text or Supplementary S2, including the collocation point distribution, residual normalization, and whether boundary terms are included.\"\n    },\n    {\n      \"id\": \"R1-6\",\n      \"severity\": \"minor\",\n      \"location\": \"Section 3.2, Table 2, and claim C05/C06\",\n      \"evidence\": \"The DeepONet reaches a potential relative $L_2$ error of 0.00014846186680207084... compared with 0.000382 and 0.00102 for the DA-PINN; these are reductions of 2.57-fold and 1.83-fold, respectively.\",\n      \"problem\": \"The comparison with the prior DA-PINN is not apples-to-apples: the DA-PINN was trained specifically on the benchmark state (500 s retraining), while the DeepONet is a general operator that has never seen this state during training. The manuscript acknowledges this for the cation error but not for the potential and current claims. The 'reduction' language implies superiority when the comparison is confounded by the different training paradigms.\",\n      \"fix\": \"Reframe the comparison as 'the operator achieves comparable or better accuracy without per-state retraining' rather than 'reduces error X-fold'. Add a sentence clarifying that the DA-PINN had the advantage of state-specific training.\"\n    },\n    {\n      \"id\": \"R1-7\",\n      \"severity\": \"minor\",\n      \"location\": \"Section 3.6, break-even analysis\",\n      \"evidence\": \"Using the dataset-mean SG/FV time of 0.2391 s, the DeepONet breaks even at 459.2494577697552 states... These counts are conservative in one respect and optimistic in another.\",\n      \"problem\": \"The break-even calculation charges the full dataset-generation and training cost but does not account for the fact that the 240-state dataset was needed to train the operator. The break-even count of 459 states is only ~1.9x the dataset size, which is a narrow margin. The manuscript acknowledges this partially but the 'few hundred states' conclusion in the abstract and conclusion overstates the practical advantage for small design sweeps.\",\n      \"fix\": \"Add a sentence noting that the break-even count is only ~1.9x the training dataset size, so the operator is most advantageous for sweeps of thousands of states, not hundreds. Soften the 'few hundred states' claim in the abstract and conclusion.\"\n    },\n    {\n      \"id\": \"R1-8\",\n      \"severity\": \"minor\",\n      \"location\": \"Section 3.8, inverse recovery, and Table 6\",\n      \"evidence\": \"The median relative error in $q_w$ is 1.1539643805520952, and the median relative error in the derived surface charge density is 1.1462987489639653.\",\n      \"problem\": \"The relative error in $q_w$ is reported as a median of 1.15 (115%), but Table 6 shows individual errors of 46.685, 1.078, 1.645, 1.154, 0.660. The median of these five values is 1.154, which is consistent, but the 46.685 value for state 175 is an extreme outlier that skews the interpretation. The manuscript does not discuss why state 175 (lowest $|q_w|=0.00206$) has such a large relative error.\",\n      \"fix\": \"Add a sentence explaining that the relative error in $q_w$ is dominated by the near-zero true charge for state 175, where any small absolute error produces a large relative error. Consider reporting absolute error in $q_w$ as well.\"\n    },\n    {\n      \"id\": \"R1-9\",\n      \"severity\": \"editorial\",\n      \"location\": \"Highlights, Abstract, Section 3.9\",\n      \"evidence\": \"ONNX models run in the browser and in a Gradio app with 3.6e-7 parity.\",\n      \"problem\": \"The phrase '3.6e-7 parity' is ambiguous. It refers to the maximum absolute difference between ONNX and PyTorch outputs, but 'parity' without units or context is unclear.\",\n      \"fix\": \"Rewrite as 'ONNX export matches PyTorch within 3.6e-7 maximum absolute difference' or similar.\"\n    },\n    {\n      \"id\": \"R1-10\",\n      \"severity\": \"editorial\",\n      \"location\": \"Section 3.3, Figure 5 description\",\n      \"evidence\": \"Panel B resolves the Debye screening transition as the bulk concentration varies, and panel C shows the EDL-overlap effect on the radial net-charge profile at four salt concentrations.\",\n      \"problem\": \"The description of Figure 5 panels B and C is vague. 'Resolves the Debye screening transition' and 'EDL-overlap effect' are not quantified. The reader cannot tell what specific physical behavior is being demonstrated.\",\n      \"fix\": \"Add specific quantitative descriptions: e.g., 'Panel B shows the current increasing sublinearly with $C_0$ as $\\\\lambda_D/R$ decreases from X to Y' or 'Panel C shows the net-charge profile transitioning from overlap (flat) to non-overlap (wall-localized) as $C_0$ increases from 20 to 200 mol m^-3'.\"\n    },\n    {\n      \"id\": \"R1-11\",\n      \"severity\": \"editorial\",\n      \"location\": \"Section 2.2, Table 1\",\n      \"evidence\": \"The benchmark state (index 144, interpolation split) is $V_\\\\mathrm{app}=50$ mV, $C_0=100$ mol m$^{-3}$, $q_w=-0.01$, and $R=5$ nm. Its reference mean axial current is 196.137225 pA.\",\n      \"problem\": \"The benchmark current is reported as 196.137225 pA in the text and Table 1, but the live SG/FV service returns 196.13722469169713 pA (Section 3.9). The difference is 3e-7 pA, which is negligible but inconsistent.\",\n      \"fix\": \"Round both values to 196.137 pA or clarify that the Table 1 value is the dataset value and the Section 3.9 value is the live service value.\"\n    },\n    {\n      \"id\": \"R1-12\",\n      \"severity\": \"editorial\",\n      \"location\": \"Section 3.8, inverse recovery\",\n      \"evidence\": \"The operator does so in 0.12526570879854262 s, whereas the same number of SG/FV solves would take 402.6 s, a speed-up of 3213.968163046741.\",\n      \"problem\": \"The speed-up factor of 3214x is reported with 15 significant figures, which is absurd precision for a timing comparison. The SG/FV time of 402.6 s is itself an estimate (2000 solves x 0.2013 s median).\",\n      \"fix\": \"Round to 'approximately 3200x' or 'three orders of magnitude'. The exact value can remain in the CSV.\"\n    }\n  ],\n  \"strengths\": [\n    \"The charge-balanced reparameterization is a genuinely useful, architecture-agnostic contribution that addresses a real numerical pathology (cancellation error in net charge) with a simple algebraic fix.\",\n    \"The software deliverables are comprehensive: dataset, reference solver, ONNX models, browser simulator, Gradio app, and reproducibility scripts are all provided.\",\n    \"The claim-evidence map is well-structured and the numerical claims are largely consistent with the archived results.\",\n    \"The inverse-problem analysis correctly identifies the flat direction in surface charge for conductance-only inversion and frames it as a physical identifiability limit rather than a surrogate failure.\"\n  ]\n}",
-      "parsed": {
-        "reviewer": "Reviewer 2 - CPC Software, Reproducibility & Physical Electrochemistry Reviewer",
-        "recommendation": "minor revision",
-        "summary": "The manuscript presents a well-executed physics-informed neural operator for axisymmetric PNP transport with a genuinely useful charge-balanced parameterization. The software deliverables (dataset, ONNX models, browser/Gradio deployment, reproducibility scripts) are strong and the claim-evidence map is largely consistent. However, the narrative is marred by pervasive raw 15-17 digit floats in prose, the CPC Program Summary is incomplete, and the inverse-problem identifiability finding needs more careful physical caveats. The charge-balanced ansatz is mathematically sound but the reservoir limit claim is slightly overstated. These are fixable without new experiments.",
-        "issues": [
-          {
-            "id": "R1-1",
-            "severity": "major",
-            "location": "Throughout narrative (Abstract, Highlights, Sections 2-4, Tables 1-5)",
-            "evidence": "0.0008913628923944445, 0.0010930409497258563, 50.59363783302251 s, 459.2494577697552 states, 0.07165499962866306 ms, 9.936325096049359e-10, 0.8033685088157654, 196.137225 pA, 0.0045737918517061785, 1.1539643805520952, etc.",
-            "problem": "Raw 15-17 digit Python floats are used in prose, highlights, abstract, and table bodies. This is inappropriate for narrative text and impairs readability. Machine-precision values belong in JSON/CSV archives, not in the human-readable manuscript.",
-            "fix": "Round all narrative values to 3-4 significant figures (e.g., 0.000891, 0.00109, 50.6 s, 459 states, 0.0717 ms, 9.94e-10, 0.803, 196 pA, 0.46%, 1.15). Keep full precision only in results/tables/*.csv and results/statistics.json. Table 6 already does this correctly; apply the same standard to Tables 1-5 and all prose."
-          },
-          {
-            "id": "R1-2",
-            "severity": "major",
-            "location": "CPC Program Summary block",
-            "evidence": "Missing fields: 'Program obtainable from', 'Distribution format', 'Nature of physical problem' (present but merged), 'Method of solution' (present), 'Typical running time' (present), 'Unusual features' (present), 'Operating system', 'RAM required', 'Number of processors used', 'Has the code been vectorized or parallelized?', 'Keywords', 'Classification'.",
-            "problem": "The CPC Program Summary is incomplete for a Computer Physics Communications submission. Several mandatory fields are absent, which will delay editorial processing and makes the software less discoverable.",
-            "fix": "Add the missing CPC Program Summary fields: Program obtainable from, Distribution format, Operating system, RAM, Number of processors, Parallelization status, Keywords, and PACS/ACM classification codes."
-          },
-          {
-            "id": "R1-3",
-            "severity": "major",
-            "location": "Section 2.3, Supplementary S3, and inverse-problem interpretation (Section 3.8, Discussion)",
-            "evidence": "The reservoir limit claim: 'which vanish at both reservoirs and therefore approach the neutral bulk value $s\\to2C_0$ through the reconstructed concentrations' and 'it forces neutrality and lets the network represent the Donnan potential.'",
-            "problem": "The reservoir limit is mathematically incorrect as stated in the main text. The ansatz forces concentrations to zero at the reservoir faces, not to $C_0$. This is a sign error in the physical interpretation, not in the code, but it must be corrected.",
-            "fix": "Revise the main text to state that the ansatz forces $s\\to0$ and $\\rho\\to0$ at the reservoirs (neutrality), and that the reconstructed concentrations approach zero there, with the bulk value $C_0$ being enforced only through the data loss on the latent fields. Clarify that the reservoir Dirichlet condition on concentration is not exactly imposed by the ansatz, only the neutrality condition. Add a caveat to the identifiability discussion that the flat direction in $q_w$ depends on the near-equal diffusivities and the limited charge range."
-          },
-          {
-            "id": "R1-4",
-            "severity": "minor",
-            "location": "Section 2.1, dimensionless form",
-            "evidence": "The Poisson coupling becomes $\\beta=(L/\\lambda_D)^2/2$, with $\\lambda_D=\\sqrt{\\varepsilon_r\\varepsilon_0 V_T/(F C_0)}$, and the geometric anisotropy is $\\alpha_r=(L/R)^2$.",
-            "problem": "The dimensionless Poisson equation is not written out explicitly. The reader cannot verify the factor of 1/2 in $\\beta$ or the scaling of the wall charge boundary condition without reconstructing the non-dimensionalization. The wall charge relation $\\sigma=q_w\\varepsilon_r\\varepsilon_0 V_T/R$ is given but its dimensionless form is not shown.",
-            "fix": "Add the full dimensionless PNP system (Poisson equation with $\\beta$ and $\\alpha_r$, Nernst-Planck fluxes, and boundary conditions) to Section 2.1 or Supplementary S3. This is essential for reproducibility of the physics loss."
-          },
-          {
-            "id": "R1-5",
-            "severity": "minor",
-            "location": "Section 2.4, physics loss definition",
-            "evidence": "The physics term penalizes the Poisson residual and the continuity residuals. The total loss is $\\mathcal{L}=\\mathcal{L}_\\mathrm{data}+10^{-3}\\,\\mathcal{L}_\\mathrm{phys}$.",
-            "problem": "The exact form of $\\mathcal{L}_\\mathrm{phys}$ is not specified. Which collocation points are used? How are the residuals normalized? Are the boundary residuals included? This is a reproducibility gap for the central training objective.",
-            "fix": "Provide the explicit formula for $\\mathcal{L}_\\mathrm{phys}$ in the main text or Supplementary S2, including the collocation point distribution, residual normalization, and whether boundary terms are included."
-          },
-          {
-            "id": "R1-6",
-            "severity": "minor",
-            "location": "Section 3.2, Table 2, and claim C05/C06",
-            "evidence": "The DeepONet reaches a potential relative $L_2$ error of 0.00014846186680207084... compared with 0.000382 and 0.00102 for the DA-PINN; these are reductions of 2.57-fold and 1.83-fold, respectively.",
-            "problem": "The comparison with the prior DA-PINN is not apples-to-apples: the DA-PINN was trained specifically on the benchmark state (500 s retraining), while the DeepONet is a general operator that has never seen this state during training. The manuscript acknowledges this for the cation error but not for the potential and current claims. The 'reduction' language implies superiority when the comparison is confounded by the different training paradigms.",
-            "fix": "Reframe the comparison as 'the operator achieves comparable or better accuracy without per-state retraining' rather than 'reduces error X-fold'. Add a sentence clarifying that the DA-PINN had the advantage of state-specific training."
-          },
-          {
-            "id": "R1-7",
-            "severity": "minor",
-            "location": "Section 3.6, break-even analysis",
-            "evidence": "Using the dataset-mean SG/FV time of 0.2391 s, the DeepONet breaks even at 459.2494577697552 states... These counts are conservative in one respect and optimistic in another.",
-            "problem": "The break-even calculation charges the full dataset-generation and training cost but does not account for the fact that the 240-state dataset was needed to train the operator. The break-even count of 459 states is only ~1.9x the dataset size, which is a narrow margin. The manuscript acknowledges this partially but the 'few hundred states' conclusion in the abstract and conclusion overstates the practical advantage for small design sweeps.",
-            "fix": "Add a sentence noting that the break-even count is only ~1.9x the training dataset size, so the operator is most advantageous for sweeps of thousands of states, not hundreds. Soften the 'few hundred states' claim in the abstract and conclusion."
-          },
-          {
-            "id": "R1-8",
-            "severity": "minor",
-            "location": "Section 3.8, inverse recovery, and Table 6",
-            "evidence": "The median relative error in $q_w$ is 1.1539643805520952, and the median relative error in the derived surface charge density is 1.1462987489639653.",
-            "problem": "The relative error in $q_w$ is reported as a median of 1.15 (115%), but Table 6 shows individual errors of 46.685, 1.078, 1.645, 1.154, 0.660. The median of these five values is 1.154, which is consistent, but the 46.685 value for state 175 is an extreme outlier that skews the interpretation. The manuscript does not discuss why state 175 (lowest $|q_w|=0.00206$) has such a large relative error.",
-            "fix": "Add a sentence explaining that the relative error in $q_w$ is dominated by the near-zero true charge for state 175, where any small absolute error produces a large relative error. Consider reporting absolute error in $q_w$ as well."
-          },
-          {
-            "id": "R1-9",
-            "severity": "editorial",
-            "location": "Highlights, Abstract, Section 3.9",
-            "evidence": "ONNX models run in the browser and in a Gradio app with 3.6e-7 parity.",
-            "problem": "The phrase '3.6e-7 parity' is ambiguous. It refers to the maximum absolute difference between ONNX and PyTorch outputs, but 'parity' without units or context is unclear.",
-            "fix": "Rewrite as 'ONNX export matches PyTorch within 3.6e-7 maximum absolute difference' or similar."
-          },
-          {
-            "id": "R1-10",
-            "severity": "editorial",
-            "location": "Section 3.3, Figure 5 description",
-            "evidence": "Panel B resolves the Debye screening transition as the bulk concentration varies, and panel C shows the EDL-overlap effect on the radial net-charge profile at four salt concentrations.",
-            "problem": "The description of Figure 5 panels B and C is vague. 'Resolves the Debye screening transition' and 'EDL-overlap effect' are not quantified. The reader cannot tell what specific physical behavior is being demonstrated.",
-            "fix": "Add specific quantitative descriptions: e.g., 'Panel B shows the current increasing sublinearly with $C_0$ as $\\lambda_D/R$ decreases from X to Y' or 'Panel C shows the net-charge profile transitioning from overlap (flat) to non-overlap (wall-localized) as $C_0$ increases from 20 to 200 mol m^-3'."
-          },
-          {
-            "id": "R1-11",
-            "severity": "editorial",
-            "location": "Section 2.2, Table 1",
-            "evidence": "The benchmark state (index 144, interpolation split) is $V_\\mathrm{app}=50$ mV, $C_0=100$ mol m$^{-3}$, $q_w=-0.01$, and $R=5$ nm. Its reference mean axial current is 196.137225 pA.",
-            "problem": "The benchmark current is reported as 196.137225 pA in the text and Table 1, but the live SG/FV service returns 196.13722469169713 pA (Section 3.9). The difference is 3e-7 pA, which is negligible but inconsistent.",
-            "fix": "Round both values to 196.137 pA or clarify that the Table 1 value is the dataset value and the Section 3.9 value is the live service value."
-          },
-          {
-            "id": "R1-12",
-            "severity": "editorial",
-            "location": "Section 3.8, inverse recovery",
-            "evidence": "The operator does so in 0.12526570879854262 s, whereas the same number of SG/FV solves would take 402.6 s, a speed-up of 3213.968163046741.",
-            "problem": "The speed-up factor of 3214x is reported with 15 significant figures, which is absurd precision for a timing comparison. The SG/FV time of 402.6 s is itself an estimate (2000 solves x 0.2013 s median).",
-            "fix": "Round to 'approximately 3200x' or 'three orders of magnitude'. The exact value can remain in the CSV."
-          }
-        ],
-        "strengths": [
-          "The charge-balanced reparameterization is a genuinely useful, architecture-agnostic contribution that addresses a real numerical pathology (cancellation error in net charge) with a simple algebraic fix.",
-          "The software deliverables are comprehensive: dataset, reference solver, ONNX models, browser simulator, Gradio app, and reproducibility scripts are all provided.",
-          "The claim-evidence map is well-structured and the numerical claims are largely consistent with the archived results.",
-          "The inverse-problem analysis correctly identifies the flat direction in surface charge for conductance-only inversion and frames it as a physical identifiability limit rather than a surrogate failure."
-        ]
-      }
-    },
     "reviewer1_openai": {
       "provider": "openai",
       "model": "gpt-4.1-mini",
       "role": "Reviewer 1 - JCP/CPC Methodological & Mathematical Rigor Reviewer",
-      "est_input_tokens": 25409,
+      "est_input_tokens": 56610,
       "max_output_tokens": 3500,
-      "estimated_reserved_cost_usd": 0.01728814,
-      "reserved_cost_usd": 0.01728814,
+      "estimated_reserved_cost_usd": 0.0316406,
+      "reserved_cost_usd": 0.0316406,
       "status": "ok",
-      "calc_cost_usd": 0.0054924,
+      "calc_cost_usd": 0.022912,
       "usage": {
-        "prompt_tokens": 22423,
-        "completion_tokens": 2003,
-        "total_tokens": 24426,
+        "prompt_tokens": 48332,
+        "completion_tokens": 2237,
+        "total_tokens": 50569,
         "prompt_tokens_details": {
-          "cached_tokens": 22272,
+          "cached_tokens": 0,
           "audio_tokens": 0
         },
         "completion_tokens_details": {
@@ -159,133 +28,151 @@
           "rejected_prediction_tokens": 0
         }
       },
-      "raw_response": "{\n  \"reviewer\": \"Reviewer 1 - JCP/CPC Methodological & Mathematical Rigor Reviewer\",\n  \"recommendation\": \"minor revision\",\n  \"summary\": \"The manuscript presents a mathematically sound and well-validated physics-informed neural operator framework for steady axisymmetric Poisson--Nernst--Planck transport in charged nanopores. The charge-balanced hyperbolic parameterization and exact reservoir Dirichlet construction are clearly derived and implemented, with no evident mathematical inconsistencies. The Scharfetter--Gummel finite-volume solver is rigorously benchmarked. Numerical results demonstrate significant accuracy and efficiency gains, supported by comprehensive ablation and inverse problem analyses. Minor issues concern excessive precision in prose numerical values, some missing explicit symbol definitions in the main text, and a few places where physical interpretation could be more cautiously phrased. Overall, the work is a strong contribution with only minor editorial and clarity improvements needed.\",\n  \"issues\": [\n    {\n      \"id\": \"R1-1\",\n      \"severity\": \"minor\",\n      \"location\": \"Section 2.3 / Supplement S3\",\n      \"evidence\": \"The exact-boundary and charge-balanced ansatz is given as s = z(1-z)G_s, rho = z(1-z)G_rho, and c_\u00b1 = (sqrt(s^2 + rho^2) \u00b1 rho)/2, with the potential correction psi_theta(r,z) = V_app(1-z) + z(1-z)G_psi(r,z).\",\n      \"problem\": \"While the ansatz is mathematically correct and well justified, the symbol G_psi, G_s, and G_rho are introduced without explicit definition or domain specification in the main text; their smoothness and boundary behavior assumptions are implicit but not stated. Also, the choice of z(1-z) as the boundary factor is not explicitly motivated beyond vanishing at reservoirs.\",\n      \"fix\": \"Add a brief explicit statement defining G_psi, G_s, and G_rho as smooth latent functions predicted by the neural operator, and clarify that z \u2208 [0,1] is the normalized axial coordinate. Include a short rationale for the z(1-z) factor enforcing zero boundary corrections.\"\n    },\n    {\n      \"id\": \"R1-2\",\n      \"severity\": \"minor\",\n      \"location\": \"Section 2.2 and 2.3\",\n      \"evidence\": \"The reservoir Dirichlet conditions are imposed exactly by the ansatz for psi and concentrations, with c_\u00b1 approaching bulk values through the reconstruction.\",\n      \"problem\": \"The manuscript states that s and rho vanish at reservoirs, but the bulk concentration C_0 is not explicitly connected to the reconstructed concentrations at boundaries in the ansatz. This could confuse readers about how the bulk boundary condition c_\u00b1 = C_0 is exactly enforced or approximated.\",\n      \"fix\": \"Clarify explicitly that the ansatz enforces zero correction at reservoirs, so the physical concentrations approach the bulk value C_0 via the constant offset outside the correction terms, or explain how the bulk boundary condition is exactly or approximately satisfied.\"\n    },\n    {\n      \"id\": \"R1-3\",\n      \"severity\": \"editorial\",\n      \"location\": \"Throughout manuscript and abstract\",\n      \"evidence\": \"Numerical values in prose such as 0.0008913628923944445, 9.936325096049359e-10, 0.07165499962866306 ms, 50.59363783302251 s, 0.0045737918517061785 (0.46%), etc.\",\n      \"problem\": \"Raw 15-17 digit floating-point numbers appear in the narrative prose, which is inappropriate for readability and typical scientific reporting standards.\",\n      \"fix\": \"Round all numerical values in the prose to 3-4 significant figures or appropriate units (e.g., 0.000891, 9.94e-10, 0.072 ms, 50.6 s, 0.00457 (0.46%)). Retain full precision only in tables, supplementary materials, or archived data files.\"\n    },\n    {\n      \"id\": \"R1-4\",\n      \"severity\": \"minor\",\n      \"location\": \"Section 2.4 Operator backbones\",\n      \"evidence\": \"The DeepONet trunk network input includes a radial boundary-layer feature e^{-s(1-r)} with parameter s, but s is not defined or explained.\",\n      \"problem\": \"The parameter s controlling the exponential boundary-layer feature is undefined, leaving unclear how it is chosen or trained.\",\n      \"fix\": \"Define the parameter s explicitly, e.g., as a fixed hyperparameter controlling boundary-layer thickness, or state that it is learned or set empirically.\"\n    },\n    {\n      \"id\": \"R1-5\",\n      \"severity\": \"minor\",\n      \"location\": \"Section 2.6 Inverse recovery\",\n      \"evidence\": \"The inverse problem recovers radius to 0.46% but finds surface charge is a flat direction for conductance-only inversion.\",\n      \"problem\": \"The causal language 'surface charge is a flat direction' could be misinterpreted as a limitation of the operator rather than a fundamental physical identifiability issue.\",\n      \"fix\": \"Add a clarifying statement emphasizing that the flat direction arises from the physics and measurement setup, not from surrogate model limitations, as done in the discussion but should be reiterated here.\"\n    },\n    {\n      \"id\": \"R1-6\",\n      \"severity\": \"minor\",\n      \"location\": \"Section 3.4 Out-of-distribution behavior\",\n      \"evidence\": \"The DeepONet OOD potential error grows 22.7-fold relative to interp-test, while current error remains low.\",\n      \"problem\": \"The manuscript states that current errors remain below 1% out of distribution, but the potential errors grow substantially. The physical implications of this discrepancy could be more explicitly discussed.\",\n      \"fix\": \"Add a brief explanation that current is an integral quantity smoothing local errors, so it is more robust to OOD extrapolation, whereas pointwise fields are more sensitive, and caution is needed when interpreting field-level predictions OOD.\"\n    },\n    {\n      \"id\": \"R1-7\",\n      \"severity\": \"editorial\",\n      \"location\": \"CPC Program Summary / Running time\",\n      \"evidence\": \"Running times are given as 50.59363783302251 s, 108.5470477079507 s, 0.07165499962866306 ms, etc.\",\n      \"problem\": \"Excessive precision in running times reduces readability and is inconsistent with typical reporting standards.\",\n      \"fix\": \"Round running times to 3-4 significant figures, e.g., 50.6 s, 108.5 s, 0.072 ms, and keep exact values in supplementary tables.\"\n    },\n    {\n      \"id\": \"R1-8\",\n      \"severity\": \"minor\",\n      \"location\": \"Table 1 and Table 3 captions\",\n      \"evidence\": \"Table captions do not explicitly state units for some quantities (e.g., current in pA, residuals dimensionless).\",\n      \"problem\": \"Missing units in table captions can confuse readers.\",\n      \"fix\": \"Add explicit units in all table captions for clarity, e.g., 'Current (pA)', 'Residual (dimensionless)', 'Concentration (mol m^-3)'.\"\n    },\n    {\n      \"id\": \"R1-9\",\n      \"severity\": \"minor\",\n      \"location\": \"Section 2.2 Conservative SG/FV solver\",\n      \"evidence\": \"The Scharfetter--Gummel discretization is described, but the exact finite-volume formulation and flux expressions are not explicitly written.\",\n      \"problem\": \"The manuscript claims conservativeness and stability but does not provide the explicit discrete equations or references to equations in the supplement.\",\n      \"fix\": \"Include explicit finite-volume discretization equations or refer precisely to supplement sections or literature where the exact scheme is detailed.\"\n    },\n    {\n      \"id\": \"R1-10\",\n      \"severity\": \"editorial\",\n      \"location\": \"Abstract and throughout\",\n      \"evidence\": \"The term 'charge-balanced hyperbolic ansatz' is used repeatedly but not defined in the abstract.\",\n      \"problem\": \"Readers unfamiliar with the term may be confused.\",\n      \"fix\": \"Add a brief parenthetical explanation or reference to the section where the ansatz is defined in the abstract.\"\n    },\n    {\n      \"id\": \"R1-11\",\n      \"severity\": \"minor\",\n      \"location\": \"Section 3.8 Inverse parameter recovery\",\n      \"evidence\": \"The inverse problem uses a five-bias current-voltage curve with 1% Gaussian noise and Nelder--Mead refinement.\",\n      \"problem\": \"The choice of noise level and inversion method is not justified or discussed in terms of experimental realism or robustness.\",\n      \"fix\": \"Add a brief discussion on the rationale for 1% noise, the choice of Nelder--Mead, and potential limitations or extensions for experimental data.\"\n    }\n  ],\n  \"strengths\": [\n    \"Clear and mathematically rigorous charge-balanced hyperbolic parameterization ensuring positivity and exact charge identity\",\n    \"Comprehensive benchmark dataset with strict acceptance criteria and detailed solver validation\",\n    \"Thorough ablation studies demonstrating the impact of charge reparameterization and physics loss\",\n    \"Efficient operator architectures with deployment-ready ONNX export and browser/Gradio applications\"\n  ]\n}",
+      "raw_response": "{\n  \"reviewer\": \"Reviewer 1 - JCP/CPC Methodological & Mathematical Rigor Reviewer\",\n  \"recommendation\": \"minor revision\",\n  \"summary\": \"The manuscript presents a rigorously validated physics-informed neural operator for axisymmetric Poisson--Nernst--Planck transport in charged nanopores, with a novel exact-boundary, charge-balanced hyperbolic parameterization ensuring positivity and charge identity to machine precision. The conservative Scharfetter--Gummel finite-volume solver and physics loss are well integrated. The operator achieves excellent accuracy and speed, enabling identifiability studies that reveal fundamental limits of conductance-only inversion and the necessity of charge-sensitive observables. The manuscript is mathematically sound, well documented, and reproducible. Minor issues concern a few undefined symbols in the supplement, excessive raw float precision in prose, and some clarifications in the CPC summary and inverse identifiability claims. These do not undermine the core contributions but should be addressed for clarity and completeness.\",\n  \"issues\": [\n    {\n      \"id\": \"R1-1\",\n      \"severity\": \"major\",\n      \"location\": \"Supplementary Section S3 / Eq. (S6)\",\n      \"evidence\": \"Dimensionless groups defined as \\\\(\\\\alpha_r=(L/R)^2\\\\), \\\\(\\\\beta=\\\\frac{L^2 F C_0}{\\\\varepsilon_0 \\\\varepsilon_r V_T} = \\\\frac{1}{2}(L/\\\\lambda_D)^2\\\\), and \\\\(\\\\lambda_D^2=\\\\frac{\\\\varepsilon_0 \\\\varepsilon_r V_T}{2 F C_0}\\\\).\",\n      \"problem\": \"The definition of \\\\(\\\\beta\\\\) includes a factor of 1/2 in the Debye length expression that is not standard; the Debye length is usually defined without the factor 1/2 in the denominator. This could cause confusion or inconsistency with literature and the main text.\",\n      \"fix\": \"Clarify the definition of \\\\(\\\\lambda_D\\\\) and \\\\(\\\\beta\\\\) explicitly, referencing the physical constants and units, and ensure consistency with the main text and standard conventions.\"\n    },\n    {\n      \"id\": \"R1-2\",\n      \"severity\": \"major\",\n      \"location\": \"Supplementary Section S3 / Eq. (S7)\",\n      \"evidence\": \"Face flux formula: \\\\(J_{z,i+1/2} = -\\\\frac{c_{i+1} B(-\\\\Delta \\\\psi_i) - c_i B(\\\\Delta \\\\psi_i)}{\\\\Delta z}\\\\), with \\\\(B(x) = x/(e^x - 1)\\\\).\",\n      \"problem\": \"The Bernoulli function \\\\(B(x)\\\\) is undefined at \\\\(x=0\\\\), which occurs in practice. The manuscript does not explicitly state how this singularity is handled numerically (e.g., via series expansion or limit).\",\n      \"fix\": \"Add a brief note or reference explaining the numerical treatment of \\\\(B(0)\\\\) to avoid division by zero or numerical instability.\"\n    },\n    {\n      \"id\": \"R1-3\",\n      \"severity\": \"minor\",\n      \"location\": \"Section 2.3 and Supplementary Section S3\",\n      \"evidence\": \"The hyperbolic ansatz: \\\\(c_{\\\\pm} = (\\\\sqrt{s^2 + \\\\rho^2} \\\\pm \\\\rho)/2\\\\), with \\\\(s = 2 \\\\exp(z(1-z) G_s)\\\\), \\\\(\\\\rho = z(1-z) G_\\\\rho\\\\).\",\n      \"problem\": \"The symbol \\\\(G_\\\\psi\\\\) is introduced as a latent field for potential, but the domain and smoothness assumptions on \\\\(G_s\\\\) and \\\\(G_\\\\rho\\\\) are not explicitly stated. Also, the clipping of the exponent to [-15,15] is mentioned but not justified or discussed regarding its impact on accuracy or training stability.\",\n      \"fix\": \"Add a brief explanation of the regularity assumptions on \\\\(G_s\\\\) and \\\\(G_\\\\rho\\\\), and discuss the rationale and effect of clipping the exponent on numerical stability and physical fidelity.\"\n    },\n    {\n      \"id\": \"R1-4\",\n      \"severity\": \"minor\",\n      \"location\": \"Section 2.4 / Operator backbones\",\n      \"evidence\": \"The multi-scale radial features are \\\\(\\\\{e^{-\\\\kappa(1-r)}\\\\}_{\\\\kappa \\\\in \\\\{1,3,10,30\\\\}}\\\\).\",\n      \"problem\": \"The choice of these particular decay rates \\\\(\\\\kappa\\\\) is not motivated or justified. It is unclear if these values are tuned or generic.\",\n      \"fix\": \"Add a sentence explaining the physical or numerical motivation for these radial scales and whether they were optimized or chosen heuristically.\"\n    },\n    {\n      \"id\": \"R1-5\",\n      \"severity\": \"editorial\",\n      \"location\": \"Throughout narrative (e.g., Abstract, Sections 3.1, 3.7, 3.9)\",\n      \"evidence\": \"Raw Python float literals such as 0.0008913628923944445, 0.072 ms, 196.137225 pA, 1.1e-4, 1.2e9, 0.0482721, 0.000999149 appear in prose.\",\n      \"problem\": \"Excessive decimal digits reduce readability and do not reflect meaningful precision in narrative text. Some values are better rounded to 3-4 significant figures.\",\n      \"fix\": \"Round all numerical values in the prose to 3-4 significant figures (e.g., 0.000891, 0.072 ms, 196.1 pA, 1.1e-4, 1.2e9, 4.8%, 0.10%) and retain full precision only in tables or archived JSON/CSV files.\"\n    },\n    {\n      \"id\": \"R1-6\",\n      \"severity\": \"minor\",\n      \"location\": \"CPC Program Summary / Nature of the problem\",\n      \"evidence\": \"The description states the solver must represent fields over a four-dimensional operating space and that repeated solves take about 0.2 s each.\",\n      \"problem\": \"The summary omits explicit mention that the model assumes axisymmetry and neglects steric effects, electro-osmotic convection, surface chemistry, and temperature variation, which are important caveats for applicability.\",\n      \"fix\": \"Add a concise statement in the CPC summary clarifying these modeling assumptions and limitations to avoid over-claiming generality.\"\n    },\n    {\n      \"id\": \"R1-7\",\n      \"severity\": \"minor\",\n      \"location\": \"Section 3.9 / Inverse identifiability claims\",\n      \"evidence\": \"The dual protocol recovers charge to 4.8% median error and radius to 0.10%, with 95% coverage 70.7% and 96.3%, respectively.\",\n      \"problem\": \"The coverage for charge is only about 70%, indicating mild undercoverage and some uncertainty in the confidence intervals. This nuance is not emphasized sufficiently in the main text or abstract.\",\n      \"fix\": \"Add a clear caveat about the undercoverage of charge uncertainty intervals and moderate confidence in the 5-10% charge recovery claim.\"\n    },\n    {\n      \"id\": \"R1-8\",\n      \"severity\": \"minor\",\n      \"location\": \"Section 3.9 / Fisher analysis and inverse problem\",\n      \"evidence\": \"The exact single-salt Fisher matrix is numerically rank-deficient with condition number > 1e16, while the operator gives about 9.8e8.\",\n      \"problem\": \"The difference in condition numbers is large and the manuscript states the exact value exceeds float64 resolution, but does not discuss implications for numerical stability or inversion robustness.\",\n      \"fix\": \"Add a brief discussion on the numerical rank deficiency, its impact on inversion, and how the operator's finite condition number relates to practical identifiability.\"\n    },\n    {\n      \"id\": \"R1-9\",\n      \"severity\": \"minor\",\n      \"location\": \"Section 3.11 / Baseline comparisons\",\n      \"evidence\": \"The linearized Poisson--Boltzmann model is better on current and out-of-distribution net charge error than the operator.\",\n      \"problem\": \"The manuscript states this qualifies the accuracy claim but does not explicitly caution readers that the operator is not uniformly superior across all metrics and regimes.\",\n      \"fix\": \"Add a clarifying statement emphasizing that the operator excels in strong-charge and selectivity regimes, but simpler models may outperform it in low-charge or linearized regimes.\"\n    },\n    {\n      \"id\": \"R1-10\",\n      \"severity\": \"editorial\",\n      \"location\": \"Supplementary Table S7 / Figure and table crosswalk\",\n      \"evidence\": \"The crosswalk lists many scripts and data files but does not mention the location or definition of all symbols used in the main text and supplement.\",\n      \"problem\": \"Some symbols (e.g., \\\\(G_s\\\\), \\\\(G_\\\\rho\\\\), \\\\(s\\\\), \\\\(\\\\rho\\\\)) are introduced without a dedicated notation table or glossary, which may hinder reader comprehension.\",\n      \"fix\": \"Include a concise notation table or glossary in the supplement listing all key symbols, their definitions, and units.\"\n    },\n    {\n      \"id\": \"R1-11\",\n      \"severity\": \"editorial\",\n      \"location\": \"Section 2.3 / Charge-balanced parameterization\",\n      \"evidence\": \"The exponential clipping is to [-15,15] for numerical safety.\",\n      \"problem\": \"The choice of clipping bounds is not justified or referenced; readers may wonder about its effect on gradients or training.\",\n      \"fix\": \"Add a brief justification or reference for the clipping range and comment on its negligible impact on accuracy.\"\n    }\n  ],\n  \"strengths\": [\n    \"Mathematically rigorous exact-boundary and charge-balanced hyperbolic ansatz guaranteeing positivity and charge identity to machine precision.\",\n    \"Comprehensive, reproducible dataset and conservative Scharfetter--Gummel finite-volume solver with sub-nanomolar residuals.\",\n    \"Thorough ablation studies isolating the impact of parameterization, physics loss, and trunk architecture.\",\n    \"Insightful inverse problem analysis revealing fundamental identifiability limits and the necessity of charge-sensitive observables.\"\n  ]\n}",
       "parsed": {
         "reviewer": "Reviewer 1 - JCP/CPC Methodological & Mathematical Rigor Reviewer",
         "recommendation": "minor revision",
-        "summary": "The manuscript presents a mathematically sound and well-validated physics-informed neural operator framework for steady axisymmetric Poisson--Nernst--Planck transport in charged nanopores. The charge-balanced hyperbolic parameterization and exact reservoir Dirichlet construction are clearly derived and implemented, with no evident mathematical inconsistencies. The Scharfetter--Gummel finite-volume solver is rigorously benchmarked. Numerical results demonstrate significant accuracy and efficiency gains, supported by comprehensive ablation and inverse problem analyses. Minor issues concern excessive precision in prose numerical values, some missing explicit symbol definitions in the main text, and a few places where physical interpretation could be more cautiously phrased. Overall, the work is a strong contribution with only minor editorial and clarity improvements needed.",
+        "summary": "The manuscript presents a rigorously validated physics-informed neural operator for axisymmetric Poisson--Nernst--Planck transport in charged nanopores, with a novel exact-boundary, charge-balanced hyperbolic parameterization ensuring positivity and charge identity to machine precision. The conservative Scharfetter--Gummel finite-volume solver and physics loss are well integrated. The operator achieves excellent accuracy and speed, enabling identifiability studies that reveal fundamental limits of conductance-only inversion and the necessity of charge-sensitive observables. The manuscript is mathematically sound, well documented, and reproducible. Minor issues concern a few undefined symbols in the supplement, excessive raw float precision in prose, and some clarifications in the CPC summary and inverse identifiability claims. These do not undermine the core contributions but should be addressed for clarity and completeness.",
         "issues": [
           {
             "id": "R1-1",
-            "severity": "minor",
-            "location": "Section 2.3 / Supplement S3",
-            "evidence": "The exact-boundary and charge-balanced ansatz is given as s = z(1-z)G_s, rho = z(1-z)G_rho, and c_\u00b1 = (sqrt(s^2 + rho^2) \u00b1 rho)/2, with the potential correction psi_theta(r,z) = V_app(1-z) + z(1-z)G_psi(r,z).",
-            "problem": "While the ansatz is mathematically correct and well justified, the symbol G_psi, G_s, and G_rho are introduced without explicit definition or domain specification in the main text; their smoothness and boundary behavior assumptions are implicit but not stated. Also, the choice of z(1-z) as the boundary factor is not explicitly motivated beyond vanishing at reservoirs.",
-            "fix": "Add a brief explicit statement defining G_psi, G_s, and G_rho as smooth latent functions predicted by the neural operator, and clarify that z \u2208 [0,1] is the normalized axial coordinate. Include a short rationale for the z(1-z) factor enforcing zero boundary corrections."
+            "severity": "major",
+            "location": "Supplementary Section S3 / Eq. (S6)",
+            "evidence": "Dimensionless groups defined as \\(\\alpha_r=(L/R)^2\\), \\(\\beta=\\frac{L^2 F C_0}{\\varepsilon_0 \\varepsilon_r V_T} = \\frac{1}{2}(L/\\lambda_D)^2\\), and \\(\\lambda_D^2=\\frac{\\varepsilon_0 \\varepsilon_r V_T}{2 F C_0}\\).",
+            "problem": "The definition of \\(\\beta\\) includes a factor of 1/2 in the Debye length expression that is not standard; the Debye length is usually defined without the factor 1/2 in the denominator. This could cause confusion or inconsistency with literature and the main text.",
+            "fix": "Clarify the definition of \\(\\lambda_D\\) and \\(\\beta\\) explicitly, referencing the physical constants and units, and ensure consistency with the main text and standard conventions."
           },
           {
             "id": "R1-2",
-            "severity": "minor",
-            "location": "Section 2.2 and 2.3",
-            "evidence": "The reservoir Dirichlet conditions are imposed exactly by the ansatz for psi and concentrations, with c_\u00b1 approaching bulk values through the reconstruction.",
-            "problem": "The manuscript states that s and rho vanish at reservoirs, but the bulk concentration C_0 is not explicitly connected to the reconstructed concentrations at boundaries in the ansatz. This could confuse readers about how the bulk boundary condition c_\u00b1 = C_0 is exactly enforced or approximated.",
-            "fix": "Clarify explicitly that the ansatz enforces zero correction at reservoirs, so the physical concentrations approach the bulk value C_0 via the constant offset outside the correction terms, or explain how the bulk boundary condition is exactly or approximately satisfied."
+            "severity": "major",
+            "location": "Supplementary Section S3 / Eq. (S7)",
+            "evidence": "Face flux formula: \\(J_{z,i+1/2} = -\\frac{c_{i+1} B(-\\Delta \\psi_i) - c_i B(\\Delta \\psi_i)}{\\Delta z}\\), with \\(B(x) = x/(e^x - 1)\\).",
+            "problem": "The Bernoulli function \\(B(x)\\) is undefined at \\(x=0\\), which occurs in practice. The manuscript does not explicitly state how this singularity is handled numerically (e.g., via series expansion or limit).",
+            "fix": "Add a brief note or reference explaining the numerical treatment of \\(B(0)\\) to avoid division by zero or numerical instability."
           },
           {
             "id": "R1-3",
-            "severity": "editorial",
-            "location": "Throughout manuscript and abstract",
-            "evidence": "Numerical values in prose such as 0.0008913628923944445, 9.936325096049359e-10, 0.07165499962866306 ms, 50.59363783302251 s, 0.0045737918517061785 (0.46%), etc.",
-            "problem": "Raw 15-17 digit floating-point numbers appear in the narrative prose, which is inappropriate for readability and typical scientific reporting standards.",
-            "fix": "Round all numerical values in the prose to 3-4 significant figures or appropriate units (e.g., 0.000891, 9.94e-10, 0.072 ms, 50.6 s, 0.00457 (0.46%)). Retain full precision only in tables, supplementary materials, or archived data files."
+            "severity": "minor",
+            "location": "Section 2.3 and Supplementary Section S3",
+            "evidence": "The hyperbolic ansatz: \\(c_{\\pm} = (\\sqrt{s^2 + \\rho^2} \\pm \\rho)/2\\), with \\(s = 2 \\exp(z(1-z) G_s)\\), \\(\\rho = z(1-z) G_\\rho\\).",
+            "problem": "The symbol \\(G_\\psi\\) is introduced as a latent field for potential, but the domain and smoothness assumptions on \\(G_s\\) and \\(G_\\rho\\) are not explicitly stated. Also, the clipping of the exponent to [-15,15] is mentioned but not justified or discussed regarding its impact on accuracy or training stability.",
+            "fix": "Add a brief explanation of the regularity assumptions on \\(G_s\\) and \\(G_\\rho\\), and discuss the rationale and effect of clipping the exponent on numerical stability and physical fidelity."
           },
           {
             "id": "R1-4",
             "severity": "minor",
-            "location": "Section 2.4 Operator backbones",
-            "evidence": "The DeepONet trunk network input includes a radial boundary-layer feature e^{-s(1-r)} with parameter s, but s is not defined or explained.",
-            "problem": "The parameter s controlling the exponential boundary-layer feature is undefined, leaving unclear how it is chosen or trained.",
-            "fix": "Define the parameter s explicitly, e.g., as a fixed hyperparameter controlling boundary-layer thickness, or state that it is learned or set empirically."
+            "location": "Section 2.4 / Operator backbones",
+            "evidence": "The multi-scale radial features are \\(\\{e^{-\\kappa(1-r)}\\}_{\\kappa \\in \\{1,3,10,30\\}}\\).",
+            "problem": "The choice of these particular decay rates \\(\\kappa\\) is not motivated or justified. It is unclear if these values are tuned or generic.",
+            "fix": "Add a sentence explaining the physical or numerical motivation for these radial scales and whether they were optimized or chosen heuristically."
           },
           {
             "id": "R1-5",
-            "severity": "minor",
-            "location": "Section 2.6 Inverse recovery",
-            "evidence": "The inverse problem recovers radius to 0.46% but finds surface charge is a flat direction for conductance-only inversion.",
-            "problem": "The causal language 'surface charge is a flat direction' could be misinterpreted as a limitation of the operator rather than a fundamental physical identifiability issue.",
-            "fix": "Add a clarifying statement emphasizing that the flat direction arises from the physics and measurement setup, not from surrogate model limitations, as done in the discussion but should be reiterated here."
+            "severity": "editorial",
+            "location": "Throughout narrative (e.g., Abstract, Sections 3.1, 3.7, 3.9)",
+            "evidence": "Raw Python float literals such as 0.0008913628923944445, 0.072 ms, 196.137225 pA, 1.1e-4, 1.2e9, 0.0482721, 0.000999149 appear in prose.",
+            "problem": "Excessive decimal digits reduce readability and do not reflect meaningful precision in narrative text. Some values are better rounded to 3-4 significant figures.",
+            "fix": "Round all numerical values in the prose to 3-4 significant figures (e.g., 0.000891, 0.072 ms, 196.1 pA, 1.1e-4, 1.2e9, 4.8%, 0.10%) and retain full precision only in tables or archived JSON/CSV files."
           },
           {
             "id": "R1-6",
             "severity": "minor",
-            "location": "Section 3.4 Out-of-distribution behavior",
-            "evidence": "The DeepONet OOD potential error grows 22.7-fold relative to interp-test, while current error remains low.",
-            "problem": "The manuscript states that current errors remain below 1% out of distribution, but the potential errors grow substantially. The physical implications of this discrepancy could be more explicitly discussed.",
-            "fix": "Add a brief explanation that current is an integral quantity smoothing local errors, so it is more robust to OOD extrapolation, whereas pointwise fields are more sensitive, and caution is needed when interpreting field-level predictions OOD."
+            "location": "CPC Program Summary / Nature of the problem",
+            "evidence": "The description states the solver must represent fields over a four-dimensional operating space and that repeated solves take about 0.2 s each.",
+            "problem": "The summary omits explicit mention that the model assumes axisymmetry and neglects steric effects, electro-osmotic convection, surface chemistry, and temperature variation, which are important caveats for applicability.",
+            "fix": "Add a concise statement in the CPC summary clarifying these modeling assumptions and limitations to avoid over-claiming generality."
           },
           {
             "id": "R1-7",
-            "severity": "editorial",
-            "location": "CPC Program Summary / Running time",
-            "evidence": "Running times are given as 50.59363783302251 s, 108.5470477079507 s, 0.07165499962866306 ms, etc.",
-            "problem": "Excessive precision in running times reduces readability and is inconsistent with typical reporting standards.",
-            "fix": "Round running times to 3-4 significant figures, e.g., 50.6 s, 108.5 s, 0.072 ms, and keep exact values in supplementary tables."
+            "severity": "minor",
+            "location": "Section 3.9 / Inverse identifiability claims",
+            "evidence": "The dual protocol recovers charge to 4.8% median error and radius to 0.10%, with 95% coverage 70.7% and 96.3%, respectively.",
+            "problem": "The coverage for charge is only about 70%, indicating mild undercoverage and some uncertainty in the confidence intervals. This nuance is not emphasized sufficiently in the main text or abstract.",
+            "fix": "Add a clear caveat about the undercoverage of charge uncertainty intervals and moderate confidence in the 5-10% charge recovery claim."
           },
           {
             "id": "R1-8",
             "severity": "minor",
-            "location": "Table 1 and Table 3 captions",
-            "evidence": "Table captions do not explicitly state units for some quantities (e.g., current in pA, residuals dimensionless).",
-            "problem": "Missing units in table captions can confuse readers.",
-            "fix": "Add explicit units in all table captions for clarity, e.g., 'Current (pA)', 'Residual (dimensionless)', 'Concentration (mol m^-3)'."
+            "location": "Section 3.9 / Fisher analysis and inverse problem",
+            "evidence": "The exact single-salt Fisher matrix is numerically rank-deficient with condition number > 1e16, while the operator gives about 9.8e8.",
+            "problem": "The difference in condition numbers is large and the manuscript states the exact value exceeds float64 resolution, but does not discuss implications for numerical stability or inversion robustness.",
+            "fix": "Add a brief discussion on the numerical rank deficiency, its impact on inversion, and how the operator's finite condition number relates to practical identifiability."
           },
           {
             "id": "R1-9",
             "severity": "minor",
-            "location": "Section 2.2 Conservative SG/FV solver",
-            "evidence": "The Scharfetter--Gummel discretization is described, but the exact finite-volume formulation and flux expressions are not explicitly written.",
-            "problem": "The manuscript claims conservativeness and stability but does not provide the explicit discrete equations or references to equations in the supplement.",
-            "fix": "Include explicit finite-volume discretization equations or refer precisely to supplement sections or literature where the exact scheme is detailed."
+            "location": "Section 3.11 / Baseline comparisons",
+            "evidence": "The linearized Poisson--Boltzmann model is better on current and out-of-distribution net charge error than the operator.",
+            "problem": "The manuscript states this qualifies the accuracy claim but does not explicitly caution readers that the operator is not uniformly superior across all metrics and regimes.",
+            "fix": "Add a clarifying statement emphasizing that the operator excels in strong-charge and selectivity regimes, but simpler models may outperform it in low-charge or linearized regimes."
           },
           {
             "id": "R1-10",
             "severity": "editorial",
-            "location": "Abstract and throughout",
-            "evidence": "The term 'charge-balanced hyperbolic ansatz' is used repeatedly but not defined in the abstract.",
-            "problem": "Readers unfamiliar with the term may be confused.",
-            "fix": "Add a brief parenthetical explanation or reference to the section where the ansatz is defined in the abstract."
+            "location": "Supplementary Table S7 / Figure and table crosswalk",
+            "evidence": "The crosswalk lists many scripts and data files but does not mention the location or definition of all symbols used in the main text and supplement.",
+            "problem": "Some symbols (e.g., \\(G_s\\), \\(G_\\rho\\), \\(s\\), \\(\\rho\\)) are introduced without a dedicated notation table or glossary, which may hinder reader comprehension.",
+            "fix": "Include a concise notation table or glossary in the supplement listing all key symbols, their definitions, and units."
           },
           {
             "id": "R1-11",
-            "severity": "minor",
-            "location": "Section 3.8 Inverse parameter recovery",
-            "evidence": "The inverse problem uses a five-bias current-voltage curve with 1% Gaussian noise and Nelder--Mead refinement.",
-            "problem": "The choice of noise level and inversion method is not justified or discussed in terms of experimental realism or robustness.",
-            "fix": "Add a brief discussion on the rationale for 1% noise, the choice of Nelder--Mead, and potential limitations or extensions for experimental data."
+            "severity": "editorial",
+            "location": "Section 2.3 / Charge-balanced parameterization",
+            "evidence": "The exponential clipping is to [-15,15] for numerical safety.",
+            "problem": "The choice of clipping bounds is not justified or referenced; readers may wonder about its effect on gradients or training.",
+            "fix": "Add a brief justification or reference for the clipping range and comment on its negligible impact on accuracy."
           }
         ],
         "strengths": [
-          "Clear and mathematically rigorous charge-balanced hyperbolic parameterization ensuring positivity and exact charge identity",
-          "Comprehensive benchmark dataset with strict acceptance criteria and detailed solver validation",
-          "Thorough ablation studies demonstrating the impact of charge reparameterization and physics loss",
-          "Efficient operator architectures with deployment-ready ONNX export and browser/Gradio applications"
+          "Mathematically rigorous exact-boundary and charge-balanced hyperbolic ansatz guaranteeing positivity and charge identity to machine precision.",
+          "Comprehensive, reproducible dataset and conservative Scharfetter--Gummel finite-volume solver with sub-nanomolar residuals.",
+          "Thorough ablation studies isolating the impact of parameterization, physics loss, and trunk architecture.",
+          "Insightful inverse problem analysis revealing fundamental identifiability limits and the necessity of charge-sensitive observables."
         ]
+      }
+    },
+    "reviewer2_deepseek": {
+      "provider": "deepseek",
+      "model": "deepseek-v4-pro",
+      "role": "Reviewer 2 - CPC Software, Reproducibility & Physical Electrochemistry Reviewer",
+      "est_input_tokens": 56615,
+      "max_output_tokens": 3500,
+      "estimated_reserved_cost_usd": 0.09980157,
+      "status": "denied",
+      "reason": "task_allowance_exceeded",
+      "detail": {
+        "projected": 0.20211687,
+        "allowance": 0.15
       }
     }
   },
-  "total_spend_usd": 0.04537938,
+  "total_spend_usd": 0.022912,
   "ledger_status_after": {
-    "committed": 0.09930755,
+    "committed": 0.21855835,
     "outstanding": 0.0,
-    "total": 0.09930755,
+    "total": 0.21855835,
     "inflight": 0,
     "by_provider": {
       "deepseek": 0.06152685000000001,
-      "openai": 0.0377807
+      "openai": 0.15703150000000005
     },
     "by_task": {
       "stage1_smoke": 1.545e-05,
       "stage5b_vision_qa": 0.019878000000000003,
-      "stage6b_independent_review": 0.0794033,
-      "stage6b_review_probe": 1.08e-05
+      "stage6b_independent_review": 0.1023153,
+      "stage6b_review_probe": 1.08e-05,
+      "stage8_literature_verification": 0.0630572,
+      "stage8_literature_verification_v2": 0.009224,
+      "stage8_literature_verification_v3": 0.0164608,
+      "stage8_literature_verification_v4": 0.007596799999999999
     },
-    "total_attempts": 17,
+    "total_attempts": 54,
     "project_total_usd": 5.0,
-    "remaining_usd": 4.90069245,
-    "fraction_used": 0.019862,
+    "remaining_usd": 4.78144165,
+    "fraction_used": 0.043712,
     "reserved_share_usd": 0.0,
-    "spent_share_usd": 0.09930755,
-    "openai_subbudget_used": 0.0377807,
+    "spent_share_usd": 0.21855835,
+    "openai_subbudget_used": 0.1570315,
     "openai_subbudget_cap": 1.0,
     "warning": false,
     "stop_new_tasks": false,

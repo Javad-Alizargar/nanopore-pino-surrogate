@@ -59,8 +59,14 @@ class BoundaryAnsatz(nn.Module):
         z = torch.linspace(0.0, 1.0, nz, dtype=torch.float32)
         self.register_buffer("z", z.reshape(1, 1, 1, nz))
 
-    def forward(self, raw: torch.Tensor, psi_app: torch.Tensor) -> dict:
-        """raw: (B, 3, nr, nz); psi_app: (B,) dimensionless."""
+    def forward(self, raw: torch.Tensor, psi_app: torch.Tensor,
+                c_left: torch.Tensor | None = None,
+                c_right: torch.Tensor | None = None) -> dict:
+        """raw: (B, 3, nr, nz); psi_app: (B,) dimensionless.
+
+        Optional unequal reservoir concentrations ``c_left``/``c_right``
+        (dimensionless, shape (B,)) preserve the exact boundary values.
+        """
         z = self.z.to(raw.dtype)
         env = z * (1.0 - z)
         psi_app = psi_app.reshape(-1, 1, 1, 1)
@@ -71,7 +77,15 @@ class BoundaryAnsatz(nn.Module):
 
         if self.mode == "reparam":
             rho = env * g3
-            s = 2.0 * torch.exp(torch.clamp(env * g2, -_CLIP, _CLIP))
+            if c_left is None and c_right is None:
+                salt_scale = 1.0
+            else:
+                if c_left is None or c_right is None:
+                    raise ValueError("both c_left and c_right are required")
+                cl = c_left.reshape(-1, 1, 1, 1)
+                cr = c_right.reshape(-1, 1, 1, 1)
+                salt_scale = cl * (1.0 - z) + cr * z
+            s = 2.0 * salt_scale * torch.exp(torch.clamp(env * g2, -_CLIP, _CLIP))
             root = torch.sqrt(s * s + rho * rho)
             c_plus = 0.5 * (root + rho)
             c_minus = 0.5 * (root - rho)

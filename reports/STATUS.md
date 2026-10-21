@@ -1,8 +1,8 @@
 # STATUS
 
 Project: `nanopore_pino_surrogate`
-Updated: 2026-10-20 (Stage 17 — DOCX code line breaks, §1 [34–40] prose, abstract six-to-ten range, S14/S18 notes, 35/35 audit; v1.3.5 release)
-Completion state: **COMPLETE** (all Stage 1–17 deliverables produced; review is AI-assisted, not expert peer review; DOCX page-rendered via LibreOffice and validated structurally; archived at Zenodo DOI 10.5281/zenodo.23487404)
+Updated: 2026-10-21 (Stage 19 — Weyl-gated hybrid solver, unequal-reservoir reversal potential, honest inverse limits, S1–S22, 35/35 audit; v1.5.0 release)
+Completion state: **COMPLETE** (all Stage 1–19 deliverables produced; review is AI-assisted, not expert peer review; DOCX page-rendered via LibreOffice and validated structurally; archived at Zenodo DOI 10.5281/zenodo.23487404)
 
 ## Phase
 Stage 1 — Preflight, Capability & Accounting Bootstrap, Project Brief. **Done.**
@@ -24,6 +24,8 @@ Stage 14 — Explicit CPiP statement at the end of §1; DA-PINN comparison conte
 Stage 15 — Figure 1B label restored and A–D letters given ≥14 px clearance; all six figures pass exact panel-set/in-bounds/clearance checks; 72 StatWhy citation-integrity flags resolved with individualized clause attribution; prose square brackets restricted to citations; CPC Program Summary aligned to the official field order; self-contained `test_run/` added; **33/33** audit; v1.3.3 release. **Done.**
 Stage 16 — Supplement S1–S20 collected in strict physical order under an S0 summary index; title synchronized; `s`/`Σc`/`S` algebra and Fisher precision corrected; S20 header/caption fixed; asymmetric-valence boundary added; DOCX tables repeat headers and forbid row splitting; fenced code underscores preserved; **35/35** audit; v1.3.4 release. **Done.**
 Stage 17 — DOCX fenced code emits one compact monospace paragraph per line (Algorithm 1 and S9 verified); Section 1 `[34–40]` and §2.3 prose polished; abstract aligned to six to ten orders at 250 words; S14/S18 clarifying notes added; **35/35** audit; v1.3.5 release. **Done.**
+Stage 18 — Final evidence: exact-SG/FV Fisher validation, matched-loss and strong-charge benchmarks, protocol coverage; dual 4.83%/0.0999%, kappa 1.174e9, 22.84x strong-charge; v1.4.0. **Done.**
+Stage 19 — Weyl-gated hybrid controller and unequal-reservoir reversal potential; 120-state benchmark, 1.907e-4 current error at 7.60x lower cost; reversal inverse q 16.88% at 1% noise; manuscript/supplement S1–S22 and Figures 1C/6D updated; **35/35** audit; v1.5.0. **Done.**
 
 ## Progress (Stage 10)
 - [x] **10.1 three experiments** — `scripts/run_stage10_upgrades.py` (with per-experiment caching `results/_stage10_cache_*`). (A) **Trunk ablation** (6 variants, matched capacity, 500 epochs, 3 seeds): the plain MLP trunk gives the best interp net-charge error (0.0914) while radial variants (0.098–0.116) reduce the wall-gradient error by ~7% (radial k=30: 4.83e-3 vs 5.20e-3) and give the best current error (multi-scale 0.274%). (B) **Scaling law** on a new 384-state solve expansion: interp net-charge error 0.3927→0.1299 for N=36→288, fitting alpha=0.552 (psi 0.535); OOD net-charge error is nearly flat (0.317→0.253, alpha=0.13). (C) **Identifiability** (15 states, 3 protocols, 0.2/1/2% noise, 30x30 grid + Nelder–Mead; 18x18 Fisher sweep): single/multi-salt I–V leave q_w unidentifiable (median err 0.77–1.00) while recovering R to <0.7%; the dual I–V+selectivity protocol recovers both below 0.3%. Fisher: kappa(F) median 7.46e8 (99.7% > 1e8), dlnI/dlnR=2.029, |dlnI/dlnq_w| <= 1.6e-3.
@@ -44,6 +46,22 @@ Stage 17 — DOCX fenced code emits one compact monospace paragraph per line (Al
 - [x] **12.3 manuscript reframing** — new title; abstract 230 words with the inverse-problem first sentence; highlights revised; Introduction gains inverse/identifiability background and three use cases; §3.2 compressed to one comparison paragraph plus selectivity validation; §3.3 states the decoupling mechanism is the driver and justifies hyperbolic on structural grounds; §3.4 adds the spatial/parametric OOD budget; §3.7 tightened; §5 replaces the positive-result ending with the identifiability limit and the charge-sensitive-observable recommendation.
 - [x] **12.4 bibliography/formatting** — refs 33 (Krishnapriyan et al.) and 57 (Zhang, Xiao, Ghosh 2025, 9(1) 45–64) repaired in `literature_db.json` and the manuscript; DOCX References now render `[1]--[60]` with hanging indent (no Word list numbering); supplement S7c reordered S16–S19 and crosswalk extended; enforcement range updated to 1..19.
 - [x] **12.5 release** — audit extended to **30 checks** (bibliography format; table first-seen order + no stray legend children) and passes **30/30**; DOCX rebuilt (main: 0 tables, 6 inline figures, 287 native equations; supplement: 20 table grids, 0 images, 354 native equations); cover letters retitled/updated; packages rebuilt (public **159 files / 31.1 MB**, private **841 files / 89.8 MB**); portal redeployed (`/api/solve_sg` 196.137225 pA); both repos tagged **v1.3.0** (`results/stage12_release.json`).
+
+## Stage 19 key results
+```
+Hybrid benchmark      : 120 states (40 weak / 40 transitional / 40 strong); 8 methods
+Pino-Controller       : median I err 1.907e-4 ; Vrev err 0.0352 mV ; 0.2008 s
+Full SG/FV reference  : 1.5267 s -> 7.60x lower cost
+One-step Gummel       : 1.907e-4 ; 0.1508 s ; POD-RBF 3.56e-4
+Strong band           : 2.65e-2 median I err (limitation reported)
+Reversal inverse      : q 9.74/16.88/21.78% ; R 0.168/0.232/0.350% at 0.2/1/2% noise
+Reversal coverage     : q 100/100/98% ; R 96/89/62%
+Dual hybrid inverse   : q 39.23/39.23/31.44% ; coverage 18/9/11%
+Audit                 : 35/35 PASS
+Public package        : 175 files, 32.1 MB
+Private package       : 864 files, 91.0 MB
+Release               : v1.5.0 ; public + private tagged ; Pages built ; portal HTTP 200
+```
 
 ## Stage 17 key results
 ```

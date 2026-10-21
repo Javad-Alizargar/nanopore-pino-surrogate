@@ -66,7 +66,8 @@ QA = {
     },
     "fig6_h4_timing_and_amortization_breakeven": {
         "scientific": "A: latency bars; B: cumulative-cost curves with N* break-even vs M1/Xeon SG-FV "
-                      "and the DA-PINN retrain; C/D: Stage-10 inverse recovery of |q_w| and R at 1% "
+                      "and the DA-PINN retrain; C: exact SG/FV vs operator sensitivities on the 8x8 "
+                      "negative-q Fisher plane; D: Stage-18 inverse recovery of q_w and R at 1% "
                       "noise for single-salt I-V, multi-salt I-V and the dual I-V + near-wall "
                       "selectivity protocol (q_w unidentifiable from I-V alone; dual recovers both).",
         "communication": "Latency + amortization + tool callout answer the cost question; C/D make "

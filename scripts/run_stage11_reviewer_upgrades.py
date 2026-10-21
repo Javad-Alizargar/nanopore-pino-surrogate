@@ -70,7 +70,7 @@ SALT_MULTI = [10.0, 30.0, 100.0]
 FD_EPS = 1e-3
 
 SCHEMES = ["direct_c", "soft_charge_penalty", "linear_ortho_projection",
-           "hyperbolic_reparam"]
+           "hyperbolic_reparam", "direct_c_matched_loss"]
 
 
 # --------------------------------------------------------------------------- #
@@ -84,8 +84,12 @@ def train_scheme(data, targets, train_idx, val_idx, scheme, seed, epochs,
     fit_idx = np.array([i for i in train_idx if i not in set(val_idx.tolist())])
     mode = {"direct_c": "direct_c", "soft_charge_penalty": "direct_c",
             "linear_ortho_projection": "linear_ortho_projection",
-            "hyperbolic_reparam": "reparam"}[scheme]
-    fields = ["psi", "c_plus", "c_minus"] if mode == "direct_c" else ["psi", "s", "rho"]
+            "hyperbolic_reparam": "reparam",
+            "direct_c_matched_loss": "direct_c"}[scheme]
+    if scheme == "direct_c_matched_loss":
+        fields = ["psi", "s", "rho"]
+    else:
+        fields = ["psi", "c_plus", "c_minus"] if mode == "direct_c" else ["psi", "s", "rho"]
     scales = {}
     for f in fields + ["rho"]:
         rms = np.sqrt((targets[f] ** 2).mean(axis=(1, 2)))

@@ -1,10 +1,54 @@
-# REPORT FOR EXTERNAL REVIEW — Stage 17 final handoff
+# REPORT FOR EXTERNAL REVIEW — Stage 19 final handoff
 
 Project: `nanopore_pino_surrogate` — parameter-conditioned physics-informed
 neural operator for steady axisymmetric Poisson--Nernst--Planck (PNP)
 transport in a charged cylindrical nanopore.
 Root: `/Users/javadalizargar/Google drive MAC/PINN to a Neural Operator`
-Date: 2026-10-20. State: **COMPLETE** (Stage 1–17 done; stop point reached; archived at Zenodo DOI 10.5281/zenodo.23487404).
+Date: 2026-10-21. State: **COMPLETE** (Stages 1–19 done; archived at Zenodo DOI 10.5281/zenodo.23487404).
+
+## Stage 19 deliverables (hybrid solver, reversal potential, v1.5.0)
+
+1. **Weyl-gated hybrid controller.** `scripts/run_stage19_hybrid_solver_and_reversal.py`
+   benchmarks eight methods on 120 states (40 weak, 40 transitional, 40 strong).
+   The Pino-Controller applies the operator and one conservative SG/FV correction
+   only when the Weyl singular-value gate accepts the local sensitivity
+   (`epsK = min(0.19*smin, (0.01+0.2*ierr)*smax)`); the gate accepts 10% of
+   observable checks and 20% of sensitivity checks.
+2. **Measured accuracy and cost.** Median current error is **1.907e-4**,
+   reversal-potential error **0.0352 mV**, and wall time **0.2008 s**, against
+   **1.5267 s** for the full `21x61` SG/FV reference: **7.60-fold** lower cost.
+   One-step Gummel has the same current error at 0.1508 s. POD-RBF reaches
+   3.56e-4. The strong-charge band degrades to 2.65e-2 median current error;
+   this band limitation is reported rather than hidden.
+3. **Unequal-reservoir reversal potential.** The exact-boundary ansatz and the
+   SG/FV baseline now support `c_L != c_R`. The exact zero-current reversal
+   potential is only ~0.6–1.3 mV because equal diffusivities cancel the neutral
+   salt diffusion current; the earlier 41 mV Nernst estimate is not applicable.
+4. **Inverse result, honestly bounded.** Hybrid reversal-potential inversion
+   gives q errors **9.74/16.88/21.78%** and R errors **0.168/0.232/0.350%** at
+   0.2/1/2% noise, with q coverage **100/100/98%** and R coverage **96/89/62%**.
+   Dual hybrid gives q errors **39.23/39.23/31.44%** and coverage **18/9/11%**.
+   Neither reaches sub-percent charge recovery; the manuscript therefore retains
+   the Stage-18 dual-selectivity **4.83%** charge result and states the reversal
+   protocol's identifiability limit explicitly.
+5. **Manuscript and supplement.** New title, abstract, sixth highlight, new
+   §3.10, Discussion/Conclusion caveat, Table S22, and Figures 1C/6D updated.
+   Supplement now has S1–S22. The audit is **35/35 PASS**; packages contain
+   **175 public files / 32.1 MB** and **864 private files / 91.0 MB**.
+6. **Release.** Both repositories are public/private as intended and tagged
+   **v1.5.0**; GitHub Pages rebuilt, the web simulator returns HTTP 200, and the
+   portal `https://pino.statwhy.com/` returns HTTP 200. The authoritative SHA
+   record is `results/stage19_release.json`.
+
+## Stage 18 deliverables (final evidence, v1.4.0)
+
+`scripts/run_stage18_final_evidence.py` added exact-SG/FV Fisher validation,
+matched-loss and strong-charge benchmarks, and protocol coverage. Key results:
+median `kappa_q = 1.174e9`, 99.07% of states above `1e8`, median CRLB 85.66 for
+charge but 0.00372 for radius; dual inversion q/R errors **4.83%/0.0999%** at 1%
+noise with coverage **70.7%/96.3%**; strong-charge current error improves
+**22.84-fold**; matched loss improves net charge **13%** and current **18%**.
+
 
 Stage 8 and Stage 9 were executed on explicit authorization. The fine-grained
 token was used **in-memory only** (`GH_TOKEN` environment for `gh`; a transient
@@ -19,7 +63,8 @@ $\boldsymbol{\mu}=(V_\text{app},C_0,q_w,R)$ that is CPC and JCP compatible:
 a verified SG/FV dataset, two backbones (multi-scale radial PI-DeepONet and a
 real-DFT FNO), charge-balanced reparameterization, an inverse demonstration,
 browser + Gradio apps, and a defensible manuscript. Stages 6B–7 added independent
-review, DOCX export, dual release packages, and deployment. **Stage 8** verified
+review, DOCX export, dual release packages, and deployment; Stages 18–19 added
+the final evidence and the sensitivity-controlled hybrid/reversal study. **Stage 8** verified
 that every cited reference supports its sentence, moved every data table into the
 supplement (figure-only main text), refreshed the cover letters, re-audited the
 release at **22/22 PASS**, and re-released both repositories as **v1.0.1**.

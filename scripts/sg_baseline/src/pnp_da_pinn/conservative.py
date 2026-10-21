@@ -16,14 +16,20 @@ from .sg_solver import bernoulli, annular_control_volume_weights, sg_face_flux_z
 
 
 class ConservativePNP:
-    def __init__(self, grid, beta, left_psi, wall_charge, fixed_charge=None):
+    def __init__(self, grid, beta, left_psi, wall_charge, fixed_charge=None,
+                 right_psi=0.0, c_left=1.0, c_right=1.0):
         self.grid = grid
         self.beta = beta
         self.left = left_psi
+        self.right = right_psi
+        self.c_left = float(c_left)
+        self.c_right = float(c_right)
         nr, nz = grid.shape
         self.n = nr * nz
         indices = np.arange(self.n).reshape(grid.shape)
         self.boundary = np.concatenate((indices[:, 0], indices[:, -1]))
+        self.left_boundary = indices[:, 0]
+        self.right_boundary = indices[:, -1]
         self.free = indices[:, 1:-1].ravel()
         weights = annular_control_volume_weights(grid)
         self.row, self.col, self.weight = [], [], []
@@ -45,6 +51,7 @@ class ConservativePNP:
         self.poisson_lu = splu(self.poisson_matrix.tocsc())
         self.load = np.zeros(grid.shape)
         self.load[:, 0] = left_psi
+        self.load[:, -1] = right_psi
         self.load[-1, 1:-1] += grid.radial_metric * wall_charge / weights[-1]
         if fixed_charge is not None:
             self.load[:, 1:-1] += beta * fixed_charge[:, 1:-1]
@@ -61,12 +68,14 @@ class ConservativePNP:
         # J(i->j) = [B(delta)c_i - B(-delta)c_j] / h.
         matrix = self.matrix(bernoulli(delta), bernoulli(-delta))
         rhs = np.zeros(self.n)
-        rhs[self.boundary] = 1.0
+        rhs[self.left_boundary] = self.c_left
+        rhs[self.right_boundary] = self.c_right
         return spsolve(matrix, rhs).reshape(self.grid.shape)
 
     def unpack(self, values):
         psi = np.zeros(self.grid.shape)
         psi[:, 0] = self.left
+        psi[:, -1] = self.right
         psi.ravel()[self.free] = values
         return psi
 
@@ -80,7 +89,7 @@ class ConservativePNP:
 
     def solve(self, tolerance=1e-9, max_iter=100, psi0=None):
         start = time.perf_counter()
-        initial = self.left * (1 - self.grid.zz) if psi0 is None else psi0
+        initial = (self.left * (1 - self.grid.zz) + self.right * self.grid.zz) if psi0 is None else psi0
         result = root(self.residual, initial.ravel()[self.free], method="krylov",
                       options={"fatol": tolerance, "maxiter": max_iter})
         psi = self.unpack(result.x)
@@ -91,12 +100,14 @@ class ConservativePNP:
         return PnpSolution(psi, cp, cm, int(result.nit), residual, time.perf_counter() - start, bool(ok))
 
 
-def solve_reference(config, grid, tolerance=1e-9, max_iter=100, psi0=None):
+def solve_reference(config, grid, tolerance=1e-9, max_iter=100, psi0=None,
+                    c_left=1.0, c_right=1.0, right_psi=0.0):
     if config.physics.fixed_charge_strength != 0:
         raise ValueError("Revision benchmark uses surface charge only.")
     problem = ConservativePNP(grid, config.scales.poisson_coupling,
                               voltage_to_psi(config.physics.applied_voltage_V, config.scales),
-                              config.physics.wall_surface_charge_strength)
+                              config.physics.wall_surface_charge_strength,
+                              right_psi=right_psi, c_left=c_left, c_right=c_right)
     solution = problem.solve(tolerance, max_iter, psi0)
     if not solution.converged:
         raise RuntimeError(f"Reference rejected: residual={solution.residual:.3e}")

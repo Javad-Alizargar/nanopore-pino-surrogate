@@ -36,7 +36,7 @@
         "found": "ABCDEF",
         "set_ok": true,
         "all_in_bounds": true,
-        "min_gap_px": 25.4,
+        "min_gap_px": 33.3,
         "ok": true
       }
     },
@@ -72,7 +72,7 @@
         "found": "ABCD",
         "set_ok": true,
         "all_in_bounds": true,
-        "min_gap_px": 18.7,
+        "min_gap_px": 21.1,
         "ok": true
       }
     }

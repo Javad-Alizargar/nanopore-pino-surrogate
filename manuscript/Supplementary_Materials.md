@@ -1,16 +1,16 @@
 # Supplementary Materials
 
-**Manuscript:** Conductance identifiability limits and physics-constrained neural operators for axisymmetric Poisson--Nernst--Planck transport in charged nanopores
+**Manuscript:** Sensitivity-controlled physics-constrained neural operators and conductance identifiability limits for Poisson--Nernst--Planck transport in charged nanopores
 
 **Author:** Javad Alizargar
 
-This supplement documents the dataset, constraint derivation, training protocol, extended metrics, out-of-distribution definitions, inverse-recovery protocol, deployment checks, and reproducibility commands. All numerical values are produced by the archived scripts and result files listed in Section S9. It contains all twenty display tables (Supplementary Tables S1--S20); the main text contains the six multipanel figures only. The released software and data are permanently archived at Zenodo DOI https://doi.org/10.5281/zenodo.23487404.
+This supplement documents the dataset, constraint derivation, training protocol, extended metrics, out-of-distribution definitions, inverse-recovery protocol, deployment checks, and reproducibility commands. All numerical values are produced by the archived scripts and result files listed in Section S9. It contains all twenty-two display tables (Supplementary Tables S1--S22); the main text contains the six multipanel figures only. The released software and data are permanently archived at Zenodo DOI https://doi.org/10.5281/zenodo.23487404.
 
 ---
 
-## S0. Supplementary tables S1--S20, summary index and compendium
+## S0. Supplementary tables S1--S22, summary index and compendium
 
-The twenty display tables are collected here in strict order S1 through S20, matching their first citation order in the main text. The sections that follow document the methods and give extended discussion; each table remains cited from the relevant section.
+The twenty-two display tables are collected here in strict order S1 through S22, matching their first citation order in the main text. The sections that follow document the methods and give extended discussion; each table remains cited from the relevant section.
 
 **Summary index**
 
@@ -24,16 +24,18 @@ The twenty display tables are collected here in strict order S1 through S20, mat
 - **S8**: Deployment and parity checks.
 - **S9**: Multi-protocol inverse identifiability.
 - **S10**: Benchmark state against the prior fixed-state DA-PINN.
-- **S11**: Four-way constraint-scheme benchmark.
+- **S11**: Five-way constraint-scheme benchmark with matched direct-$c$ control.
 - **S12**: Physics-weight sensitivity sweep.
 - **S13**: FNO training-budget check.
 - **S14**: Out-of-distribution error decomposition.
 - **S15**: Net-charge error by wall-charge magnitude quartile.
 - **S16**: Net-charge error by Debye-ratio quartile.
 - **S17**: Latency and amortization.
-- **S18**: Inverse recovery from five-bias noisy current--voltage curves.
+- **S18**: Candidate-grid nesting and SG/FV-in-the-loop inverse check.
 - **S19**: Exact SG/FV versus neural-operator Fisher and Jacobian validation.
 - **S20**: Exact SG/FV diffusivity-ratio scan.
+- **S21**: Interpreted baselines and strong-charge benchmark.
+- **S22**: Sensitivity-controlled hybrid solver and reversal-potential inverse benchmark.
 
 **Supplementary Table S1.** Dataset splits and sampling.
 
@@ -77,7 +79,7 @@ The twenty display tables are collected here in strict order S1 through S20, mat
 | 144 | 0.2066 $\pm$ 0.0154 | 0.0023 | 0.417 | $6.488\times10^{-3}$ | 0.2575 |
 | 288 | 0.1299 $\pm$ 0.0039 | 0.0020 | 0.387 | $6.206\times10^{-3}$ | 0.2527 |
 
-**Supplementary Table S4.** Model and training hyperparameters.
+**Supplementary Table S4.** Model and training hyperparameters. The parameter count in Table S3 refers to the matched-capacity Stage-10 ablation backbone (250-epoch budget); the production three-seed model in this table is the 500-epoch $p=64$ configuration, so its 36,880 count is not directly comparable with the 34,243 ablation count.
 
 | Setting | DeepONet | FNO |
 |---|---|---|
@@ -134,19 +136,21 @@ The twenty display tables are collected here in strict order S1 through S20, mat
 | Supplementary Table S10 | Benchmark versus DA-PINN | `results/tables/table2_benchmark_state_vs_dapinn.csv` |
 | Supplementary Table S17 | Timing and break-even | `results/tables/table4_timing_and_amortization.csv` |
 | Supplementary Table S13 | FNO epoch check | `results/tables/table5_fno_epoch_check.csv` |
-| Supplementary Table S18 | Inverse recovery | `results/tables/table6_inverse_parameter_recovery.csv` |
+| Supplementary Table S18 | Candidate-grid nesting and SG/FV-in-the-loop inverse check | `results/stage18_final_evidence.json` |
 | Supplementary Table S15 | Net-charge error by charge quartile | `results/tables/table3_multiseed_h1_h2_h3_ablation.csv` |
 | Supplementary Table S16 | Net-charge error by Debye-ratio quartile | `results/tables/table3_multiseed_h1_h2_h3_ablation.csv` |
 | Supplementary Table S8 | Deployment and parity checks | `results/stage5b_live_server_verification.json` |
 | Supplementary Table S9 | Multi-protocol inverse identifiability | `results/tables/table_s15_fisher_identifiability_protocols.csv` |
-| Supplementary Table S11 | Four-way constraint-scheme benchmark | `results/tables/table_constraint_schemes_4way.csv` |
+| Supplementary Table S11 | Five-way constraint-scheme benchmark, including matched direct-$c$ control | `results/tables/table_constraint_schemes_4way.csv` |
 | Supplementary Table S12 | Physics-weight sensitivity sweep | `results/tables/table_physics_weight_sensitivity.csv` |
 | Supplementary Table S14 | Out-of-distribution error decomposition | `results/tables/table_ood_mechanistic_breakdown.csv` |
-| Supplementary Table S19 | Exact SG/FV versus operator Fisher/Jacobian validation | `results/tables/table_sgfv_fisher_validation.csv` |
+| Supplementary Table S19 | Exact SG/FV versus operator Fisher/Jacobian validation | `results/tables/table_sgfv_operator_fisher_8x8.csv` |
 | Supplementary Table S20 | Exact SG/FV diffusivity-ratio scan | `results/tables/table_diffusivity_symmetry_breaking.csv` |
-| Claim map | Claim-to-evidence audit (C01--C38, L01--L60) | `manuscript/claim_evidence.csv` |
+| Supplementary Table S21 | Interpreted baselines and strong-charge benchmark | `results/tables/table_analytic_pod_baselines.csv`; `results/tables/table_strong_charge_benchmark.csv` |
+| Supplementary Table S22 | Sensitivity-controlled hybrid solver and reversal-potential inverse benchmark | `results/tables/table_s22_hybrid_controller_and_reversal.csv`; `results/stage19_hybrid_controller.json` |
+| Claim map | Claim-to-evidence audit (C01--C44, L01--L60) | `manuscript/claim_evidence.csv` |
 | Statistics | Canonical JSON values | `results/statistics.json` |
-| Inverse demo | Full inverse JSON | `results/inverse_recovery_demo.json` |
+| Inverse study | Stage-18 inverse, nesting, and SG/FV-in-the-loop results | `results/stage18_final_evidence.json` |
 | Literature verification | API-backed abstract and support audit | `results/literature_claim_verification.json` |
 | Layout QA | 0-issue report | `results/figure_data/figure_layout_report.json` |
 | Vision QA | Advisory model report | `results/figure_data/vision_qa_report.json` |
@@ -164,19 +168,19 @@ The twenty display tables are collected here in strict order S1 through S20, mat
 | Gradio DeepONet | 196.1 pA, 0.7568 ms |
 | Gradio compare, live solve | 0.2057 s; $\psi$ rel. $L_2$ 0.0002126; $I$ rel. $L_2$ 0.0007364 |
 
-**Supplementary Table S9.** Multi-protocol inverse identifiability. For 15 held-out states, 1\%/2\%/5\%-proxy Gaussian noise levels (implemented as 0.2\%, 1\%, 2\% relative noise), three measurement protocols: single-salt I--V (one salt), multi-salt I--V (three salts, 10--100 mol $m^{-3}$), and the dual protocol that adds the near-wall Donnan selectivity $S=(c_+-c_-)/(c_++c_-)|_{r=1}$ to the multi-salt I--V data. Recovery uses a $30\times30$ candidate grid in $(q_w,R)$ followed by Nelder--Mead refinement. Errors are medians over the 15 states.
+**Supplementary Table S9.** Multi-protocol inverse identifiability with exact SG/FV-generated observations. For 15 held-out interpolation states, three protocols, and three relative noise levels (0.2\%, 1\%, 2\%), we use 20 independent realizations per state--protocol--noise cell and a $61\times61$ candidate grid in $(q_w,R)$ followed by quadratic refinement. Medians and interquartile ranges (IQR) are over the 300 realizations per cell. Single-salt uses one bulk concentration; multi-salt uses 10, 30, and 100 mol $m^{-3}$; dual adds the near-wall selectivity $S=(c_+-c_-)/(c_++c_-)|_{r=1}$ to the multi-salt data. Coverage is the fraction of 95\% intervals containing the true value.
 
-| Protocol | Noise | median $q_w$ rel. err | median $R$ rel. err | $q_w$ identifiable ($<$10\%) | $R$ recovered ($<$2\%) |
-|---|---|---|---|---|---|
-| single-salt I--V | 0.002 | 1.0000 | 0.0005 | no | yes |
-| single-salt I--V | 0.010 | 1.0000 | 0.0025 | no | yes |
-| single-salt I--V | 0.020 | 0.7703 | 0.0065 | no | yes |
-| multi-salt I--V | 0.002 | 0.8239 | 0.0003 | no | yes |
-| multi-salt I--V | 0.010 | 1.0000 | 0.0011 | no | yes |
-| multi-salt I--V | 0.020 | 1.0000 | 0.0025 | no | yes |
-| dual (I--V + selectivity) | 0.002 | 0.0005 | 0.0003 | yes | yes |
-| dual (I--V + selectivity) | 0.010 | 0.0024 | 0.0008 | yes | yes |
-| dual (I--V + selectivity) | 0.020 | 0.0028 | 0.0018 | yes | yes |
+| Protocol | Noise | median $q_w$ rel. err | $q_w$ IQR | median $R$ rel. err | $R$ IQR | $q_w$ coverage | $R$ coverage |
+|---|---|---|---|---|---|---|---|
+| single-salt | 0.002 | 1.000 | 4.97 | 0.00262 | 0.00720 | 1.000 | 0.400 |
+| single-salt | 0.010 | 1.000 | 1.95 | 0.00357 | 0.00662 | 1.000 | 0.820 |
+| single-salt | 0.020 | 1.000 | 1.95 | 0.00440 | 0.00652 | 1.000 | 0.960 |
+| multi-salt | 0.002 | 1.087 | 5.78 | 0.00262 | 0.00720 | 0.933 | 0.133 |
+| multi-salt | 0.010 | 1.056 | 4.96 | 0.00262 | 0.00670 | 1.000 | 0.610 |
+| multi-salt | 0.020 | 1.000 | 1.93 | 0.00357 | 0.00654 | 1.000 | 0.660 |
+| dual | 0.002 | 0.0490 | 0.106 | 0.000225 | 0.000284 | 0.690 | 0.890 |
+| dual | 0.010 | 0.0483 | 0.116 | 0.000999 | 0.00125 | 0.707 | 0.963 |
+| dual | 0.020 | 0.0495 | 0.0897 | 0.00221 | 0.00215 | 0.700 | 0.947 |
 
 **Supplementary Table S10.** Benchmark state (50 mV, 100 mol $m^{-3}$, $q_w=-0.01$, $R=5$ nm) against the prior fixed-state DA-PINN.
 
@@ -188,14 +192,15 @@ The twenty display tables are collected here in strict order S1 through S20, mat
 | FNO (direct $c$) | 195.6 | 0.001352 | 0.003661 | 0.8599 | 0.004085 |
 | Prior DA-PINN | 196.1 | 0.000382 | 0.000106 | 0.145 | 0.00102 |
 
-**Supplementary Table S11.** Four-way constraint-scheme benchmark on the identical PI-DeepONet backbone (250 epochs, seeds 42/43/44). Errors are three-seed means on the interpolation-test split; consistency mismatch is $\overline{|\rho-\rho_\mathrm{latent}|}$.
+**Supplementary Table S11.** Five-way constraint-scheme benchmark on the identical PI-DeepONet backbone (250 epochs, seeds 42/43/44). Errors are three-seed means on the interpolation-test split; consistency mismatch is $\overline{|\rho-\rho_\mathrm{latent}|}$. The matched direct-$c$ control uses the same field-normalized data loss as the other schemes, isolating the output parameterization from the optimization pathology of the naive direct loss.
 
-| Scheme | $\rho$ rel. $L_2$ | OOD $\rho$ | wall-grad. | consistency mismatch | min $c$ |
-|---|---|---|---|---|---|
-| hyperbolic reparam. (ours) | $0.2066\pm0.0154$ | 0.2575 | $6.49\times10^{-3}$ | 0 (exact) | 0.992 |
-| linear orthogonal projection | $0.2008\pm0.0206$ | 0.2598 | $6.55\times10^{-3}$ | $4.2\times10^{-8}$ | 0.992 |
-| soft charge penalty ($10\times$) | $0.4114\pm0.1871$ | 0.2835 | $8.19\times10^{-3}$ | 0 (exact) | 0.986 |
-| direct concentration | $0.9334\pm0.0082$ | 0.8606 | $2.22\times10^{-2}$ | 0 (exact) | 0.999 |
+| Scheme | $\rho$ rel. $L_2$ | OOD $\rho$ | $I$ rel. $L_2$ | wall-grad. | consistency mismatch | min $c$ |
+|---|---|---|---|---|---|---|
+| hyperbolic reparam. (ours) | $0.2066\pm0.0154$ | 0.2575 | 0.00417 | $6.49\times10^{-3}$ | 0 (exact) | 0.992 |
+| linear orthogonal projection | $0.2008\pm0.0206$ | 0.2598 | 0.00361 | $6.55\times10^{-3}$ | $4.2\times10^{-8}$ | 0.992 |
+| soft charge penalty ($10\times$) | $0.4114\pm0.1871$ | 0.2835 | 0.00690 | $8.19\times10^{-3}$ | 0 (exact) | 0.986 |
+| direct concentration, naive | $0.9334\pm0.0082$ | 0.8606 | 0.00991 | $2.22\times10^{-2}$ | 0 (exact) | 0.999 |
+| direct concentration, matched | $0.2377\pm0.0571$ | 0.2739 | 0.00514 | $7.34\times10^{-3}$ | 0 (exact) | 0.988 |
 
 **Supplementary Table S12.** Physics-weight sensitivity sweep at seed 42 (interpolation-test split).
 
@@ -277,26 +282,28 @@ The twenty display tables are collected here in strict order S1 through S20, mat
 | DeepONet break-even vs DA-PINN retrain | 0.2195 | states |
 | FNO break-even vs DA-PINN retrain | 0.3355 | states |
 
-**Supplementary Table S18.** Inverse recovery from five-bias noisy current--voltage curves (1% noise; 400 candidates, 2000 forward evaluations per state). Values are rounded for display; the exact values are in `results/tables/table6_inverse_parameter_recovery.csv`. For near-zero charge states such as state 175 (true q_w = −0.00206, recovered q_w = −0.09816), the absolute error is 0.0961 (slightly more than half of the 0.0982 prior width), which appears as a large relative error (46.69) because the denominator |q_w| is near zero.
+**Supplementary Table S18.** Candidate-grid nesting and SG/FV-in-the-loop inverse check. (A) At 1\% noise, median errors on the $61\times61$ and $121\times121$ grids for the same 15 states and 20 realizations; the dual protocol changes by less than 1\%, whereas the radius-only protocols have a shallow, grid-sensitive radius optimum. (B) Median errors with the exact SG/FV solver used for every candidate on five states at 1\% noise, initialized from the operator estimate; this check validates the protocol ranking but is not a blind estimator.
 
-| State | $C_0$ (mol $m^{-3}$) | $R$ true (nm) | $R$ recovered (nm) | $R$ rel. error | $q_w$ true | $q_w$ recovered | $q_w$ rel. error |
-|---|---|---|---|---|---|---|---|
-| 175 | 27.2 | 6.083 | 6.085 | 0.0003 | -0.00206 | -0.09816 | 46.69 |
-| 147 | 93.3 | 6.918 | 6.870 | 0.0069 | -0.03770 | -0.07835 | 1.078 |
-| 154 | 51.1 | 3.362 | 3.344 | 0.0054 | -0.03711 | -0.09816 | 1.645 |
-| 172 | 103.9 | 7.276 | 7.302 | 0.0036 | -0.04557 | -0.09816 | 1.154 |
-| 161 | 140.2 | 3.917 | 3.935 | 0.0046 | -0.02875 | -0.00978 | 0.660 |
+| Protocol | $q_w$ 61 | $q_w$ 121 | $\Delta q_w$ | $R$ 61 | $R$ 121 | $\Delta R$ |
+|---|---|---|---|---|---|---|
+| single-salt | 1.000 | 1.000 | 0.0\% | 0.00357 | 0.00252 | 29.4\% |
+| multi-salt | 1.056 | 1.000 | 5.3\% | 0.00262 | 0.00208 | 20.6\% |
+| dual | 0.0483 | 0.0485 | 0.40\% | 0.000999 | 0.00101 | 0.91\% |
 
-**Supplementary Table S19.** Exact SG/FV versus neural-operator Fisher and Jacobian validation. Centered finite differences of the float64 Scharfetter--Gummel solver at relative step $10^{-3}$ are compared with the operator Jacobian over 15 held-out states and three protocols (four non-zero biases; salts 10, 30, and 100 mol $m^{-3}$ for the multi-salt and dual protocols). $\kappa(\mathcal{F})$ is the condition number of $\mathcal{F}=J^\top J$ with $J=\partial(\ln|I|,S)/\partial(\ln R,\ln|q_w|)$.
+| Protocol | median $q_w$ rel. err | median $R$ rel. err |
+|---|---|---|
+| single-salt | 1.336 | 0.00440 |
+| multi-salt | 1.185 | 0.00272 |
+| dual | 0.0871 | 0.00455 |
+
+**Supplementary Table S19.** Exact SG/FV versus neural-operator sensitivities on the $8\times8$ negative-$q_w$ Fisher plane ($R=5$ nm, four non-zero biases). Centered finite differences use relative step $10^{-3}$; the Jacobian changes by at most $3.3\times10^{-5}$ across steps $10^{-3}$, $3\times10^{-3}$, and $10^{-2}$. $\kappa(\mathcal{F})$ is the condition number of $\mathcal{F}=J^\top J/\sigma^2$ with $J=\partial\ln|I|/\partial\ln(R,|q_w|)$ at 1\% noise. The exact single-salt matrix is numerically rank-deficient, so its condition number is reported only as a scale; the radius sensitivity is the quantity that is resolved.
 
 | Quantity | Exact SG/FV | Neural operator |
 |---|---|---|
-| median $\partial\ln I/\partial\ln R$ | 2.00003 | 1.99997 |
-| median relative difference in $\partial\ln I/\partial\ln R$ | $1.5\times10^{-4}$ | -- |
-| median $\vert\partial\ln I/\partial\ln q_w\vert$ | $2.1\times10^{-5}$ | $1.2\times10^{-4}$ |
-| median $\kappa(\mathcal{F})$, single-salt | $4.9\times10^{15}$ | $8.2\times10^{8}$ |
-| median $\kappa(\mathcal{F})$, multi-salt | $8.7\times10^{9}$ | $4.5\times10^{7}$ |
-| median $\kappa(\mathcal{F})$, dual | $1.8\times10^{5}$ | $1.8\times10^{5}$ |
+| median $\partial\ln I/\partial\ln R$ | 2.00003 | 2.00022 |
+| median relative difference in $\partial\ln I/\partial\ln R$ | $1.1\times10^{-4}$ | -- |
+| median $\partial\ln I/\partial\ln q_w$ | $-1.64\times10^{-5}$ | $-2.49\times10^{-5}$ |
+| median $\kappa(\mathcal{F})$, single-salt | $1.8\times10^{16}$ (rank-deficient) | $9.8\times10^{8}$ |
 
 **Supplementary Table S20.** Exact SG/FV diffusivity-ratio scan at the benchmark state ($V_\mathrm{app}=50$ mV, $q_w=-0.01$, $R=5$ nm) and at low salt ($C_0=20$ mol $m^{-3}$). The anion diffusivity is fixed at $D_-=2.03\times10^{-9}$ $m^2$ $s^{-1}$ and the cation diffusivity is varied; $\kappa(\mathcal{F})$ is the condition number of $\mathcal{F}=J^\top J$ with $J=\partial(\ln|I|,S)/\partial(\ln R,\ln|q_w|)$, using four non-zero biases for the single-salt protocol and adding $S$ at 50 mV for the dual protocol. Sensitivities are centered finite differences at relative step $10^{-3}$. Condition-number reduction ratios ($\kappa_\mathrm{single}/\kappa_\mathrm{dual}$) are computed from unrounded float64 values before display rounding.
 
@@ -310,6 +317,53 @@ The twenty display tables are collected here in strict order S1 through S20, mat
 | $C_0=20$ | KCl | 0.9655 | $4.50\times10^{-5}$ | $1.71\times10^{14}$ | $6.31\times10^{5}$ | $2.7\times10^{8}$ |
 | $C_0=20$ | NaCl | 0.655 | $6.50\times10^{-4}$ | $2.29\times10^{13}$ | $6.32\times10^{5}$ | $3.6\times10^{7}$ |
 | $C_0=20$ | strongly asymmetric | 0.200 | $2.10\times10^{-3}$ | $3.61\times10^{12}$ | $6.35\times10^{5}$ | $5.7\times10^{6}$ |
+
+**Supplementary Table S21.** Interpreted baselines and strong-charge benchmark. (A) Relative $L_2$ errors on the 48 interpolation-test and 48 out-of-distribution states. The Ohmic bulk model uses bulk conductivity and the geometric cross-section; the linearized radial Poisson--Boltzmann (PB) model uses a Debye-layer profile calibrated only by $C_0$ and $R$, with no per-state fitting; POD--RBF uses 30 modes per field; DeepONet and FNO are the three-seed canonical models. (B) Strong-charge test: 120 generated states, 96/24 train/test split, $C_0=10$--13 mol $m^{-3}$, $q_w=-0.50$ to $-0.38$, $R=2.5$--5 nm, 600 epochs. The Ohmic row predicts no wall layer, so its net-charge error is unity by construction.
+
+| Split | Method | $\psi$ rel. $L_2$ | $\rho$ rel. $L_2$ | $S$ rel. $L_2$ | $I$ rel. $L_2$ |
+|---|---|---|---|---|---|
+| interp. | Ohmic bulk | 0.0103 | 1.000 | 1.000 | $4.87\times10^{-5}$ |
+| interp. | linearized radial PB | 0.000969 | 0.0939 | 0.0796 | $8.25\times10^{-6}$ |
+| interp. | POD--RBF (30 modes) | 0.00102 | 0.433 | 0.0882 | $4.84\times10^{-5}$ |
+| interp. | PI-DeepONet | 0.000891 | 0.0825 | 0.0177 | 0.00109 |
+| interp. | FNO-2D | 0.00550 | 0.0931 | 0.0264 | 0.00851 |
+| OOD | Ohmic bulk | 0.153 | 1.000 | 1.000 | $8.33\times10^{-4}$ |
+| OOD | linearized radial PB | 0.0203 | 0.113 | 0.102 | $5.29\times10^{-4}$ |
+| OOD | POD--RBF (30 modes) | 0.0463 | 0.333 | 0.309 | 0.00476 |
+| OOD | PI-DeepONet | 0.0202 | 0.368 | 0.316 | 0.00136 |
+| OOD | FNO-2D | 0.0208 | 0.224 | 0.179 | 0.00912 |
+
+| Method | Seed | $I$ median rel. $L_2$ | $I$ mean rel. $L_2$ | $\psi$ rel. $L_2$ | $\rho$ rel. $L_2$ | $S$ rel. $L_2$ | $S$ abs. error |
+|---|---|---|---|---|---|---|---|
+| Ohmic bulk | -- | 0.0591 | 0.0797 | 0.469 | 1.000 | 1.000 | -- |
+| strong-trained DeepONet | 42 | 0.00259 | 0.00321 | 0.0248 | 0.0453 | 0.0535 | 0.0206 |
+| strong-trained DeepONet | 43 | 0.00120 | 0.00257 | 0.0263 | 0.0464 | 0.0552 | 0.0212 |
+| strong-trained DeepONet | 44 | 0.00302 | 0.00377 | 0.0276 | 0.0492 | 0.0585 | 0.0223 |
+
+
+
+**Supplementary Table S22.** Sensitivity-controlled hybrid solver and unequal-reservoir reversal-potential benchmark on 120 states (40 weak, 40 transitional, 40 strong). (A) Median current and reversal-potential errors with median wall time for eight methods. The Pino-Controller uses the Weyl gate and one conservative SG/FV correction; full SG/FV is the reference. (B) Hybrid inverse recovery at 0.2\%, 1\%, and 2\% noise for the reversal-potential and dual protocols (5 states, 20 realizations). The reversal-potential protocol is better than the dual hybrid for charge but does not reach the projected sub-percent error; the Stage-18 dual-selectivity result remains the best inverse protocol.
+
+| Method | Median $I$ rel. error | Median $V_\mathrm{rev}$ abs. error (mV) | Median time (s) |
+|---|---|---|---|
+| Ohmic bulk | $8.06\times10^{-5}$ | 1.252 | $<10^{-3}$ |
+| Linearized PB | $3.21\times10^{-6}$ | 1.252 | $<10^{-3}$ |
+| POD--RBF | $3.56\times10^{-4}$ | 1.252 | $<10^{-3}$ |
+| PI-DeepONet | $1.06\times10^{-3}$ | 0.0352 | 0.002 |
+| Calibrated DINO-style | $8.51\times10^{-4}$ | 0.131 | 0.003 |
+| One-step Gummel | $1.91\times10^{-4}$ | 0.0352 | 0.151 |
+| Full SG/FV | 0 | 0 | 1.527 |
+| Pino-Controller (Weyl-gated) | $1.91\times10^{-4}$ | 0.0352 | 0.201 |
+
+| Protocol | Noise | $q_w$ median rel. error | $R$ median rel. error | $q_w$ coverage 95\% | $R$ coverage 95\% |
+|---|---|---|---|---|---|
+| reversal potential | 0.2\% | 9.74\% | 0.168\% | 100\% | 96\% |
+| reversal potential | 1\% | 16.9\% | 0.232\% | 100\% | 89\% |
+| reversal potential | 2\% | 21.8\% | 0.350\% | 98\% | 62\% |
+| dual + selectivity | 0.2\% | 39.2\% | 0.169\% | 18\% | 96\% |
+| dual + selectivity | 1\% | 39.2\% | 0.233\% | 9\% | 89\% |
+| dual + selectivity | 2\% | 31.4\% | 0.349\% | 11\% | 62\% |
+
 
 ---
 
@@ -462,7 +516,7 @@ is their total. The capital $S$ is reserved for the near-wall Donnan selectivity
 
 The algebraic charge identity was checked numerically: the maximum absolute error over the test states is $1.110\times10^{-16}$, i.e., double-precision round-off.
 
-**Why this matters.** If $c_+$ and $c_-$ are predicted independently, the error in $\rho=c_+-c_-$ is the difference of two errors, each of order $\epsilon c$, while $|\rho|$ can be much smaller than $c$. The relative error in $\rho$ therefore scales like $\epsilon c/|\rho|$ and diverges in weakly charged states. Predicting $s$ and $\rho$ removes this cancellation by construction. The empirical effect is an 8.63-fold (DeepONet) and 10.29-fold (FNO) reduction in interp-test net-charge error.
+**Why this matters.** If $c_+$ and $c_-$ are predicted independently, the error in $\rho=c_+-c_-$ is the difference of two errors, each of order $\epsilon c$, while $|\rho|$ can be much smaller than $c$. The relative error in $\rho$ therefore scales like $\epsilon c/|\rho|$ and diverges in weakly charged states. Predicting $s$ and $\rho$ removes this cancellation by construction. Relative to a naive direct loss the empirical reduction is 8.63-fold (DeepONet) and 10.29-fold (FNO), but much of that gap is an optimization pathology: with the matched field-normalized loss the direct model reaches $0.238\pm0.057$ net-charge error versus $0.207\pm0.015$ for the hyperbolic map, with 23\% higher current error. The robust gain is therefore 13--15\% on net charge and 18--23\% on current, plus exact positivity and charge identity.
 
 ---
 
@@ -495,17 +549,15 @@ The split is a controlled extrapolation, not an adversarial stress test. It is i
 
 ## S7. Inverse-recovery protocol and sensitivity
 
-**States.** Five held-out interpolation states: indices 175, 147, 154, 172, and 161. They span $C_0=27.2$--$140.2$ mol $m^{-3}$, $R=3.362$--$7.276$ nm, and $q_w=-0.04557$ to $-0.00206$.
+**States.** Fifteen held-out interpolation states selected to span the Debye-overlap range. Five of these are also used for the SG/FV-in-the-loop check in Supplementary Table S18.
 
-**Measurement.** Exact SG/FV currents at $V_\mathrm{app}=-50,-25,0,25,50$ mV, multiplied by $1+0.01\,\mathcal{N}(0,1)$ with a fixed seed per state.
+**Measurements.** Exact SG/FV currents at $V_\mathrm{app}=-50,-25,0,25,50$ mV. Single-salt uses the state's own $C_0$; multi-salt uses 10, 30, and 100 mol $m^{-3}$; dual adds the near-wall Donnan selectivity $S=(c_+-c_-)/(c_++c_-)|_{r=1}$ at the same biases. Each observation is perturbed by independent 0.2\%, 1\%, or 2\% relative Gaussian noise; 20 realizations are used per state--protocol--noise cell.
 
-**Search.** 400 candidate $(q_w,R)$ pairs in the dataset box ($q_w\in[-0.09815884117319931,0]$, $R\in[2.0265975267620897,8]$), evaluated at the five biases (2000 forward evaluations per state). The best three candidates are refined with Nelder--Mead (bounded by clipping, 400 iterations, objective tolerance $10^{-12}$).
+**Search.** A $61\times61$ candidate grid in $(q_w,R)$ over the dataset box, followed by quadratic refinement. The complete study is repeated on a $121\times121$ grid for the nesting check. We report medians, interquartile ranges, and 95\% coverage over the 300 realizations per cell.
 
-**Identifiability diagnostic.** At the recovered radius, the cost is profiled over 41 values of $q_w$ spanning the prior. The 1%-noise floor is $\Delta\mathrm{cost}=10^{-4}$; the set of $q_w$ values within that floor spans the full prior width (0.09816) for all five states. The maximum relative current change across the prior is 0.0009625.
+**Identifiability diagnostic.** The Fisher matrix uses $J=\partial\ln|I|/\partial\ln(R,|q_w|)$ at four non-zero biases, whitened by 1\% relative noise, and $\mathcal{F}=J^\top J/\sigma^2$. The negative-$q_w$ plane covers $20\le C_0\le200$ mol $m^{-3}$ and $-0.05\le q_w<0$ at $R=5$ nm on an $18\times18$ grid.
 
-**Interpretation.** Radius is identifiable because the current magnitude and slope constrain the pore cross-section. Fixed charge is not identifiable because the total conductance of a symmetric electrolyte with nearly equal diffusivities is almost invariant to Donnan polarization. This is a property of the measurement, not of the operator. A charge-sensitive observable would break the degeneracy.
-
-**Results.** See Supplementary Table S18 and `results/tables/table6_inverse_parameter_recovery.csv`. Median radius error 0.004574; median $q_w$ error 1.154; median surface-charge-density error 1.146. Grid wall time per state 0.1253 s; equivalent SG/FV time 402.6 s; speed-up 3214.
+**Results.** See Supplementary Table S9 for the protocol summary, S18 for the grid nesting and SG/FV-in-the-loop check, and S19 for the $8\times8$ exact sensitivity comparison. At 1\% noise, single- and multi-salt inversion leave the median $q_w$ error at 100\%, while the dual protocol gives 4.83\% for $q_w$ and 0.0999\% for $R$; the dual $q_w$ and $R$ estimates change by 0.40\% and 0.91\% between the 61 and 121 grids. An SG/FV-in-the-loop check on five states gives a more conservative 8.7\% dual $q_w$ error and 0.45\% radius error.
 
 ---
 
@@ -515,7 +567,7 @@ This section documents the three Stage-10 studies. All values are produced by `s
 
 Fitted power laws $\epsilon=a\,N_\mathrm{train}^{-\alpha}$: $\alpha_\rho=0.552$ and $\alpha_\psi=0.535$ in-distribution, but only $\alpha_\rho=0.130$ and $\alpha_\psi=0.118$ out of distribution and $\alpha_I=0.369$ in-distribution. The interpolation error therefore follows approximately $N^{-1/2}$, whereas OOD error is nearly data-insensitive.
 
-The Fisher-information plane (Figure 3F) spans $\lambda_D/R\in[0.05,0.55]$ at $R=5$ nm and $|q_w|\in[0.005,0.05]$. The dimensionless current sensitivity is $\partial\ln I/\partial\ln R=2.029$ (range 2.028--2.032, i.e.\ the current scales as the pore area) while the median $|\partial\ln I/\partial\ln q_w|=1.9\times10^{-4}$ (maximum $1.6\times10^{-3}$), giving a condition number $\kappa(\mathcal{F})$ between $9.9\times10^{7}$ and $1.7\times10^{12}$ (median $7.5\times10^{8}$); $99.7\%$ of the plane exceeds $10^{8}$. The near-null Fisher direction is the charge axis for every operating point, which is why conductance-only inversion cannot recover $q_w$. The single-salt conductance sensitivity to $q_w$ does grow at low salinity (relative spread of $|I|$ over $q_w\in[-0.05,0]$: $1.3\times10^{-3}$ at $C_0=10$ mol $m^{-3}$ versus $1.5\times10^{-4}$ at $C_0=100$ mol $m^{-3}$), but remains below the measurement noise, so multi-salt I--V alone is still insufficient; the independent near-wall selectivity observable is what breaks the degeneracy.
+The Fisher-information plane (Figure 3F) spans $20\le C_0\le200$ mol $m^{-3}$ and $-0.05\le q_w<0$ at $R=5$ nm on an $18\times18$ grid. The dimensionless current sensitivity is $\partial\ln I/\partial\ln R=2.00$ (the current scales as the pore area), while the median $\partial\ln I/\partial\ln q_w$ is $-2.5\times10^{-5}$; the condition number $\kappa(\mathcal{F})$ ranges from $7.8\times10^{7}$ to $1.6\times10^{11}$ (median $1.17\times10^{9}$), and $99.1\%$ of the plane exceeds $10^{8}$. The near-null Fisher direction is the charge axis at every operating point, which is why conductance-only inversion cannot recover $q_w$. Multi-salt current--voltage data do not remove the degeneracy; the independent near-wall selectivity observable does, reducing the median 1\%-noise charge error to 4.8\%.
 
 The expanded dataset used for the scaling study appends 144 new in-distribution Latin-hypercube states (seed 20261020) to the original 240, giving 384 states (`data/processed/pnp_parametric_384.npz`, 6.36 MB) with a maximum residual of $9.86\times10^{-10}$ and strictly positive concentrations.
 
@@ -523,7 +575,7 @@ The expanded dataset used for the scaling study appends 144 new in-distribution 
 
 ## S7c. Reviewer-upgrade experiments (Stages 11--12)
 
-This section documents the three Stage-11 studies and the Stage-12 OOD decomposition. All values are produced by `scripts/run_stage11_reviewer_upgrades.py` and archived in `results/stage11_upgrades.json` and the matching `results/tables/` CSV files. The corresponding display tables are S11, S12, S14, and S19 in Section S0.
+This section documents the three Stage-11 studies and the Stage-12 OOD decomposition. All values are produced by `scripts/run_stage11_reviewer_upgrades.py` and archived in `results/stage11_upgrades.json` and the matching `results/tables/` CSV files. The corresponding display tables are S11, S12, and S14 in Section S0.
 
 ---
 
@@ -572,6 +624,9 @@ Run from the project root with the virtual environment activated.
 
 # 9. Stage-13 diffusivity-asymmetry scan
 .venv/bin/python scripts/run_diffusivity_symmetry_check.py
+
+# 10. Stage-19 hybrid solver and reversal-potential study
+.venv/bin/python scripts/run_stage19_hybrid_solver_and_reversal.py
 
 # 8. Web bundle and DOM test
 .venv/bin/python scripts/build_web_bundle.py

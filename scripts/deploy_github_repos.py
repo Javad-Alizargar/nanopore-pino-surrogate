@@ -24,15 +24,15 @@ REPOS = {
         "dir": ROOT / "reproducibility" / "public_repo",
         "name": "Javad-Alizargar/nanopore-pino-surrogate",
         "private": False,
-        "message": "Public release v1.3.5: final DOCX code breaks, Section 1 prose, abstract range, and table notes (Stage 17)",
-        "tag": "v1.3.5",
+        "message": "Public release v1.5.0: sensitivity-controlled hybrid solver, reversal-potential limits, and Stage 18/19 evidence (Stages 18-19)",
+        "tag": "v1.5.0",
     },
     "private": {
         "dir": ROOT / "reproducibility" / "github",
         "name": "Javad-Alizargar/nanopore-pino-surrogate-private",
         "private": True,
-        "message": "Complete private research archive v1.3.5 (Stage 1-17 verified)",
-        "tag": "v1.3.5",
+        "message": "Complete private research archive v1.5.0 (Stage 1-19 verified)",
+        "tag": "v1.5.0",
     },
 }
 
@@ -122,6 +122,15 @@ def enable_pages(name: str, env: dict) -> dict:
     return {}
 
 
+def http_code(url: str) -> int | None:
+    import urllib.request
+    try:
+        with urllib.request.urlopen(url, timeout=30) as r:
+            return r.getcode()
+    except Exception:
+        return None
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--only", choices=["public", "private"])
@@ -152,12 +161,24 @@ def main() -> None:
                     "visibility_ok": ok_private}
         if key == "public":
             pages = enable_pages(spec["name"], env)
+            for _ in range(18):
+                if pages.get("status") == "built":
+                    break
+                time.sleep(5)
+                info = run(["gh", "api", f"repos/{spec['name']}/pages"], env, ROOT, check=False)
+                if info.returncode == 0:
+                    import json as _json
+                    pages = _json.loads(info.stdout)
+            sim_url = "https://javad-alizargar.github.io/nanopore-pino-surrogate/web_simulator/"
+            portal = "https://pino.statwhy.com/"
             out[key]["pages"] = {"html_url": pages.get("html_url"),
                                  "status": pages.get("status"),
-                                 "url": "https://javad-alizargar.github.io/nanopore-pino-surrogate/web_simulator/"}
-            out[key]["portal"] = "https://pino.statwhy.com/"
+                                 "url": sim_url,
+                                 "verified_http": http_code(sim_url)}
+            out[key]["portal"] = portal
+            out[key]["portal_verified_http"] = http_code(portal)
     import json
-    (ROOT / "results" / "stage17_release.json").write_text(json.dumps(out, indent=2))
+    (ROOT / "results" / "stage19_release.json").write_text(json.dumps(out, indent=2))
     print(json.dumps(out, indent=2))
 
 

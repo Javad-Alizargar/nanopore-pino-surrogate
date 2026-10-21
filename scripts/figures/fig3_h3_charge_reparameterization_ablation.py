@@ -15,15 +15,17 @@ schemes = stat["stage11_constraint_schemes_benchmark"]["summary"]
 sweep = stat["stage11_physics_weight_sweep"]
 
 ORDER = ["hyperbolic_reparam", "linear_ortho_projection",
-         "soft_charge_penalty", "direct_c"]
+         "soft_charge_penalty", "direct_c", "direct_c_matched_loss"]
 PRETTY = {"hyperbolic_reparam": "reparam\n(ours)",
           "linear_ortho_projection": "linear\nproj.",
           "soft_charge_penalty": "soft\npenalty",
-          "direct_c": "direct $c$"}
+          "direct_c": "direct $c$",
+          "direct_c_matched_loss": "direct $c$\nmatched"}
 SCOL = {"hyperbolic_reparam": K.C["blue"],
         "linear_ortho_projection": K.C["orange"],
         "soft_charge_penalty": K.C["vermillion"],
-        "direct_c": K.C["purple"]}
+        "direct_c": K.C["purple"],
+        "direct_c_matched_loss": K.C["grey"]}
 
 fig = plt.figure(figsize=(13.0, 6.4))
 gs = GridSpec(2, 3, figure=fig, hspace=0.46, wspace=0.42)
@@ -45,7 +47,7 @@ axA.set_xticks(x)
 axA.set_xticklabels([PRETTY[s] for s in ORDER], fontsize=7.5)
 axA.set_ylabel(r"net-charge rel. $L_2$ error  $\rho$")
 axA.set_ylim(0, 1.15)
-axA.set_title("4-way constraint schemes, 3-seed", fontsize=9)
+axA.set_title("5-way constraint schemes, 3-seed", fontsize=9)
 axA.legend(frameon=False, fontsize=7)
 axA.text(0.02, 0.93, "solid: interp  |  hatched: OOD", transform=axA.transAxes,
          fontsize=6.2, color="0.3")
@@ -154,26 +156,26 @@ axE.legend(frameon=False, fontsize=6.6)
 K.panel_label(axE, "E", x=-0.18, y=1.15)
 
 # ---- Panel F: Fisher condition-number ridge ----------------------------
-fp = stat["stage10_fisher_plane"]
+fp = stat["stage18_fisher_plane_corrected"]["grid"]
 lam = np.array([g["lambda_D_over_R"] for g in fp])
-qw = np.array([g["q_w"] for g in fp])
-cn = np.array([g["cond"] for g in fp])
+qw = np.abs(np.array([g["q_w"] for g in fp]))
+cn = np.array([g["kappa_q"] for g in fp])
 dlq = np.array([g["dlnI_dlnq"] for g in fp])
 dlr = np.array([g["dlnI_dlnR"] for g in fp])
 Lc = np.unique(lam); Qc = np.unique(qw)
 Kc = np.full((Lc.size, Qc.size), np.nan)
 for g in fp:
     Kc[np.argmin(np.abs(Lc - g["lambda_D_over_R"])),
-       np.argmin(np.abs(Qc - g["q_w"]))] = np.log10(max(g["cond"], 1e-6))
+       np.argmin(np.abs(Qc - abs(g["q_w"])))] = np.log10(max(g["kappa_q"], 1e-6))
 axF = fig.add_subplot(gs[1, 2])
 mesh = axF.pcolormesh(Lc, Qc * 1e3, Kc.T, cmap="viridis", shading="auto")
 axF.contour(Lc, Qc * 1e3, Kc.T, levels=[9.0, 10.0, 11.0],
             colors="white", linewidths=1.2, alpha=0.85)
 axF.set_xlabel(r"Debye ratio  $\lambda_D/R$")
 axF.set_ylabel(r"surface charge  $|q_w|$  ($\times10^{-3}$)")
-axF.set_title(r"Fisher conditioning $\log_{10}\kappa(\mathcal{F})$ (white: $10^{9,10,11}$)"
-              "\n" + rf"$\partial\ln I/\partial\ln R\!\approx\!{np.nanmean(dlr):.2f}$, "
-              rf"$|\partial\ln I/\partial\ln q_w|\!<\!{np.nanmax(np.abs(dlq)):.1e}$",
+axF.set_title(r"single-salt Fisher conditioning $\log_{10}\kappa(\mathcal{F})$"
+              "\n" + rf"white: $10^{{9,10,11}}$; median $\kappa_F$="
+              + f"{np.nanmedian(cn):.1e}",
               fontsize=8.0)
 cb = fig.colorbar(mesh, ax=axF, pad=0.02, fraction=0.046)
 cb.set_label(r"$\log_{10}\kappa(\mathcal{F})$", fontsize=7.5)
@@ -196,7 +198,7 @@ sdata = {
     "panelE_trunk_order": np.array(order, dtype=object),
     "panelE_rho_rel": np.array(rho_rel), "panelE_rho_sd": np.array(rho_sd),
     "panelE_wall_rel": np.array(wall_rel), "panelE_wall_sd": np.array(wall_sd),
-    "panelF_lambda": Lc, "panelF_qw": Qc, "panelF_log10_cond": Kc,
+    "panelF_lambda": Lc, "panelF_qw": Qc, "panelF_log10_kappa_q": Kc,
     "panelF_dlnI_dlnR": dlr, "panelF_dlnI_dlnq": dlq,
 }
 K.save_fig(fig, "fig3_h3_charge_reparameterization_ablation", sdata)
