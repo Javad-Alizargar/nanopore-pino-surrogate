@@ -1,0 +1,13 @@
+quantity,value
+n_states,240
+n_train,144
+n_interp_test,48
+n_ood_charge_salt,24
+n_ood_geometry_voltage,24
+max_residual,9.936325096049359e-10
+min_c_plus,0.9999474287033081
+min_c_minus,0.8033685088157654
+n_continuation_steps,0
+benchmark_current_pA,196.137225
+sgfv_median_s,0.2013
+sgfv_mean_s,0.2391

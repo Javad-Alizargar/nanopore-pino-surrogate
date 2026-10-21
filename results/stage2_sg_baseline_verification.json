@@ -1,0 +1,97 @@
+{
+  "stage": 2,
+  "task": "2.1_baseline_sg_fv_reproduction",
+  "generated_utc": "2026-10-18T09:17:10Z",
+  "hardware": {
+    "platform": "macOS-14.1-arm64-arm-64bit-Mach-O",
+    "machine": "arm64",
+    "processor": "arm",
+    "cpu": "Apple M1 (8 cores)"
+  },
+  "software": {
+    "python": "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 16.0.0 (clang-1600.0.26.6)]",
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "dtype": "float64"
+  },
+  "reference_state": {
+    "config": "surface_wall_0p036mC.yaml",
+    "geometry": {
+      "radius_nm": 5.0,
+      "length_nm": 30.0,
+      "nr": 21,
+      "nz": 61
+    },
+    "physics": {
+      "temperature_K": 298.15,
+      "bulk_concentration_mol_m3": 100.0,
+      "relative_permittivity": 78.5,
+      "diffusion_cation_m2_s": 1.96e-09,
+      "diffusion_anion_m2_s": 2.03e-09,
+      "applied_voltage_V": 0.05,
+      "fixed_charge_strength": 0.0,
+      "wall_surface_charge_strength": -0.01
+    },
+    "solver": {
+      "max_gummel_iter": 300,
+      "tolerance": 1e-06,
+      "relaxation": 0.005
+    },
+    "tolerance": 1e-09
+  },
+  "timing": {
+    "warmup_s": [
+      0.21219983301125467,
+      0.2055115420371294
+    ],
+    "solves_s": [
+      0.20053041691426188,
+      0.20847904204856604,
+      0.20070516702253371,
+      0.19919745798688382,
+      0.20321412500925362,
+      0.19974758301395923,
+      0.1997273750603199,
+      0.2019787080353126,
+      0.22017370793037117,
+      0.20204712497070432
+    ],
+    "median_s": 0.20134193752892315,
+    "q25_s": 0.1999432914890349,
+    "q75_s": 0.2029223749996163,
+    "iqr_s": 0.002979083510581404,
+    "min_s": 0.19919745798688382,
+    "max_s": 0.22017370793037117,
+    "prior_xeon_baseline_s": 0.44,
+    "m1_vs_xeon_ratio": 0.45759531256573444
+  },
+  "verification": {
+    "residual": 2.4219382055434835e-10,
+    "iterations": 4,
+    "mean_axial_current_pA": 196.13722469169716,
+    "relative_axial_current_range": 5.667072886675506e-14,
+    "psi_min": 0.0,
+    "psi_max": 1.9460872247804557,
+    "c_plus_min": 1.0,
+    "c_minus_min": 0.9978480153776841,
+    "c_plus_max": 1.0021565637402947,
+    "c_minus_max": 1.0,
+    "expected": {
+      "mean_axial_current_pA": 196.137225,
+      "residual_max": 1e-09,
+      "relative_axial_current_range": 7.74e-14
+    }
+  },
+  "checks": {
+    "converged": true,
+    "residual_below_1e-9": true,
+    "mean_current_matches_expected": true,
+    "relative_range_matches_expected": true
+  },
+  "unit_tests": {
+    "suite": "tests/test_conservative.py",
+    "result": "9/9 passed",
+    "note": "Run separately via .venv/bin/python -m unittest discover -s tests"
+  },
+  "all_checks_passed": true
+}
