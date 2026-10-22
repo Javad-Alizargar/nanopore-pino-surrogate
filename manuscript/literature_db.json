@@ -10,16 +10,17 @@
   ],
   "candidate_pool_size": 172,
   "counts": {
-    "total": 61,
+    "total": 62,
     "by_origin": {
       "prior_da_pinn": 34,
       "topic_fno_pino": 8,
       "topic_deeponet": 6,
       "topic_constraints_conditioning": 6,
-      "topic_nanopore_edl_design": 6
+      "topic_nanopore_edl_design": 6,
+      "manual_stage21": 1
     },
-    "crossref_verified": 61,
-    "entries": 61
+    "crossref_verified": 60,
+    "entries": 62
   },
   "entries": [
     {
@@ -1945,6 +1946,37 @@
       },
       "retrieval_date": "2026-10-21",
       "id": "ref0061"
+    },
+    {
+      "authors": [
+        "Lianghao Cao",
+        "Thomas O’Leary-Roseberry",
+        "Prashant K. Jha",
+        "J. Tinsley Oden",
+        "Omar Ghattas"
+      ],
+      "year": 2023,
+      "title": "Residual-based error correction for neural operator accelerated infinite-dimensional Bayesian inverse problems",
+      "journal": "Journal of Computational Physics",
+      "doi": "10.1016/j.jcp.2023.112104",
+      "pmid": null,
+      "url": "https://doi.org/10.1016/j.jcp.2023.112104",
+      "cited_by_count": null,
+      "abstract_available": false,
+      "topics": [
+        "hybrid_solver"
+      ],
+      "origin": "manual_stage21",
+      "sources": [
+        "crossref"
+      ],
+      "verification": {
+        "crossref": true,
+        "openalex": false,
+        "title_match": true
+      },
+      "retrieval_date": "2026-10-22",
+      "id": "ref0062"
     }
   ]
 }

@@ -50,19 +50,25 @@ def main():
                         "median_sigma_rel_err": float(np.median(s)),
                         "q_coverage95": float(np.mean(d[f"{method}_q_cover"][m])),
                         "R_coverage95": float(np.mean(d[f"{method}_R_cover"][m])),
+                        "sigma_coverage95": float(np.mean(d[f"{method}_sigma_cover"][m])),
+                        "converged_fraction": float(np.mean(d[f"{method}_converged"][m])),
+                        "boundary_hit_fraction": float(np.mean(d[f"{method}_boundary_hit"][m])),
                         "median_time_s": float(np.median(d[f"{method}_time_s"][m])),
                     }
     OUT.write_text(json.dumps(rows, indent=2))
     CSV.parent.mkdir(parents=True, exist_ok=True)
     with CSV.open("w") as fh:
         fh.write("protocol,method,noise,band,n,median_q_rel_err,q_iqr,median_R_rel_err,"
-                 "R_iqr,q_coverage95,R_coverage95,median_time_s\n")
+                 "R_iqr,median_sigma_rel_err,q_coverage95,R_coverage95,sigma_coverage95,"
+                 "converged_fraction,boundary_hit_fraction,median_time_s\n")
         for key, v in rows.items():
             p, method, nz, b = key.split("_")
             fh.write(f"{p},{method},{nz.replace('noise','')},{b},{v['n']},"
                      f"{v['median_q_rel_err']:.10g},{v['q_iqr']:.10g},"
                      f"{v['median_R_rel_err']:.10g},{v['R_iqr']:.10g},"
-                     f"{v['q_coverage95']:.6g},{v['R_coverage95']:.6g},"
+                     f"{v['median_sigma_rel_err']:.10g},"
+                     f"{v['q_coverage95']:.6g},{v['R_coverage95']:.6g},{v['sigma_coverage95']:.6g},"
+                     f"{v['converged_fraction']:.6g},{v['boundary_hit_fraction']:.6g},"
                      f"{v['median_time_s']:.6g}\n")
     ver = json.loads(VER.read_text())
     ver["inverse_summary_by_band"] = rows

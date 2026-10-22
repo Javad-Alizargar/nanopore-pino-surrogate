@@ -92,7 +92,7 @@ Dear Editors,
 
 {positioning}
 
-I am pleased to submit the original research article entitled **"Sensitivity-controlled physics-constrained neural operators and conductance identifiability limits for Poisson--Nernst--Planck transport in charged nanopores"** for consideration at *{editors}*.
+I am pleased to submit the original research article entitled **"Charge-balanced neural operators, conductance identifiability limits, and warm-started finite-volume solvers for nanopore ion transport"** for consideration at *{editors}*.
 
 **Author:** Javad Alizargar, Department of Nursing, National Taipei University of Nursing and Health Sciences, No. 365, Mingde Rd, Beitou District, Taipei City 112, Taiwan (corresponding author: 8javad@ntunhs.edu.tw; ORCID: 0000-0003-2966-1315).
 

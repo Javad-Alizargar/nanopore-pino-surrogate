@@ -11,7 +11,7 @@ Dear Editors,
 
 We submit this manuscript for consideration in the *Journal of Computational Physics*. The software package PINO-Nanopore (archived permanently at Zenodo DOI: 10.5281/zenodo.23487404 and deployed interactively at https://pino.statwhy.com) provides a validated, exact-boundary solution operator for steady axisymmetric Poisson--Nernst--Planck transport, together with a controlled numerical study and an identifiability analysis for nanopore experiments.
 
-I am pleased to submit the original research article entitled **"Sensitivity-controlled physics-constrained neural operators and conductance identifiability limits for Poisson--Nernst--Planck transport in charged nanopores"** for consideration at *Journal of Computational Physics*.
+I am pleased to submit the original research article entitled **"Charge-balanced neural operators, conductance identifiability limits, and warm-started finite-volume solvers for nanopore ion transport"** for consideration at *Journal of Computational Physics*.
 
 **Author:** Javad Alizargar, Department of Nursing, National Taipei University of Nursing and Health Sciences, No. 365, Mingde Rd, Beitou District, Taipei City 112, Taiwan (corresponding author: 8javad@ntunhs.edu.tw; ORCID: 0000-0003-2966-1315).
 

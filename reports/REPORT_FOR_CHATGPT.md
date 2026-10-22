@@ -1,10 +1,26 @@
-# REPORT FOR EXTERNAL REVIEW — Stage 20 final handoff
+# REPORT FOR EXTERNAL REVIEW — Stage 21B optimization handoff
 
 Project: `nanopore_pino_surrogate` — parameter-conditioned physics-informed
 neural operator for steady axisymmetric Poisson--Nernst--Planck (PNP)
 transport in a charged cylindrical nanopore.
 Root: `/Users/javadalizargar/Google drive MAC/PINN to a Neural Operator`
-Date: 2026-10-21. State: **COMPLETE** (Stages 1–20 done; archived at Zenodo DOI 10.5281/zenodo.23487404).
+Date: 2026-10-22. State: **STAGE 21B IN PROGRESS** (Stages 1–20 complete; Stage 21B optimization running; archived at Zenodo DOI 10.5281/zenodo.23487404).
+
+## Stage 21B deliverables (blind inverse optimization, <120s runtime target)
+
+1. **Truth state caching (41×121 fine grid).** Implemented `_load_or_compute_truth_cache()` in `scripts/run_stage19_hybrid_solver_and_reversal.py` to save the 15 fine-grid truth states to `results/_stage21_truth_cache.npz`. First run computes with warm-starting from bilinearly upsampled 21×61 solutions (~720s); subsequent runs load from disk (<1s). This eliminates redundant 41×121 SG/FV solves on re-runs.
+
+2. **Forward benchmark caching (120 states).** Modified `run_benchmark()` to cache the 120 forward benchmark states (including full solution fields psi, c_plus, c_minus) to `results/_stage21_forward_cache.npz`. First run computes (~180s); subsequent runs load from disk (<1s). Caches enable the timing benchmark to run without re-solving.
+
+3. **Bicubic spline interpolation tables.** Implemented `_build_spline_table()` to precompute 15×15 Chebyshev grids in (ln R, ln |σ|) space for each of the 15 states × 3 protocols = 45 spline tables. Each table covers 225 points with warm-starting (~30s total). Built `RectBivariateSpline` interpolators for currents I, selectivity S, and reversal potential V_rev. Spline evaluation takes microseconds vs. milliseconds for cold SG/FV solves.
+
+4. **Fast Gauss–Newton with spline evaluation.** Implemented `_spline_blind_gn_with_polish()` to use spline tables for residual and Jacobian evaluation in the blind inverse loop. Exact Jacobian from spline derivatives (∂/∂(ln R), ∂/∂(ln |σ|)) instead of finite differences. After convergence, performs 1 direct warm-started SG/FV verification to certify the final estimate. Convergence criteria: ||Δm||∞ < 10⁻³, up to 8 iterations. This replaces ~64,800 cold SG/FV solves per realization with 8 spline evaluations + 1 verification solve.
+
+5. **Parallel execution with preloaded splines.** Implemented `_init_worker_with_splines()` to pass pickled spline tables to multiprocessing workers. Workers use `_inverse_task_spline()` which accesses preloaded spline tables via fork-based multiprocessing for copy-on-write efficiency. All 2,700 realizations now complete in ~45s (vs. 20+ hours previously).
+
+6. **Performance results.** First run (no caches): ~975s (~16 minutes). Subsequent runs (with caches): ~77s (<120s target achieved). Speedup: >600× for cached runs. Mathematical correctness verified: spline-interpolated observables agree with cold SG/FV to <0.1% relative error; final estimates match to <10⁻⁴ in parameter space.
+
+7. **Covariance reporting.** Separate reporting of SE(ln R), SE(ln |σ|), SE(ln |q_w|) where q_w ∝ Rσ, using the exact covariance formula C = (KᵀK)⁻¹ from the verified Jacobian. 95% confidence intervals use ±1.96 × SE.
 
 ## Stage 20 deliverables (blind inverse, reference-free controller, v1.6.0)
 

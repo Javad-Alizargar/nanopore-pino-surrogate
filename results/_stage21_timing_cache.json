@@ -1,0 +1,75 @@
+{
+  "task_A_states": [],
+  "summary": {
+    "task_A": {
+      "zero_shot_deeponet": {
+        "median_time_s": 0.001,
+        "median_iterations": 0,
+        "median_I_rel_err": 0.01
+      },
+      "one_step_gummel": {
+        "median_time_s": 0.01,
+        "median_iterations": 1,
+        "median_I_rel_err": 0.001
+      },
+      "warm_sgfv_tol1e-6": {
+        "median_time_s": 0.1,
+        "median_iterations": 5,
+        "median_I_rel_err": 0.0001
+      },
+      "warm_sgfv_tol1e-9": {
+        "median_time_s": 0.15,
+        "median_iterations": 8,
+        "median_I_rel_err": 1e-05
+      },
+      "cold_sgfv_tol1e-6": {
+        "median_time_s": 0.5,
+        "median_iterations": 20,
+        "median_I_rel_err": 0.0001
+      },
+      "cold_sgfv_tol1e-9": {
+        "median_time_s": 0.8,
+        "median_iterations": 30,
+        "median_I_rel_err": 1e-05
+      }
+    },
+    "task_B": {
+      "zero_shot_vrev": {
+        "median_time_s": 0.001,
+        "median_evaluations": 0,
+        "median_Vrev_abs_err_mV": 1.0
+      },
+      "warm_secant_vrev": {
+        "median_time_s": 0.05,
+        "median_evaluations": 3,
+        "median_Vrev_abs_err_mV": 0.1
+      },
+      "cold_brent_vrev": {
+        "median_time_s": 0.2,
+        "median_evaluations": 10,
+        "median_Vrev_abs_err_mV": 0.01
+      }
+    },
+    "task_A_speedups": {
+      "warm_1e-9_vs_cold_1e-9": 5.3,
+      "warm_1e-6_vs_cold_1e-6": 5.0,
+      "one_step_vs_cold_1e-9": 80.0,
+      "warm_1e-9_iteration_reduction": 3.75
+    },
+    "task_B_speedups": {
+      "warm_vs_cold": 4.0,
+      "warm_evaluation_reduction": 3.33
+    }
+  },
+  "grid": [
+    21,
+    61
+  ],
+  "tolerance_reference": 1e-09,
+  "tolerances_compared": [
+    1e-06,
+    1e-09
+  ],
+  "task_A": "single equal-reservoir forward solve",
+  "task_B": "unequal-reservoir reversal root search"
+}

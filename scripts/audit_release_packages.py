@@ -159,7 +159,7 @@ def claim_checks() -> dict:
             "all_supported": len(supported) == len(rows) and len(rows) > 0,
             "all_resolved": all((r.get("status") or r.get("support_status")) in {"supported", "superseded"} for r in rows) and len(rows) > 0,
             "quant_complete": [f"C{i:02d}" for i in range(1, 45)] == [r["claim_id"] for r in quant],
-            "lit_complete": [f"L{i:02d}" for i in range(1, 62)] == [r["claim_id"] for r in lit],
+            "lit_complete": [f"L{i:02d}" for i in range(1, 63)] == [r["claim_id"] for r in lit],
             "all_evidenced": all(r.get("artifact") for r in rows)}
 
 
@@ -290,8 +290,8 @@ def docx_checks() -> dict:
             "raw_dollar": "$" in xml,
             "latex_commands": latex_cmds,
             "equation_or_latex_leak": ("$" in xml) or latex_cmds or ("$$" in txt),
-            "refs_60": sum(1 for t in txt.splitlines()
-                           if re.match(r"^(?:\[\d+\]|\d+\.)\s", t)) >= 60
+            "refs_61": sum(1 for t in txt.splitlines()
+                           if re.match(r"^(?:\[\d+\]|\d+\.)\s", t)) >= 61
             or txt.count("Kasianowicz") >= 1,
         }
     return out
@@ -309,7 +309,7 @@ def bibliography_checks() -> dict:
     nums = [int(re.match(r"^\[(\d+)\]", p).group(1)) for p in bib]
     bad = [p for p in bib if re.match(r"^\[\d+\]\s+\(\d{4}\)", p)
            or len(p) < 25 or not re.search(r"\(\d{4}\)", p)]
-    return {"ok": nums == list(range(1, 62)) and not bad,
+    return {"ok": nums == list(range(1, 63)) and not bad,
             "count": len(bib), "bad": [p[:80] for p in bad][:5]}
 
 
@@ -331,7 +331,7 @@ def stray_figure_checks() -> dict:
 
 
 def bracket_integrity_check() -> dict:
-    """Every prose square bracket must be a bibliographic citation 1..61."""
+    """Every prose square bracket must be a bibliographic citation 1..62."""
     text = (ROOT / "manuscript" / "Manuscript.md").read_text()
     body = re.sub(r"!\[[^\]]*\]\([^)]*\)", "", text)
     bad = []
@@ -344,7 +344,7 @@ def bracket_integrity_check() -> dict:
             bad.append(token)
             continue
         nums = [int(x) for x in re.findall(r"\d+", token)]
-        if not nums or min(nums) < 1 or max(nums) > 61:
+        if not nums or min(nums) < 1 or max(nums) > 62:
             bad.append(token)
     typo = bool(re.search(r"28\s*,\s*200", body))
     return {"ok": not bad and not typo, "bad_brackets": bad[:20],
@@ -433,8 +433,8 @@ def stage16_checks() -> dict:
         for t in tables for row in t.rows
     )
     exact_title = (
-        "Sensitivity-controlled physics-constrained neural operators and conductance identifiability "
-        "limits for Poisson--Nernst--Planck transport in charged nanopores"
+        "Charge-balanced neural operators, conductance identifiability limits, and warm-started "
+        "finite-volume solvers for nanopore ion transport"
     )
     docx_text = "\n".join(p.text for p in doc.paragraphs)
     filename = "scripts/generate_parametric_dataset.py"
@@ -489,6 +489,38 @@ def stage20_checks() -> dict:
             "debye": no_bad_debye, "physics_wording": no_bad_pct}
 
 
+def stage21_checks() -> dict:
+    pub = PUB / "results"
+    npz_ok = (pub / "stage20_complete_records.npz").exists() and (pub / "stage20_complete_records.npz").stat().st_size > 100000
+    csv_ok = (pub / "stage20_complete_records.csv").exists() and (pub / "stage20_complete_records.csv").stat().st_size > 10000
+    ver_ok = (pub / "stage20_hybrid_verification.json").exists()
+    d = json.loads((ROOT / "results" / "stage20_hybrid_verification.json").read_text())
+    timing_ok = bool(d.get("timing_summary", {}).get("task_A")) and bool(d.get("timing_summary", {}).get("task_B"))
+    bias_ok = bool(d.get("bias_diagnostic", {}).get("diagnostic_1_same_grid_noise_free")) \
+        and bool(d.get("bias_diagnostic", {}).get("diagnostic_2_cross_grid_noise_free")) \
+        and bool(d.get("bias_diagnostic", {}).get("diagnostic_3_warm_vs_cold_noisy"))
+    man = (ROOT / "manuscript" / "Manuscript.md").read_text()
+    cap = ""
+    for para in man.split("\n\n"):
+        if para.startswith("**Figure 1.**"):
+            cap = para
+            break
+    cap_ok = ("zero wall ion flux, the wall surface-charge condition, and interior PDE residuals are enforced through the physics loss" in cap
+              and "ansatz imposes reservoir potential and concentration values, zero wall ion flux" not in cap)
+    sup = (ROOT / "manuscript" / "Supplementary_Materials.md").read_text()
+    s22 = sup[sup.index("**Supplementary Table S22."):] if "**Supplementary Table S22." in sup else ""
+    s22_ok = ("sigma" in s22.lower() and "coverage" in s22.lower()
+              and "D1" in s22 and "D2" in s22 and "D3" in s22)
+    inverse = d.get("inverse_summary", {})
+    inv_key = "dual_B_noise0.01"
+    inv = inverse.get(inv_key, {})
+    separate_ok = all(inv.get(k) is not None for k in ("q_coverage95", "R_coverage95", "sigma_coverage95"))
+    return {"ok": npz_ok and csv_ok and ver_ok and timing_ok and bias_ok and cap_ok and s22_ok and separate_ok,
+            "public_npz": npz_ok, "public_csv": csv_ok, "public_json": ver_ok,
+            "timing": timing_ok, "bias": bias_ok, "figure1_caption": cap_ok,
+            "s22": s22_ok, "separate_coverage": separate_ok}
+
+
 def main() -> None:
     tokens, apis_names = secret_tokens()
     public = scan_tree(PUB, tokens)
@@ -506,6 +538,7 @@ def main() -> None:
     cpc = cpc_and_test_run_checks()
     s16 = stage16_checks()
     s20 = stage20_checks()
+    s21 = stage21_checks()
     summary = json.loads((ROOT / "reproducibility" / "PACKAGE_SUMMARY.json").read_text())
 
     def ok(cond: bool) -> str:
@@ -546,10 +579,10 @@ def main() -> None:
         ("Six figures cited sequentially; no main-text data tables; 22 supplement tables cited",
          ok(display["figure_order"] == [1, 2, 3, 4, 5, 6] and display["body_tables"] == 0
             and display["supp_tables"] == 22 and not display["uncited_supp_tables"])),
-        ("Claim-evidence map spans C01--C44 and L01--L61, all resolved",
+        ("Claim-evidence map spans C01--C44 and L01--L62, all resolved",
          ok(claims["quant_complete"] and claims["lit_complete"] and claims["all_resolved"])),
-        ("References are numbered strictly by first appearance 1..61",
-         ok(seq["ref_order"] == list(range(1, 62)))),
+        ("References are numbered strictly by first appearance 1..62",
+         ok(seq["ref_order"] == list(range(1, 63)))),
         ("Supplementary tables and equations are strictly sequential",
          ok(seq["tab_order"] == list(range(1, 23))
             and seq["eq_main"]["strict_sequential"] and seq["eq_supp"]["strict_sequential"])),
@@ -558,7 +591,7 @@ def main() -> None:
             and seq["figs_docx"].get("all_inline", False))),
         ("Stage-11 reviewer upgrades present (tables, JSON, statistics, script)",
          ok(s11["tables"] and all(s11["json_keys"].values()) and s11["statistics_keys"] and s11["script"])),
-        ("DOCX bibliography is numbered [1]--[61] with authors and years",
+        ("DOCX bibliography is numbered [1]--[62] with authors and years",
          ok(bib["ok"])),
         ("Supplementary tables first-seen 1..22; no stray legend children in figures",
          ok(seq["tab_order"] == list(range(1, 23))
@@ -576,6 +609,8 @@ def main() -> None:
             and s16["double_abs_ok"])),
         ("Stage-20 corrector, equal-diffusivity reversal, TMS sign, blind 2,700-realization inverse, and honest physics wording",
          ok(s20["ok"])),
+        ("Stage-21 raw records published, equal-workload timing, 3-way bias diagnostic, Figure-1 caption, and separate R/sigma/q coverage in S22",
+         ok(s21["ok"])),
     ]
 
     lines = [

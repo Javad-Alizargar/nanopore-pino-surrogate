@@ -126,9 +126,9 @@ for xa, xb in ((0.315, 0.345), (0.650, 0.680)):
     axC.add_patch(FancyArrowPatch((xa + 0.005, 0.50), (xb - 0.005, 0.50),
                   arrowstyle="-|>", mutation_scale=13, lw=1.1,
                   color=K.C["grey"], transform=axC.transAxes))
-axC.set_title(r"hard constraints + Weyl-gated correction",
+axC.set_title(r"exact-reservoir charge-balanced ansatz",
               fontsize=11, loc="left", fontweight="bold")
-axC.text(0.5, 0.035, r"$\sigma_{\min}(K)>\varepsilon_K$ and $\|\delta y\|<0.1$: accept fast; else one SG/FV Newton step",
+axC.text(0.5, 0.035, r"Weyl singular-value check as sensitivity diagnostic; charge identity is exact",
          ha="center", va="center", fontsize=7.1, color="0.30",
          transform=axC.transAxes)
 K.panel_label(axC, "C")
