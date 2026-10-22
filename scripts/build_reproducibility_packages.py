@@ -138,7 +138,7 @@ expansion, a multi-scale radial physics-informed DeepONet, a real-DFT Fourier
 neural operator, the inverse recovery demo, a trunk ablation, a data-scaling
 study, a Fisher-information and multi-protocol identifiability analysis, a
 four-way constraint-scheme benchmark, an exact SG/FV Fisher validation, a
-physics-weight sweep, a reference-free warm-started hybrid controller, a blind 2,700-realization inverse benchmark, and a static browser simulator.
+physics-weight sweep, a reference-free warm-started hybrid controller, a blind 675-realization inverse benchmark, and a static browser simulator.
 
 ## Quick start
 
@@ -186,7 +186,7 @@ cases, and a live SG/FV reference solver).
 | `scripts/run_stage11_reviewer_upgrades.py` | four-way constraint benchmark, physics-weight sweep, exact SG/FV Fisher validation |
 | `scripts/run_stage12_diagnostics.py` | OOD spatial/parametric decomposition, selectivity validation, positivity stress test |
 | `scripts/run_stage18_final_evidence.py` | corrected conductance Fisher, exact SG/FV sensitivities, inverse protocols, baselines, matched loss, strong charge |
-| `scripts/run_stage19_hybrid_solver_and_reversal.py` | warm-started hybrid controller, unequal-reservoir reversal potential, blind 2,700-realization inverse |
+| `scripts/run_stage19_hybrid_solver_and_reversal.py` | warm-started hybrid controller, unequal-reservoir reversal potential, blind 675-realization inverse |
 | `scripts/run_diffusivity_symmetry_check.py` | exact-SG/FV diffusivity-ratio scan and dual-observable conditioning |
 | `scripts/run_cpc_test_case.py` | self-contained CPC verification run against `test_run/` |
 | `scripts/enforce_sequential_numbering_and_inline_figures.py` | first-appearance reference/table renumbering and inline-figure audit |
@@ -200,7 +200,7 @@ cases, and a live SG/FV reference solver).
 ## Reproducibility notes
 
 - The dataset was generated on an Apple M1 with Python 3.14, seed 20261018.
-- `results/stage21_inverse_records_real.npz` holds all 2,700 blind
+- `results/stage21_inverse_records_real.npz` holds all 675 blind
   realizations, including per-realization R, sigma, and q_w estimates, standard
   errors, interval coverage, and convergence/boundary flags.
 - `results/stage21_timing_benchmark_real.json` holds the 120 per-state timings

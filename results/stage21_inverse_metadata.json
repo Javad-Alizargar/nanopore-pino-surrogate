@@ -1,0 +1,11 @@
+{
+  "n_states": 15,
+  "n_realizations_per_condition": 5,
+  "total_tasks": 675,
+  "elapsed_time_s": 9568.253439925,
+  "timestamp": "2026-10-22T20:53:36Z",
+  "n_records": 675,
+  "validation": {
+    "all_diagnostics_populated": true
+  }
+}

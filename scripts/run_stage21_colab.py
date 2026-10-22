@@ -162,6 +162,9 @@ def run_inverse_tasks_parallel(tasks, op, rev_sur, state_data, n_workers=None):
             checkpoint_data = pickle.load(f)
             records = checkpoint_data['records']
             completed_indices = set(checkpoint_data['completed_indices'])
+        for r in records:
+            r.pop("y_obs", None)
+            r.pop("sigmas", None)
         print(f"  ✓ Resumed from {len(records)}/{len(tasks)} tasks", flush=True)
     
     # Filter out completed tasks
@@ -172,6 +175,7 @@ def run_inverse_tasks_parallel(tasks, op, rev_sur, state_data, n_workers=None):
         return records
     
     t_start = time.perf_counter()
+    n_at_start = len(records)
     
     # Use multiprocessing pool with initializer
     with mp.Pool(processes=n_workers, initializer=_init_worker, 
@@ -199,12 +203,13 @@ def run_inverse_tasks_parallel(tasks, op, rev_sur, state_data, n_workers=None):
             with open(checkpoint_file, 'wb') as f:
                 pickle.dump(checkpoint_data, f)
             
-            # Progress update
+            # Progress update (rate must use work done in this session only)
             elapsed = time.perf_counter() - t_start
             completed = len(records)
-            rate = completed / elapsed if elapsed > 0 else 0
+            session_done = completed - n_at_start
+            rate = session_done / elapsed if elapsed > 0 else 0
             remaining = (len(tasks) - completed) / rate if rate > 0 else 0
-            
+
             print(f"    Progress: {completed}/{len(tasks)} tasks "
                   f"({elapsed:.0f}s elapsed, ~{remaining/60:.1f}min remaining)", flush=True)
     
@@ -366,7 +371,8 @@ def main():
     
     # Generate tasks
     print("\n[5/6] Generating tasks...", flush=True)
-    tasks = generate_tasks(states, truth, n_realizations=20)
+    n_reps = int(os.environ.get("STAGE21_REPS", "20"))
+    tasks = generate_tasks(states, truth, n_realizations=n_reps)
     
     # Run inverse study
     print("\n[6/6] Running inverse study...", flush=True)
@@ -381,7 +387,7 @@ def main():
     # Save results
     metadata = {
         "n_states": len(states),
-        "n_realizations_per_condition": 20,
+        "n_realizations_per_condition": n_reps,
         "total_tasks": len(tasks),
         "elapsed_time_s": time.perf_counter() - t_total_start
     }

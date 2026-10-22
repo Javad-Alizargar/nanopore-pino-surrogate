@@ -1,6 +1,8 @@
 """Figure 6: Hypothesis H4 - latency, amortization break-even and the exact
 SG/FV vs neural-operator Fisher/Jacobian agreement (Stage 11)."""
 
+import os
+
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
@@ -107,12 +109,30 @@ axC.legend(frameon=False, fontsize=6.2, loc="upper left")
 K.panel_label(axC, "C", x=-0.16, y=1.02)
 
 axD = fig.add_subplot(gs[1, 1])
-inv20 = stat["stage20_hybrid_verification"]["inverse_by_band"]
 protos = ["single", "vrev", "dual"]
-q_med = np.array([inv20[f"{p}_B_noise0.01_all"]["median_q_rel_err"] for p in protos])
-q_err = np.array([inv20[f"{p}_B_noise0.01_all"]["q_iqr"] for p in protos])
-r_med = np.array([inv20[f"{p}_B_noise0.01_all"]["median_R_rel_err"] for p in protos])
-r_err = np.array([inv20[f"{p}_B_noise0.01_all"]["R_iqr"] for p in protos])
+inv_path = os.path.join(K.RESULTS, "stage21_inverse_records_real.npz")
+if os.path.exists(inv_path):
+    z = np.load(inv_path, allow_pickle=True)
+    proto = np.array([p.decode() if isinstance(p, bytes) else str(p) for p in z["protocol"]])
+    noise = z["noise"].astype(float)
+    q_med, q_err, r_med, r_err = [], [], [], []
+    for p in protos:
+        m = (proto == p) & np.isclose(noise, 0.01)
+        q = z["B_q_rel"][m].astype(float)
+        r = z["B_R_rel"][m].astype(float)
+        q_med.append(float(np.median(q)))
+        q_err.append(float(np.quantile(q, .75) - np.quantile(q, .25)))
+        r_med.append(float(np.median(r)))
+        r_err.append(float(np.quantile(r, .75) - np.quantile(r, .25)))
+    q_med, q_err, r_med, r_err = map(np.array, (q_med, q_err, r_med, r_err))
+    n_rep = int(np.unique(z["realization"]).size)
+else:  # fallback for older checkouts
+    inv20 = stat["stage20_hybrid_verification"]["inverse_by_band"]
+    q_med = np.array([inv20[f"{p}_B_noise0.01_all"]["median_q_rel_err"] for p in protos])
+    q_err = np.array([inv20[f"{p}_B_noise0.01_all"]["q_iqr"] for p in protos])
+    r_med = np.array([inv20[f"{p}_B_noise0.01_all"]["median_R_rel_err"] for p in protos])
+    r_err = np.array([inv20[f"{p}_B_noise0.01_all"]["R_iqr"] for p in protos])
+    n_rep = 20
 xp = np.arange(len(protos)); w = 0.38
 axD.bar(xp - w / 2, q_med, w, yerr=q_err / 2, capsize=2.4,
         color=K.C["orange"], edgecolor="0.35", linewidth=0.3,
@@ -131,7 +151,7 @@ axD.set_xticks(xp)
 axD.set_xticklabels(["single\nsalt I-V", "reversal\npotential", "dual\n+S"], fontsize=6.4)
 axD.set_ylabel("median relative error")
 axD.set_title("blind inversion at 1% noise (Stage 20, B)\n"
-              "15 states x 20 realizations", fontsize=8.0)
+              f"15 states x {n_rep} realizations", fontsize=8.0)
 axD.legend(frameon=False, fontsize=6.3, loc="upper right")
 
 K.panel_label(axD, "D", x=-0.16, y=1.10)

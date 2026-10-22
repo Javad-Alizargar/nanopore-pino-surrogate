@@ -15,16 +15,23 @@ Those files were deleted, the loader now raises on missing diagnostics, and the
 timing benchmark was genuinely rerun (`results/stage21_timing_benchmark_real.json`).
 The inverse study still has to be rerun in full.
 
-## Current checkpoint
+## Status: complete (675 realizations)
 
-`results/checkpoints/` contains **verified** progress from the final code:
+The verified rerun finished on Colab High-RAM (8 vCPU): **675 realizations**
+(15 states × 3 protocols × 3 noise levels × 5 realizations), with
+non-zero `B_se_ln*`, `B_delta_m_inf`, and coverage flags for all records.
+Outputs are in `results/`:
 
-- `truth_states.pkl` — 15 truth states on the 41×121 grid
-- `state_data.pkl` — candidate-mesh predictions, 15 states × 3 protocols
-- `inverse_records.pkl` — **100 of 2,700 realizations**, with non-zero
-  `B_se_ln*`, `B_delta_m_inf`, and coverage flags
+- `stage21_inverse_records_real.npz`
+- `stage21_inverse_summary_real.json`
+- `stage21_inverse_metadata.json`
+- `stage21_coverage_stats.json`
+- `stage21_bias_diagnostic_real.json` (D1/D2/D3; local Mac run, identical to Colab)
+- `table_s22_partB.md`
 
-Let Google Drive finish syncing this folder before starting Colab.
+The same notebook can be re-run with `STAGE21_REPS=20` to extend the study to the
+full 2,700 realizations; the checkpoint keys are (state, protocol, noise,
+realization), so existing records can be reused by mapping.
 
 ## Run
 

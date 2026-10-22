@@ -342,7 +342,7 @@ The twenty-two display tables are collected here in strict order S1 through S22,
 
 
 
-**Supplementary Table S22.** Operator-warm-started SG/FV solver and blind unequal-reservoir reversal-potential benchmark. (A) Median current and reversal-potential errors with median wall time for eight methods on 120 states (40 weak, 40 transitional, 40 strong). The Pino-Controller warm-starts the conservative SG/FV solve from the operator and is reference-free; full SG/FV is the reference. (B) Blind Stage-20 inversion with shared noisy observations, 15 states, and 20 realizations per protocol and noise level; B is the residual-controlled SG/FV Gauss--Newton estimator. Errors are medians over all states and over the weak, transitional, and strong charge bands; coverage is the fraction of 95% intervals containing the truth for the dimensionless wall charge $q_w \propto R\sigma$, reported for all states and by charge band. The dual protocol reaches 1.7% median charge error at 1% noise but its intervals are undercovered (68% for $q_w$), while the reversal potential is strongly state dependent (263% weak-charge versus 7.3% strong-charge). Single-salt conductance remains unidentifiable.
+**Supplementary Table S22.** Operator-warm-started SG/FV solver and blind unequal-reservoir reversal-potential benchmark. (A) Median current and reversal-potential errors with median wall time for eight methods on 120 states (40 weak, 40 transitional, 40 strong). The Pino-Controller warm-starts the conservative SG/FV solve from the operator and is reference-free; full SG/FV is the reference. (B) Blind Stage-20 inversion with shared noisy observations, 15 states, and 5 realizations per protocol and noise level; B is the residual-controlled SG/FV Gauss--Newton estimator. Errors are medians over all states and over the weak, transitional, and strong charge bands; coverage is the fraction of 95% intervals containing the truth, reported separately for radius $R$, surface charge density $\sigma$, and dimensionless wall charge $q_w \propto R\sigma$, for all states and by charge band. The dual protocol reaches 1.5% median charge error at 1% noise but its intervals are undercovered (73% for $q_w$), while the reversal potential is strongly state dependent (85% weak-charge versus 5.0% strong-charge). Single-salt conductance remains unidentifiable. (C) Three-way bias diagnostic at 1% noise with estimator B (dual protocol): D1---noise-free $21\times61$ observations inverted on $21\times61$ (pure optimization error); D2---noise-free $41\times121$ observations inverted on $21\times61$ (mesh discretization bias); D3---warm-started versus cold-started noisy $41\times121\to21\times61$ inversion (initialization dependence). The roughly 1.3% dual error floor is dominated by the $41\times121$ versus $21\times61$ mesh bias (D2: 1.29% median charge error), whereas same-grid noise-free inversion (D1) reaches $2.1\times10^{-7}$ and initialization changes the charge error only from 1.49% (warm B) to 1.55% (cold C).
 
 | Method | Median $I$ rel. error | Median $V_\mathrm{rev}$ abs. error (mV) | Median time (s) |
 |---|---|---|---|
@@ -355,17 +355,26 @@ The twenty-two display tables are collected here in strict order S1 through S22,
 | Full SG/FV | 0 | 0 | 0.235 |
 | Pino-Controller (warm SG/FV) | $3.03\times10^{-12}$ | 0.03838 | $1.53\times10^{-1}$ |
 
-| Protocol | Noise | $q_w$ all | $q_w$ weak | $q_w$ trans. | $q_w$ strong | $R$ all | $q_w$ cov. all | weak | trans. | strong |
-|---|---|---|---|---|---|---|---|---|---|---|
-| single salt | 0.2% | 140.71% | 997.51% | 486.04% | 70.48% | 0.34% | 100% | 100% | 100% | 100% |
-| single salt | 1% | 140.41% | 1605.31% | 485.20% | 77.31% | 0.30% | 100% | 100% | 100% | 100% |
-| single salt | 2% | 138.44% | 940.83% | 206.11% | 67.67% | 0.49% | 100% | 100% | 100% | 100% |
-| reversal potential | 0.2% | 31.92% | 94.03% | 72.22% | 6.09% | 0.05% | 62% | 58% | 49% | 78% |
-| reversal potential | 1% | 20.67% | 263.41% | 37.65% | 7.29% | 0.20% | 56% | 44% | 46% | 78% |
-| reversal potential | 2% | 24.18% | 382.51% | 44.42% | 7.72% | 0.33% | 52% | 35% | 40% | 80% |
-| dual + selectivity | 0.2% | 1.47% | 1.41% | 1.36% | 2.62% | 0.03% | 4% | 13% | 0% | 0% |
-| dual + selectivity | 1% | 1.72% | 1.38% | 1.40% | 2.41% | 0.17% | 68% | 89% | 70% | 44% |
-| dual + selectivity | 2% | 2.29% | 2.55% | 1.80% | 2.74% | 0.39% | 87% | 87% | 91% | 83% |
+| Protocol | Noise | median $q_w$ rel. | weak | trans. | strong | median $R$ rel. | median $\sigma$ rel. | cov. $q_w$ | cov. $R$ | cov. $\sigma$ | $n$ |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| single salt | 0.2% | 140.99% | 1234.97% | 489.72% | 73.81% | 0.35% | 145.66% | 100% | 100% | 100% | 75 |
+| single salt | 1% | 147.63% | 1820.52% | 486.24% | 80.03% | 0.30% | 145.66% | 100% | 100% | 100% | 75 |
+| single salt | 2% | 147.63% | 1606.88% | 344.16% | 67.66% | 0.42% | 145.66% | 100% | 100% | 100% | 75 |
+| reversal potential | 0.2% | 12.66% | 77.29% | 13.19% | 5.91% | 0.03% | 12.68% | 88% | 95% | 88% | 75 |
+| reversal potential | 1% | 11.11% | 84.57% | 18.39% | 5.01% | 0.17% | 11.24% | 88% | 95% | 88% | 75 |
+| reversal potential | 2% | 13.05% | 68.85% | 11.40% | 6.31% | 0.31% | 13.14% | 89% | 96% | 92% | 75 |
+| dual + selectivity | 0.2% | 1.36% | 1.40% | 1.33% | 1.35% | 0.04% | 1.36% | 1.3% | 96% | 2.7% | 75 |
+| dual + selectivity | 1% | 1.49% | 1.55% | 1.32% | 1.24% | 0.15% | 1.45% | 73% | 96% | 73% | 75 |
+| dual + selectivity | 2% | 1.89% | 2.28% | 1.76% | 1.85% | 0.44% | 1.93% | 91% | 93% | 92% | 75 |
+
+**Supplementary Table S22 (continued).** Three-way bias diagnostic rows for part (C).
+
+| Diagnostic | $n$ | median $q_w$ rel. | median $R$ rel. | median $\sigma$ rel. | converged |
+|---|---|---|---|---|---|
+| D1: same-grid, noise-free | 15 | $2.1\times10^{-7}$ | $1.1\times10^{-9}$ | $2.0\times10^{-7}$ | 100% |
+| D2: cross-grid, noise-free | 15 | 1.29% | $1.1\times10^{-6}$ | 1.29% | 100% |
+| D3: warm B, 1% noise | 75 | 1.49% | 0.154% | 1.45% | 97.3% |
+| D3: cold C, 1% noise | 75 | 1.55% | 0.154% | 1.70% | 66.7% |
 
 
 ---
@@ -554,7 +563,7 @@ The split is a controlled extrapolation, not an adversarial stress test. It is i
 
 **States.** Fifteen held-out interpolation states selected to span the Debye-overlap range. Five of these are also used for the SG/FV-in-the-loop check in Supplementary Table S18.
 
-**Measurements.** Exact SG/FV currents at $V_\mathrm{app}=-50,-25,0,25,50$ mV. Single-salt uses the state's own $C_0$; multi-salt uses 10, 30, and 100 mol $m^{-3}$; dual adds the near-wall Donnan selectivity $S=(c_+-c_-)/(c_++c_-)|_{r=1}$ at the same biases. Each observation is perturbed by independent 0.2%, 1%, or 2% relative Gaussian noise; 20 realizations are used per state--protocol--noise cell.
+**Measurements.** Exact SG/FV currents at $V_\mathrm{app}=-50,-25,0,25,50$ mV. Single-salt uses the state's own $C_0$; multi-salt uses 10, 30, and 100 mol $m^{-3}$; dual adds the near-wall Donnan selectivity $S=(c_+-c_-)/(c_++c_-)|_{r=1}$ at the same biases. Each observation is perturbed by independent 0.2%, 1%, or 2% relative Gaussian noise; 5 realizations are used per state--protocol--noise cell.
 
 **Search.** The Stage-18 estimator is a $61\times61$ candidate grid in $(q_w,R)$ over the dataset box, followed by quadratic refinement; the complete study is repeated on a $121\times121$ grid for the nesting check. The Stage-20 estimator is a blind, refreshed-Jacobian Gauss--Newton iteration in $m=(\ln R,\ln|\sigma|)$, with observations generated at $41\times121$ and inverted at $21\times61$. Its stopping rule is $\|\Delta m\|_\infty<10^{-3}$ or at most six iterations, and boundary hits and non-converged realizations are recorded. The final covariance is evaluated at the converged estimate; standard errors for $R$, $\sigma$, and $q_w$ are $\sqrt{C_{00}}$, $\sqrt{C_{11}}$, and $\sqrt{C_{00}+2C_{01}+C_{11}}$, respectively. We report medians, interquartile ranges, and separate 95% coverage for the three parameters over the 300 realizations per cell.
 

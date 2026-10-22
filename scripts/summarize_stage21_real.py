@@ -76,6 +76,8 @@ def summarize(records):
             for est in ("A", "B", "C"):
                 for qty, field in (("q", "q_rel"), ("R", "R_rel"), ("sigma", "sigma_rel")):
                     row[f"{est}_{qty}_rel"] = med([r[f"{est}_{qty}_rel"] for r in sub])
+                    vals = np.asarray([r[f"{est}_{qty}_rel"] for r in sub], dtype=float)
+                    row[f"{est}_{qty}_iqr"] = float(np.quantile(vals, .75) - np.quantile(vals, .25))
                 for qty in ("q", "R", "sigma"):
                     row[f"{est}_{qty}_cover"] = float(np.mean([r[f"{est}_{qty}_cover"] for r in sub]))
                 row[f"{est}_se_lnq"] = med([r[f"{est}_se_lnq"] for r in sub])

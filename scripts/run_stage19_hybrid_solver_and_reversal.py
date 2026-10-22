@@ -1543,6 +1543,10 @@ def _inverse_task_spline(task):
         "gate_status": gate_status, "eps_K": epsK, "sigma_min": smin,
         "weighted_residual": residual,
     }
+    # The raw observation vectors are not needed downstream; dropping them keeps
+    # the resumable checkpoint small (important when it is written to Drive).
+    out.pop("y_obs", None)
+    out.pop("sigmas", None)
     return out
 
 
@@ -1653,6 +1657,10 @@ def _inverse_task(task):
         "gate_status": gate_status, "eps_K": epsK, "sigma_min": smin,
         "weighted_residual": residual,
     }
+    # The raw observation vectors are not needed downstream; dropping them keeps
+    # the resumable checkpoint small (important when it is written to Drive).
+    out.pop("y_obs", None)
+    out.pop("sigmas", None)
     return out
 
 

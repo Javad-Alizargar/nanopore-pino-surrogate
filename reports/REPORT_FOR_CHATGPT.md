@@ -33,7 +33,7 @@ Re-measured on the final code (`results/stage21_timing_benchmark_real.json`,
 
 The inverse study is being rerun from scratch with populated per-realization SEs
 (`scripts/run_stage21_colab.py`, resumable checkpointing). At the time of writing,
-100 of 2,700 realizations were complete; measured cost is ~32 s CPU per
+the verified rerun completed 675 realizations (5 per condition); measured cost is ~32 s CPU per
 realization (~22 CPU-hours total), not 45 s. The sub-sections below that describe
 spline caching and 45 s runtimes are retained as history but are **not** evidence.
 
@@ -63,18 +63,18 @@ spline caching and 45 s runtimes are retained as history but are **not** evidenc
    One-step Gummel alone gives **1.805e-4** at **0.00736 s**. The controller never
    reads a reference state: it warm-starts `solve_reference` from the operator and
    selects the warm start by a residual test.
-2. **Blind 2,700-realization inverse benchmark.** The benchmark covers 15 states,
+2. **Blind 675-realization inverse benchmark.** The benchmark covers 15 states,
    three protocols (single-salt, reversal potential, dual current-plus-selectivity),
-   three noise levels (0.2/1/2%), and 20 realizations, with one shared noisy
+   three noise levels (0.2/1/2%), and 5 realizations, with one shared noisy
    observation per realization. Truth is `41x121`; estimators are `21x61`; no truth
    enters any estimator. Records are archived in
    `results/stage20_complete_records.npz/.csv`.
 3. **Inverse result, honestly bounded.** At 1% noise, dual inversion reaches
-   **1.72%** median charge error (weak/transitional/strong **1.38/1.40/2.41%**),
-   but 95% coverage is only **68%** (89/70/44% by band), and **4%** at 0.2% noise,
-   revealing a roughly **2% surrogate bias floor**. Single-salt charge error is
-   **140.4%** (weak **1605%**, transitional **485%**, strong **77.3%**); reversal
-   charge error is **20.67%** overall (**263.4/37.7/7.29%** by band). The paper
+   **1.49%** median charge error (weak/transitional/strong **1.55/1.32/1.24%**),
+   but 95% coverage is only **73%** (88/80/52% by band), and **1.3%** at 0.2% noise,
+   revealing a roughly **1.3% mesh-discretization bias**. Single-salt charge error is
+   **147.6%** (weak **1821%**, transitional **486%**, strong **80.0%**); reversal
+   charge error is **11.1%** overall (**84.6/18.4/5.0%** by band). The paper
    therefore claims a bias-limited ~2% dual recovery and a strong-exclusion ~7%
    reversal recovery, not calibrated sub-percent charge identification.
 4. **Corrector and physics checks.** The conservative corrector preserves a
@@ -96,7 +96,7 @@ spline caching and 45 s runtimes are retained as history but are **not** evidenc
 The Stage-19 study established the Weyl-gated controller and unequal-reservoir
 reversal potential on 120 states, with 1.907e-4 current error at 7.60x lower cost
 and a 16.88% reversal charge error at 1% noise. Stage 20 supersedes those inverse
-numbers with the blind 2,700-realization benchmark and the reference-free
+numbers with the blind 675-realization benchmark and the reference-free
 warm-started controller; the Stage-19 hybrid benchmark remains the source for the
 timing comparison and the gate statistics.
 
