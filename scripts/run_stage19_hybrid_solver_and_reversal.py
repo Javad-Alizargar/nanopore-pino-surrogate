@@ -1699,8 +1699,32 @@ def run_inverse(op, cal, rev_sur):
                 predI, predS, predV = predict_candidates(op, qs, rs, st["C0"], protocol, rev_sur)
                 state_data[(sid, protocol)] = (qs, rs, (predI, predS, predV))
         
-        # Load cached records
+        # Load cached records with validation
         loaded = np.load(npz_path, allow_pickle=True)
+        
+        # Validate that required diagnostic fields exist and are non-zero
+        required_se_fields = ["A_se_lnR", "A_se_lnsigma", "A_se_lnq", 
+                              "B_se_lnR", "B_se_lnsigma", "B_se_lnq",
+                              "C_se_lnR", "C_se_lnsigma", "C_se_lnq"]
+        for field in required_se_fields:
+            if field not in loaded.files:
+                raise ValueError(f"CRITICAL: Required field '{field}' missing from cached records. Cannot use legacy cache with missing diagnostics.")
+            if np.all(loaded[field] == 0.0):
+                raise ValueError(f"CRITICAL: Field '{field}' contains all zeros. This indicates missing or invalid diagnostics. Cannot use legacy cache.")
+        
+        # Validate convergence and boundary flags are meaningful
+        if "B_converged" in loaded.files:
+            if np.all(loaded["B_converged"] == True):
+                print("WARNING: All B_converged flags are True - this may indicate missing diagnostics", flush=True)
+        if "B_boundary_hit" in loaded.files:
+            if np.all(loaded["B_boundary_hit"] == False):
+                print("WARNING: All B_boundary_hit flags are False - this may indicate missing diagnostics", flush=True)
+        
+        # Validate delta_m_inf is computed
+        if "B_delta_m_inf" in loaded.files:
+            if np.all(loaded["B_delta_m_inf"] == 0.0):
+                raise ValueError(f"CRITICAL: B_delta_m_inf contains all zeros. Convergence tracking is missing. Cannot use legacy cache.")
+        
         inv_records = []
         for i in range(len(loaded["state"])):
             rec = {
@@ -1718,37 +1742,37 @@ def run_inverse(op, cal, rev_sur):
                 "B_q_rel": float(loaded["B_q_rel"][i]), "B_R_rel": float(loaded["B_R_rel"][i]), "B_sigma_rel": float(loaded["B_sigma_rel"][i]),
                 "C_q_rel": float(loaded["C_q_rel"][i]), "C_R_rel": float(loaded["C_R_rel"][i]), "C_sigma_rel": float(loaded["C_sigma_rel"][i]),
                 "A_q_cover": bool(loaded["A_q_cover"][i]), "A_R_cover": bool(loaded["A_R_cover"][i]),
-                "A_sigma_cover": bool(loaded["A_sigma_cover"][i]) if "A_sigma_cover" in loaded.files else False,
+                "A_sigma_cover": bool(loaded["A_sigma_cover"][i]),
                 "B_q_cover": bool(loaded["B_q_cover"][i]), "B_R_cover": bool(loaded["B_R_cover"][i]),
-                "B_sigma_cover": bool(loaded["B_sigma_cover"][i]) if "B_sigma_cover" in loaded.files else False,
+                "B_sigma_cover": bool(loaded["B_sigma_cover"][i]),
                 "C_q_cover": bool(loaded["C_q_cover"][i]), "C_R_cover": bool(loaded["C_R_cover"][i]),
-                "C_sigma_cover": bool(loaded["C_sigma_cover"][i]) if "C_sigma_cover" in loaded.files else False,
-                "A_se_lnR": float(loaded["A_se_lnR"][i]) if "A_se_lnR" in loaded.files else 0.0,
-                "A_se_lnsigma": float(loaded["A_se_lnsigma"][i]) if "A_se_lnsigma" in loaded.files else 0.0,
-                "A_se_lnq": float(loaded["A_se_lnq"][i]) if "A_se_lnq" in loaded.files else 0.0,
-                "B_se_lnR": float(loaded["B_se_lnR"][i]) if "B_se_lnR" in loaded.files else 0.0,
-                "B_se_lnsigma": float(loaded["B_se_lnsigma"][i]) if "B_se_lnsigma" in loaded.files else 0.0,
-                "B_se_lnq": float(loaded["B_se_lnq"][i]) if "B_se_lnq" in loaded.files else 0.0,
-                "C_se_lnR": float(loaded["C_se_lnR"][i]) if "C_se_lnR" in loaded.files else 0.0,
-                "C_se_lnsigma": float(loaded["C_se_lnsigma"][i]) if "C_se_lnsigma" in loaded.files else 0.0,
-                "C_se_lnq": float(loaded["C_se_lnq"][i]) if "C_se_lnq" in loaded.files else 0.0,
-                "A_cr_q": float(loaded["A_se_lnq"][i]) if "A_se_lnq" in loaded.files else 0.0,
-                "A_cr_R": float(loaded["A_se_lnR"][i]) if "A_se_lnR" in loaded.files else 0.0,
-                "B_cr_q": float(loaded["B_se_lnq"][i]) if "B_se_lnq" in loaded.files else 0.0,
-                "B_cr_R": float(loaded["B_se_lnR"][i]) if "B_se_lnR" in loaded.files else 0.0,
-                "C_cr_q": float(loaded["C_se_lnq"][i]) if "C_se_lnq" in loaded.files else 0.0,
-                "C_cr_R": float(loaded["C_se_lnR"][i]) if "C_se_lnR" in loaded.files else 0.0,
+                "C_sigma_cover": bool(loaded["C_sigma_cover"][i]),
+                "A_se_lnR": float(loaded["A_se_lnR"][i]),
+                "A_se_lnsigma": float(loaded["A_se_lnsigma"][i]),
+                "A_se_lnq": float(loaded["A_se_lnq"][i]),
+                "B_se_lnR": float(loaded["B_se_lnR"][i]),
+                "B_se_lnsigma": float(loaded["B_se_lnsigma"][i]),
+                "B_se_lnq": float(loaded["B_se_lnq"][i]),
+                "C_se_lnR": float(loaded["C_se_lnR"][i]),
+                "C_se_lnsigma": float(loaded["C_se_lnsigma"][i]),
+                "C_se_lnq": float(loaded["C_se_lnq"][i]),
+                "A_cr_q": float(loaded["A_se_lnq"][i]),
+                "A_cr_R": float(loaded["A_se_lnR"][i]),
+                "B_cr_q": float(loaded["B_se_lnq"][i]),
+                "B_cr_R": float(loaded["B_se_lnR"][i]),
+                "C_cr_q": float(loaded["C_se_lnq"][i]),
+                "C_cr_R": float(loaded["C_se_lnR"][i]),
                 "A_time_s": float(loaded["A_time_s"][i]), "B_time_s": float(loaded["B_time_s"][i]), "C_time_s": float(loaded["C_time_s"][i]),
-                "B_iterations": int(loaded["B_iterations"][i]) if "B_iterations" in loaded.files else 0,
-                "C_iterations": int(loaded["C_iterations"][i]) if "C_iterations" in loaded.files else 0,
-                "B_converged": bool(loaded["B_converged"][i]) if "B_converged" in loaded.files else True,
-                "C_converged": bool(loaded["C_converged"][i]) if "C_converged" in loaded.files else True,
-                "B_boundary_hit": bool(loaded["B_boundary_hit"][i]) if "B_boundary_hit" in loaded.files else False,
-                "C_boundary_hit": bool(loaded["C_boundary_hit"][i]) if "C_boundary_hit" in loaded.files else False,
-                "B_delta_m_inf": float(loaded["B_delta_m_inf"][i]) if "B_delta_m_inf" in loaded.files else 0.0,
-                "C_delta_m_inf": float(loaded["C_delta_m_inf"][i]) if "C_delta_m_inf" in loaded.files else 0.0,
-                "B_stop_reason": str(loaded["B_stop_reason"][i]) if "B_stop_reason" in loaded.files else "step_tolerance",
-                "C_stop_reason": str(loaded["C_stop_reason"][i]) if "C_stop_reason" in loaded.files else "step_tolerance",
+                "B_iterations": int(loaded["B_iterations"][i]),
+                "C_iterations": int(loaded["C_iterations"][i]),
+                "B_converged": bool(loaded["B_converged"][i]),
+                "C_converged": bool(loaded["C_converged"][i]),
+                "B_boundary_hit": bool(loaded["B_boundary_hit"][i]),
+                "C_boundary_hit": bool(loaded["C_boundary_hit"][i]),
+                "B_delta_m_inf": float(loaded["B_delta_m_inf"][i]),
+                "C_delta_m_inf": float(loaded["C_delta_m_inf"][i]),
+                "B_stop_reason": str(loaded["B_stop_reason"][i]),
+                "C_stop_reason": str(loaded["C_stop_reason"][i]),
                 "gate_status": str(loaded["gate_status"][i]),
                 "eps_K": float(loaded["eps_K"][i]), "sigma_min": float(loaded["sigma_min"][i]),
                 "weighted_residual": float(loaded["weighted_residual"][i]),

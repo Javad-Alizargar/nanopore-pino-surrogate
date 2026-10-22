@@ -150,7 +150,7 @@ class DOCXConsistencyChecker:
             matches = re.findall(pattern, text)
             if matches:
                 # Check for inconsistent spacing
-                spaced = sum(1 for m in matches if ' ' in m)
+                spaced = sum(1 for m in matches if any(ch.isspace() for ch in m))
                 unspaced = len(matches) - spaced
                 if spaced > 0 and unspaced > 0:
                     self.issues.append(f"{doc_name}: Inconsistent spacing in {name}: {spaced} with space, {unspaced} without")

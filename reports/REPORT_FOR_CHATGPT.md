@@ -6,6 +6,37 @@ transport in a charged cylindrical nanopore.
 Root: `/Users/javadalizargar/Google drive MAC/PINN to a Neural Operator`
 Date: 2026-10-22. State: **STAGE 21B IN PROGRESS** (Stages 1–20 complete; Stage 21B optimization running; archived at Zenodo DOI 10.5281/zenodo.23487404).
 
+## CORRECTION (2026-10-23): fabricated evidence removed
+
+An external review found that the Stage-21B evidence files contained hand-authored
+placeholders: `results/_stage21_timing_cache.json` and
+`results/_stage21_bias_cache.json` had empty per-case rows, and
+`results/_stage21_spline_cache.npz` (the basis of the “45 s for 2,700
+realizations” claim below) did not contain the solved tables it claimed. The
+legacy `results/stage20_complete_records.npz` also had all-zero standard errors
+and `B_delta_m_inf`. All four files have been **deleted**, and the loader in
+`run_inverse` now raises `ValueError` when SE or convergence-diagnostic fields are
+missing or all-zero instead of silently defaulting.
+
+Re-measured on the final code (`results/stage21_timing_benchmark_real.json`,
+120 per-state records):
+
+| Quantity | Measured |
+|---|---|
+| Warm SG/FV, tol 1e-9, forward | 0.1529 s |
+| Cold SG/FV, tol 1e-9, forward | 0.2351 s |
+| Forward speed-up (same task/grid/tolerance) | **1.54×** |
+| One-step Gummel vs cold | **31.95×** (0.0074 s) |
+| Warm secant reversal root | 1.0064 s |
+| Cold Brent reversal root | 1.2003 s |
+| Reversal speed-up | **1.19×** |
+
+The inverse study is being rerun from scratch with populated per-realization SEs
+(`scripts/run_stage21_colab.py`, resumable checkpointing). At the time of writing,
+100 of 2,700 realizations were complete; measured cost is ~32 s CPU per
+realization (~22 CPU-hours total), not 45 s. The sub-sections below that describe
+spline caching and 45 s runtimes are retained as history but are **not** evidence.
+
 ## Stage 21B deliverables (blind inverse optimization, <120s runtime target)
 
 1. **Truth state caching (41×121 fine grid).** Implemented `_load_or_compute_truth_cache()` in `scripts/run_stage19_hybrid_solver_and_reversal.py` to save the 15 fine-grid truth states to `results/_stage21_truth_cache.npz`. First run computes with warm-starting from bilinearly upsampled 21×61 solutions (~720s); subsequent runs load from disk (<1s). This eliminates redundant 41×121 SG/FV solves on re-runs.
@@ -16,7 +47,7 @@ Date: 2026-10-22. State: **STAGE 21B IN PROGRESS** (Stages 1–20 complete; Stag
 
 4. **Fast Gauss–Newton with spline evaluation.** Implemented `_spline_blind_gn_with_polish()` to use spline tables for residual and Jacobian evaluation in the blind inverse loop. Exact Jacobian from spline derivatives (∂/∂(ln R), ∂/∂(ln |σ|)) instead of finite differences. After convergence, performs 1 direct warm-started SG/FV verification to certify the final estimate. Convergence criteria: ||Δm||∞ < 10⁻³, up to 8 iterations. This replaces ~64,800 cold SG/FV solves per realization with 8 spline evaluations + 1 verification solve.
 
-5. **Parallel execution with preloaded splines.** Implemented `_init_worker_with_splines()` to pass pickled spline tables to multiprocessing workers. Workers use `_inverse_task_spline()` which accesses preloaded spline tables via fork-based multiprocessing for copy-on-write efficiency. All 2,700 realizations now complete in ~45s (vs. 20+ hours previously).
+5. **Parallel execution with preloaded splines — INVALIDATED.** The spline-cache file behind this claim was a placeholder and has been deleted (see CORRECTION above). The final code uses the exact finite-difference Gauss–Newton path in `_inverse_task`; the resumable driver is `scripts/run_stage21_colab.py`. Measured cost is ~32 s CPU per realization.
 
 6. **Performance results.** First run (no caches): ~975s (~16 minutes). Subsequent runs (with caches): ~77s (<120s target achieved). Speedup: >600× for cached runs. Mathematical correctness verified: spline-interpolated observables agree with cold SG/FV to <0.1% relative error; final estimates match to <10⁻⁴ in parameter space.
 
@@ -26,9 +57,10 @@ Date: 2026-10-22. State: **STAGE 21B IN PROGRESS** (Stages 1–20 complete; Stag
 
 1. **Reference-free warm-started controller.** `scripts/operators/hybrid_controller.py`
    and `scripts/run_stage19_hybrid_solver_and_reversal.py` now reproduce the cold
-   conservative SG/FV current to **3.027e-12** median relative error at **0.16544 s**
-   per state, versus **1.57507 s** for the full `21x61` solve (**9.5x** lower cost).
-   One-step Gummel alone gives **1.805e-4** at **0.01020 s**. The controller never
+   conservative SG/FV current to **3.027e-12** median relative error at **0.153 s**
+   per state, versus **0.235 s** for the full `21x61` cold forward solve
+   (**1.54×** lower wall time; **1.19×** for the reversal-potential root search).
+   One-step Gummel alone gives **1.805e-4** at **0.00736 s**. The controller never
    reads a reference state: it warm-starts `solve_reference` from the operator and
    selects the warm start by a residual test.
 2. **Blind 2,700-realization inverse benchmark.** The benchmark covers 15 states,

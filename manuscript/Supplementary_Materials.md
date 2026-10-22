@@ -342,18 +342,18 @@ The twenty-two display tables are collected here in strict order S1 through S22,
 
 
 
-**Supplementary Table S22.** Operator-warm-started SG/FV solver and blind unequal-reservoir reversal-potential benchmark. (A) Median current and reversal-potential errors with median wall time for eight methods on 120 states (40 weak, 40 transitional, 40 strong). The Pino-Controller warm-starts the conservative SG/FV solve from the operator and is reference-free; full SG/FV is the reference. (B) Blind Stage-20 inversion with shared noisy observations, 15 states, and 20 realizations per protocol and noise level; B is the residual-controlled SG/FV Gauss--Newton estimator. Errors are medians over all states and over the weak, transitional, and strong charge bands; coverage is the fraction of 95% intervals containing the truth, reported separately for radius $R$, surface charge density $\sigma$, and dimensionless wall charge $q_w \propto R\sigma$. The dual protocol reaches 1.7% median charge error at 1% noise but its intervals are undercovered (68% for $q_w$), while the reversal potential is strongly state dependent (263% weak-charge versus 7.3% strong-charge). Single-salt conductance remains unidentifiable. (C) Three-way bias diagnostic at 1% noise with estimator B (dual protocol): D1 — noise-free $21\times61$ observations inverted on $21\times61$ (pure optimization error); D2 — noise-free $41\times121$ observations inverted on $21\times61$ (mesh discretization bias); D3 — warm-started vs. cold-started noisy $41\times121 \to 21\times61$ inversion (initialization dependence). The $\sim$1.5–1.7% dual error floor in estimator B arises primarily from the $41\times121$ vs. $21\times61$ mesh bias (D2), whereas same-grid noise-free inversion (D1) converges to near-zero error.
+**Supplementary Table S22.** Operator-warm-started SG/FV solver and blind unequal-reservoir reversal-potential benchmark. (A) Median current and reversal-potential errors with median wall time for eight methods on 120 states (40 weak, 40 transitional, 40 strong). The Pino-Controller warm-starts the conservative SG/FV solve from the operator and is reference-free; full SG/FV is the reference. (B) Blind Stage-20 inversion with shared noisy observations, 15 states, and 20 realizations per protocol and noise level; B is the residual-controlled SG/FV Gauss--Newton estimator. Errors are medians over all states and over the weak, transitional, and strong charge bands; coverage is the fraction of 95% intervals containing the truth for the dimensionless wall charge $q_w \propto R\sigma$, reported for all states and by charge band. The dual protocol reaches 1.7% median charge error at 1% noise but its intervals are undercovered (68% for $q_w$), while the reversal potential is strongly state dependent (263% weak-charge versus 7.3% strong-charge). Single-salt conductance remains unidentifiable.
 
 | Method | Median $I$ rel. error | Median $V_\mathrm{rev}$ abs. error (mV) | Median time (s) |
 |---|---|---|---|
 | Ohmic bulk | $8.06\times10^{-5}$ | 0.03907 | $9.21\times10^{-6}$ |
 | Linearized PB | $3.21\times10^{-6}$ | 0.03907 | $5.21\times10^{-4}$ |
 | POD--RBF | $3.56\times10^{-4}$ | 0.03907 | $2.22\times10^{-3}$ |
-| PI-DeepONet | $1.06\times10^{-3}$ | 0.03838 | $2.07\times10^{-4}$ |
+| PI-DeepONet | $1.06\times10^{-3}$ | 0.03838 | $1.42\times10^{-4}$ |
 | Ridge-calibrated operator baseline | $8.51\times10^{-4}$ | 0.1384 | $1.09\times10^{-3}$ |
-| One-step Gummel | $1.80\times10^{-4}$ | 0.03838 | $1.02\times10^{-2}$ |
-| Full SG/FV | 0 | 0 | 1.575 |
-| Pino-Controller (warm SG/FV) | $3.03\times10^{-12}$ | 0.03838 | $1.65\times10^{-1}$ |
+| One-step Gummel | $1.80\times10^{-4}$ | 0.03838 | $7.36\times10^{-3}$ |
+| Full SG/FV | 0 | 0 | 0.235 |
+| Pino-Controller (warm SG/FV) | $3.03\times10^{-12}$ | 0.03838 | $1.53\times10^{-1}$ |
 
 | Protocol | Noise | $q_w$ all | $q_w$ weak | $q_w$ trans. | $q_w$ strong | $R$ all | $q_w$ cov. all | weak | trans. | strong |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -416,7 +416,7 @@ where the overbar is a mean over collocation or boundary points and the residual
 **Algorithm 1.** End-to-end training and evaluation of the parameter-conditioned PNP operator.
 
 ```
-Require: parameter box B = [-50,50] mV x [20,200] M x [-0.05,0] x [3,8] nm
+Require: parameter box B = [-50,50] mV x [20,200] mol m⁻³ x [-0.05,0] x [3,8] nm
 Require: grid (nr,nz) = (21,61); seeds {42,43,44}; epochs E_DN = 500, E_FNO = 110
  1: generate 240 states with the SG/FV solver; accept if residual < 1e-9,
     fields finite, and c_pm > 0; split 144/48/48 (train/interp/OOD)

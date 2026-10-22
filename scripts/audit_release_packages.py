@@ -490,15 +490,93 @@ def stage20_checks() -> dict:
 
 
 def stage21_checks() -> dict:
+    """Validate the verified Stage-21 evidence: per-case timing arithmetic,
+    genuinely populated inverse diagnostics, non-empty bias rows, and a
+    Supplementary Table S22 whose caption matches its contents."""
+    import numpy as np
+
+    res = ROOT / "results"
     pub = PUB / "results"
-    npz_ok = (pub / "stage20_complete_records.npz").exists() and (pub / "stage20_complete_records.npz").stat().st_size > 100000
-    csv_ok = (pub / "stage20_complete_records.csv").exists() and (pub / "stage20_complete_records.csv").stat().st_size > 10000
-    ver_ok = (pub / "stage20_hybrid_verification.json").exists()
-    d = json.loads((ROOT / "results" / "stage20_hybrid_verification.json").read_text())
-    timing_ok = bool(d.get("timing_summary", {}).get("task_A")) and bool(d.get("timing_summary", {}).get("task_B"))
-    bias_ok = bool(d.get("bias_diagnostic", {}).get("diagnostic_1_same_grid_noise_free")) \
-        and bool(d.get("bias_diagnostic", {}).get("diagnostic_2_cross_grid_noise_free")) \
-        and bool(d.get("bias_diagnostic", {}).get("diagnostic_3_warm_vs_cold_noisy"))
+
+    # --- Timing: per-case records plus arithmetic that matches the medians. ---
+    timing_path = res / "stage21_timing_benchmark_real.json"
+    timing_ok = timing_arith = False
+    if timing_path.exists():
+        t = json.loads(timing_path.read_text())
+        rows = t.get("task_A_states", [])
+        s = t.get("summary", {})
+        keys = ("warm_sgfv_tol1e-9", "cold_sgfv_tol1e-9", "one_step_gummel")
+        timing_ok = (len(rows) == 120
+                     and all(all(r.get(k, {}).get("time_s", 0) > 0 for k in keys)
+                             for r in rows))
+        try:
+            ta, tb = s["task_A"], s["task_B"]
+            fwd = ta["cold_sgfv_tol1e-9"]["median_time_s"] / ta["warm_sgfv_tol1e-9"]["median_time_s"]
+            gum = ta["cold_sgfv_tol1e-9"]["median_time_s"] / ta["one_step_gummel"]["median_time_s"]
+            rev = tb["cold_brent_vrev"]["median_time_s"] / tb["warm_secant_vrev"]["median_time_s"]
+            timing_arith = (
+                abs(fwd - s["task_A_speedups"]["warm_1e-9_vs_cold_1e-9"]) <= 1e-6 * max(1.0, fwd)
+                and abs(gum - s["task_A_speedups"]["one_step_vs_cold_1e-9"]) <= 1e-6 * max(1.0, gum)
+                and abs(rev - s["task_B_speedups"]["warm_vs_cold"]) <= 1e-6 * max(1.0, rev)
+            )
+        except (KeyError, ZeroDivisionError):
+            timing_arith = False
+
+    # --- Inverse: per-realization SEs/intervals/flags, not placeholders. ---
+    inv_path = res / "stage21_inverse_records_real.npz"
+    sum_path = res / "stage21_inverse_summary_real.json"
+    inv_ok = diag_ok = cov_ok = coverage_matches = False
+    n_records = 0
+    if inv_path.exists():
+        z = np.load(inv_path, allow_pickle=True)
+        n_records = len(z["B_se_lnq"]) if "B_se_lnq" in z.files else 0
+        se_fields = [f"{e}_se_{q}" for e in "ABC" for q in ("lnR", "lnsigma", "lnq")]
+        have = [f for f in se_fields if f in z.files]
+        diag_ok = (n_records >= 2600 and len(have) == len(se_fields)
+                   and all(np.mean(np.isfinite(z[f]) & (z[f] > 0)) > 0.99 for f in have)
+                   and "B_delta_m_inf" in z.files
+                   and np.mean(np.isfinite(z["B_delta_m_inf"]) & (z["B_delta_m_inf"] > 0)) > 0.99)
+        cov_fields = [f"{e}_{q}_cover" for e in "ABC" for q in ("q", "R", "sigma")]
+        cov_fields = [f for f in cov_fields if f in z.files]
+        cov_ok = len(cov_fields) == 9 and all(
+            np.all(np.isfinite(z[f].astype(float))) and np.all((z[f].astype(float) >= 0) & (z[f] <= 1))
+            for f in cov_fields)
+        inv_ok = diag_ok and cov_ok
+        if sum_path.exists() and inv_ok:
+            sj = json.loads(sum_path.read_text())
+            proto = np.array([p.decode() if isinstance(p, bytes) else str(p) for p in z["protocol"]])
+            noise = z["noise"].astype(float)
+            m = (proto == "dual") & (np.abs(noise - 0.01) < 1e-12)
+            if m.any():
+                rec_cov = float(np.mean(z["B_q_cover"][m].astype(float)))
+                summary_cov = float(sj["by_condition"]["dual_0.01"]["B_q_cover"])
+                coverage_matches = abs(rec_cov - summary_cov) <= 1e-12
+                inv_ok = inv_ok and coverage_matches
+
+    # --- Bias: rows must exist for D1/D2 and D3 must summarise real records. ---
+    bias_path = res / "stage21_bias_diagnostic_real.json"
+    bias_ok = False
+    if bias_path.exists():
+        b = json.loads(bias_path.read_text())
+        rows = b.get("rows", [])
+        labels = {r.get("diagnostic") for r in rows}
+        bias_ok = (len(rows) >= 30
+                   and {"same_grid_noise_free", "cross_grid_noise_free"} <= labels
+                   and b.get("summary", {}).get("diagnostic_3_warm_vs_cold_noisy", {}).get("n", 0) > 0)
+
+    # --- Published copies and the claimed file set. ---
+    pub_files = ["stage21_timing_benchmark_real.json",
+                 "stage21_inverse_records_real.npz",
+                 "stage21_inverse_summary_real.json",
+                 "stage21_bias_diagnostic_real.json"]
+    pub_ok = all((pub / f).exists() and (pub / f).stat().st_size > 10000 for f in pub_files)
+
+    # --- Table S22 caption must match displayed content. ---
+    sup = (ROOT / "manuscript" / "Supplementary_Materials.md").read_text()
+    s22 = sup[sup.index("**Supplementary Table S22."):] if "**Supplementary Table S22." in sup else ""
+    s22_ok = ("coverage" in s22.lower() and "sigma" in s22.lower()
+              and all(tag in s22 for tag in ("D1", "D2", "D3")))
+
     man = (ROOT / "manuscript" / "Manuscript.md").read_text()
     cap = ""
     for para in man.split("\n\n"):
@@ -507,18 +585,14 @@ def stage21_checks() -> dict:
             break
     cap_ok = ("zero wall ion flux, the wall surface-charge condition, and interior PDE residuals are enforced through the physics loss" in cap
               and "ansatz imposes reservoir potential and concentration values, zero wall ion flux" not in cap)
-    sup = (ROOT / "manuscript" / "Supplementary_Materials.md").read_text()
-    s22 = sup[sup.index("**Supplementary Table S22."):] if "**Supplementary Table S22." in sup else ""
-    s22_ok = ("sigma" in s22.lower() and "coverage" in s22.lower()
-              and "D1" in s22 and "D2" in s22 and "D3" in s22)
-    inverse = d.get("inverse_summary", {})
-    inv_key = "dual_B_noise0.01"
-    inv = inverse.get(inv_key, {})
-    separate_ok = all(inv.get(k) is not None for k in ("q_coverage95", "R_coverage95", "sigma_coverage95"))
-    return {"ok": npz_ok and csv_ok and ver_ok and timing_ok and bias_ok and cap_ok and s22_ok and separate_ok,
-            "public_npz": npz_ok, "public_csv": csv_ok, "public_json": ver_ok,
-            "timing": timing_ok, "bias": bias_ok, "figure1_caption": cap_ok,
-            "s22": s22_ok, "separate_coverage": separate_ok}
+
+    ok = (timing_ok and timing_arith and inv_ok and bias_ok and pub_ok and s22_ok and cap_ok)
+    return {"ok": ok, "public_files": pub_ok,
+            "timing": timing_ok, "timing_arithmetic": timing_arith,
+            "inverse": inv_ok, "inverse_diagnostics": diag_ok,
+            "inverse_coverage": cov_ok, "coverage_matches_summary": coverage_matches,
+            "n_records": n_records, "bias": bias_ok,
+            "figure1_caption": cap_ok, "s22": s22_ok}
 
 
 def main() -> None:
