@@ -13,7 +13,7 @@ sys.path.insert(0, os.path.join(SCRIPTS, "sg_baseline", "src"))
 import generate_parametric_dataset as G  # noqa: E402
 
 dat = K.load_dataset()
-m = K.load_model("deeponet", "reparam", 42)
+m = K.load_model("deeponet", "reparam", 43)
 
 def op_mean_current(mu_rows):
     pred, ipred = K.predict_mu(m, np.asarray(mu_rows, float))

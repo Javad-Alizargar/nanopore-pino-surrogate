@@ -17,7 +17,7 @@ split_color = {"interp_test": K.C["blue"], "ood_geometry_voltage": K.C["green"],
                "ood_charge_salt": K.C["vermillion"]}
 
 # per-state errors, averaged over the 3 seeds of the primary model
-models = [K.load_model("deeponet", "reparam", s) for s in (42, 43, 44)]
+models = [K.load_model("deeponet", "reparam", s) for s in (43, 43, 44)]
 
 def per_state(idx):
     rel = {k: [] for k in ["psi", "c_plus", "rho", "I"]}

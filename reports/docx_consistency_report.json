@@ -1,0 +1,14 @@
+{
+  "manuscript": "manuscript/Manuscript_PINO_clean.docx",
+  "supplement": "manuscript/Supplementary_Materials_PINO.docx",
+  "issues": [
+    "Supplement: Inconsistent spacing in milliseconds: 2 with space, 7 without"
+  ],
+  "fixes": [],
+  "summary": {
+    "total_issues": 1,
+    "total_fixes": 0,
+    "manuscript_issues": 0,
+    "supplement_issues": 1
+  }
+}

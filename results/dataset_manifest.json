@@ -1,7 +1,7 @@
 {
   "stage": 3,
   "task": "3.1_parametric_sg_fv_dataset",
-  "generated_utc": "2026-10-18T09:39:24Z",
+  "generated_utc": "2026-10-22T13:11:19Z",
   "seed": 20261018,
   "hardware": {
     "platform": "macOS-14.1-arm64-arm-64bit-Mach-O",
@@ -10,7 +10,7 @@
   },
   "solver": {
     "module": "scripts/sg_baseline/src/pnp_da_pinn/conservative.py",
-    "conservative_sha256": "dc726e670f329e37474425636ac0f588f251165fd1a7f9d462150cb462efc8a7",
+    "conservative_sha256": "2baa5a7359cb8e1918b9dbb31997cc96edbeaa0eea827d3f115f8e235340a70c",
     "sg_solver_sha256": "03a1e948afe10181772b4af60ff4f551590bd6690032d57be80e7d79414b9748",
     "tolerance": 1e-09,
     "max_iter": 300,
@@ -58,8 +58,8 @@
   "dataset": {
     "path": "data/processed/pnp_parametric_240.npz",
     "n_states": 240,
-    "sha256": "3cf16cf70142138e991985fbcfd99c113e535577f32f9241bd894ce719be6cab",
-    "size_bytes": 4021110,
+    "sha256": "bfaac91a215628cc8bca6693983e5bfaea17ee425e98fcb46d638f70c85e2c07",
+    "size_bytes": 4021212,
     "size_mb": 4.021,
     "compact_under_15mb": true,
     "arrays": [
@@ -245,10 +245,10 @@
     "finite_fields": true
   },
   "timing": {
-    "wall_seconds": 59.18,
-    "mean_solve_s": 0.23909970383974724,
-    "median_solve_s": 0.2199542919988744,
-    "max_solve_s": 0.785325999953784
+    "wall_seconds": 57.18,
+    "mean_solve_s": 0.23151141404987358,
+    "median_solve_s": 0.21908014599830494,
+    "max_solve_s": 0.4636682920026942
   },
   "continuation": {
     "n_states_using_continuation": 0,

@@ -1,10 +1,10 @@
 # Final audit report
 
-Generated: 2026-10-22T11:57:14Z
+Generated: 2026-10-22T13:23:11Z
 
 Audited packages:
-- Public: 179 files, 34.7 MB
-- Private: 876 files, 96.9 MB
+- Public: 166 files, 19.9 MB
+- Private: 869 files, 84.7 MB
 
 ## Checklist
 
@@ -53,7 +53,7 @@ Audited packages:
 - Credential files inspected: 12 (values never printed).
 - Public package secret-value hits: []
 - Private package secret-value hits: []
-- Tracked/unignored files scanned: 232; hits: []
+- Tracked/unignored files scanned: 238; hits: []
 - Public secret-name hits: []
 - Private secret-name hits: []
 - Abstract: 242 words; highlights: 5 (max 83 chars).

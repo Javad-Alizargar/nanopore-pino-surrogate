@@ -12,7 +12,7 @@ g = dat["bench_idx"]
 mu0 = dat["mu"][g:g + 1]
 ref = {k: dat["ref"][k][g] for k in ["psi", "c_plus", "c_minus", "rho", "i_z"]}
 
-m_dn = K.load_model("deeponet", "reparam", 42)
+m_dn = K.load_model("deeponet", "reparam", 43)
 m_fno = K.load_model("fno", "reparam", 42, epochs=300)
 pred_dn, i_dn = K.predict_mu(m_dn, mu0)
 pred_fno, i_fno = K.predict_mu(m_fno, mu0)

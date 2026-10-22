@@ -69,7 +69,7 @@ def load_table(name):
         return list(csv.DictReader(fh))
 
 
-def load_model(kind, mode, seed=42, condition="data_plus_physics", epochs=None):
+def load_model(kind, mode, seed=43, condition="data_plus_physics", epochs=None):
     if epochs is not None:
         name = f"{kind}_{mode}_seed{seed}_{epochs}ep.pt"
     else:
