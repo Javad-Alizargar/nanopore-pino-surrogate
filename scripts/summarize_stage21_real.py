@@ -45,6 +45,11 @@ def band_of(sid):
     return BANDS[min(int(sid) // 5, 2)]
 
 
+def pct(x):
+    v = x * 100.0
+    return f"{v:.1f}%" if v < 10 else f"{v:.0f}%"
+
+
 def med(vals):
     vals = np.asarray([v for v in vals if np.isfinite(v)], dtype=float)
     return float(np.median(vals)) if vals.size else float("nan")
@@ -84,6 +89,7 @@ def summarize(records):
             row["B_converged"] = float(np.mean([r["B_converged"] for r in sub]))
             row["C_converged"] = float(np.mean([r["C_converged"] for r in sub]))
             row["B_boundary_hit"] = float(np.mean([r["B_boundary_hit"] for r in sub]))
+            row["C_boundary_hit"] = float(np.mean([r["C_boundary_hit"] for r in sub]))
             row["B_iterations"] = med([r["B_iterations"] for r in sub])
             row["B_time_s"] = med([r["B_time_s"] for r in sub])
             for band in BANDS:
@@ -113,8 +119,8 @@ def summarize(records):
 
 def table_rows(summary):
     lines = [
-        "| Protocol | Noise | median $q_w$ rel. | weak | trans. | strong | median $R$ rel. | median $\\sigma$ rel. | cov. $q_w$ | cov. $R$ | cov. $\\sigma$ | $n$ |",
-        "|---|---|---|---|---|---|---|---|---|---|---|---|",
+        "| Protocol | Noise | median $q_w$ rel. | weak | trans. | strong | median $R$ rel. | median $\\sigma$ rel. | cov. $q_w$ | cov. $R$ | cov. $\\sigma$ | B conv. | B bound. | C conv. | $n$ |",
+        "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|",
     ]
     for proto in PROTOCOLS:
         for noise in NOISES:
@@ -126,8 +132,9 @@ def table_rows(summary):
                 f"| {r['B_q_rel']*100:.2f}% | {r['B_q_rel_weak']*100:.2f}% "
                 f"| {r['B_q_rel_transitional']*100:.2f}% | {r['B_q_rel_strong']*100:.2f}% "
                 f"| {r['B_R_rel']*100:.2f}% | {r['B_sigma_rel']*100:.2f}% "
-                f"| {r['B_q_cover']*100:.0f}% | {r['B_R_cover']*100:.0f}% "
-                f"| {r['B_sigma_cover']*100:.0f}% | {r['n']} |"
+                f"| {pct(r['B_q_cover'])} | {pct(r['B_R_cover'])} "
+                f"| {pct(r['B_sigma_cover'])} | {pct(r['B_converged'])} "
+                f"| {r['B_boundary_hit']*100:.0f}% | {r['C_converged']*100:.0f}% | {r['n']} |"
             )
     return "\n".join(lines) + "\n"
 

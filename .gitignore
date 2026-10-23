@@ -78,6 +78,7 @@ literature/cache/
 literature/raw/
 *.npy
 *.npz
+!results/stage21_inverse_records_real.npz
 *.pt
 *.pth
 *.h5
@@ -117,3 +118,6 @@ MASTER_PROMPT*.md
 # Office lock files and regenerable docx cache
 ~$*
 manuscript/cache/
+
+# resumable inverse checkpoints (regenerable)
+results/checkpoints/

@@ -535,7 +535,10 @@ def stage21_checks() -> dict:
         diag_ok = (n_records >= 600 and len(have) == len(se_fields)
                    and all(np.mean(np.isfinite(z[f]) & (z[f] > 0)) > 0.99 for f in have)
                    and "B_delta_m_inf" in z.files
-                   and np.mean(np.isfinite(z["B_delta_m_inf"]) & (z["B_delta_m_inf"] > 0)) > 0.99)
+                   and np.mean(np.isfinite(z["B_delta_m_inf"]) & (z["B_delta_m_inf"] > 0)) > 0.99
+                   and "B_converged" in z.files and "C_converged" in z.files
+                   and set(np.unique(z["B_converged"].astype(int))) <= {0, 1}
+                   and set(np.unique(z["C_converged"].astype(int))) <= {0, 1})
         cov_fields = [f"{e}_{q}_cover" for e in "ABC" for q in ("q", "R", "sigma")]
         cov_fields = [f for f in cov_fields if f in z.files]
         cov_ok = len(cov_fields) == 9 and all(
@@ -575,7 +578,9 @@ def stage21_checks() -> dict:
     sup = (ROOT / "manuscript" / "Supplementary_Materials.md").read_text()
     s22 = sup[sup.index("**Supplementary Table S22."):] if "**Supplementary Table S22." in sup else ""
     s22_ok = ("coverage" in s22.lower() and "sigma" in s22.lower()
-              and all(tag in s22 for tag in ("D1", "D2", "D3")))
+              and all(tag in s22 for tag in ("D1", "D2", "D3"))
+              and "B conv." in s22 and "attempted" in s22.lower()
+              and "provisional" in s22.lower())
 
     man = (ROOT / "manuscript" / "Manuscript.md").read_text()
     cap = ""

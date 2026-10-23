@@ -57,7 +57,7 @@ spline caching and 45 s runtimes are retained as history but are **not** evidenc
 
 1. **Reference-free warm-started controller.** `scripts/operators/hybrid_controller.py`
    and `scripts/run_stage19_hybrid_solver_and_reversal.py` now reproduce the cold
-   conservative SG/FV current to **3.027e-12** median relative error at **0.153 s**
+   conservative SG/FV current to **5.083e-14** median relative error at **0.153 s**
    per state, versus **0.235 s** for the full `21x61` cold forward solve
    (**1.54×** lower wall time; **1.19×** for the reversal-potential root search).
    One-step Gummel alone gives **1.805e-4** at **0.00736 s**. The controller never

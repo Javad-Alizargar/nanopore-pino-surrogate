@@ -147,7 +147,7 @@ The twenty-two display tables are collected here in strict order S1 through S22,
 | Supplementary Table S19 | Exact SG/FV versus operator Fisher/Jacobian validation | `results/tables/table_sgfv_operator_fisher_8x8.csv` |
 | Supplementary Table S20 | Exact SG/FV diffusivity-ratio scan | `results/tables/table_diffusivity_symmetry_breaking.csv` |
 | Supplementary Table S21 | Interpreted baselines and strong-charge benchmark | `results/tables/table_analytic_pod_baselines.csv`; `results/tables/table_strong_charge_benchmark.csv` |
-| Supplementary Table S22 | Operator-warm-started SG/FV solver and reversal-potential inverse benchmark | `results/tables/table_s22_hybrid_controller_and_reversal.csv`; `results/stage19_hybrid_controller.json` |
+| Supplementary Table S22 | Operator-warm-started SG/FV solver and reversal-potential inverse benchmark | `results/tables/table_s22_hybrid_controller_and_reversal.csv`; `results/stage21_timing_benchmark_real.json`; `results/stage21_inverse_records_real.npz`; `results/stage21_bias_diagnostic_real.json` |
 | Claim map | Claim-to-evidence audit (C01--C44, L01--L61) | `manuscript/claim_evidence.csv` |
 | Statistics | Canonical JSON values | `results/statistics.json` |
 | Inverse study | Stage-18 inverse, nesting, and SG/FV-in-the-loop results | `results/stage18_final_evidence.json` |
@@ -342,32 +342,44 @@ The twenty-two display tables are collected here in strict order S1 through S22,
 
 
 
-**Supplementary Table S22.** Operator-warm-started SG/FV solver and blind unequal-reservoir reversal-potential benchmark. (A) Median current and reversal-potential errors with median wall time for eight methods on 120 states (40 weak, 40 transitional, 40 strong). The Pino-Controller warm-starts the conservative SG/FV solve from the operator and is reference-free; full SG/FV is the reference. (B) Blind Stage-20 inversion with shared noisy observations, 15 states, and 5 realizations per protocol and noise level; B is the residual-controlled SG/FV Gauss--Newton estimator. Errors are medians over all states and over the weak, transitional, and strong charge bands; coverage is the fraction of 95% intervals containing the truth, reported separately for radius $R$, surface charge density $\sigma$, and dimensionless wall charge $q_w \propto R\sigma$, for all states and by charge band. The dual protocol reaches 1.5% median charge error at 1% noise but its intervals are undercovered (73% for $q_w$), while the reversal potential is strongly state dependent (85% weak-charge versus 5.0% strong-charge). Single-salt conductance remains unidentifiable. (C) Three-way bias diagnostic at 1% noise with estimator B (dual protocol): D1---noise-free $21\times61$ observations inverted on $21\times61$ (pure optimization error); D2---noise-free $41\times121$ observations inverted on $21\times61$ (mesh discretization bias); D3---warm-started versus cold-started noisy $41\times121\to21\times61$ inversion (initialization dependence). The roughly 1.3% dual error floor is dominated by the $41\times121$ versus $21\times61$ mesh bias (D2: 1.29% median charge error), whereas same-grid noise-free inversion (D1) reaches $2.1\times10^{-7}$ and initialization changes the charge error only from 1.49% (warm B) to 1.55% (cold C).
+**Supplementary Table S22.** Operator-warm-started SG/FV solver and blind unequal-reservoir reversal-potential benchmark. (A) Task A is the equal-reservoir forward solve on the $21\times61$ grid at tolerance $10^{-9}$; the table reports the median relative current error and median wall time for eight methods on 120 states (40 weak, 40 transitional, 40 strong), with full SG/FV as the reference. Task B is the unequal-reservoir reversal root $I(V)=0$; the table reports the median absolute reversal-potential error, the median number of SG/FV current evaluations, and the median wall time for the operator surrogate and the warm and cold root solvers. The Pino controller warm-starts the conservative SG/FV solve from the operator and is reference-free. (B) Blind Stage-20 inversion with shared noisy observations, 15 states, and 5 realizations per protocol and noise level (75 per protocol--noise cell; 675 total); B is the residual-controlled SG/FV Gauss--Newton estimator and C is a single-start cold SG/FV baseline. Errors are medians over all attempted fits, with no converged-only filtering, and coverage is the fraction of 95% intervals containing the truth for radius $R$, surface charge density $\sigma$, and wall charge $q_w\propto R\sigma$. The B conv., B bound., and C conv. columns give the convergence and boundary-hit fractions. Single-salt fits never satisfy the convergence criterion (0% at every noise level) and hit a parameter bound in 20--41% of attempts; at 1% noise all 75 single-salt B fits stop on line-search failure, the reversal fits stop on step tolerance (48), iteration limit (22), or line search (5), and the dual fits stop on step tolerance (73) or line search (2). Their reported intervals are provisional local intervals rather than validated confidence intervals, and the single-salt identifiability conclusion rests on the Fisher analysis rather than on these failed fits. The dual protocol reaches 1.5% median charge error at 1% noise but its intervals are undercovered (73% for $q_w$), while the reversal potential is strongly state dependent (85% weak-charge versus 5.0% strong-charge). (C) Three-way bias diagnostic at 1% noise with estimator B (dual protocol): D1---noise-free $21\times61$ observations inverted on $21\times61$ (pure optimization error); D2---noise-free $41\times121$ observations inverted on $21\times61$ (mesh discretization bias); D3---warm-started versus cold-started noisy $41\times121\to21\times61$ inversion (initialization dependence). The roughly 1.3% dual error floor is dominated by the $41\times121$ versus $21\times61$ mesh bias (D2: 1.29% median charge error), whereas same-grid noise-free inversion (D1) reaches $2.1\times10^{-7}$. Initialization changes the charge error only from 1.49% (warm B) to 1.55% (cold C), but it changes the convergence rate from 97.3% to 66.7%; warm starting is therefore more robust even though the median errors are similar.
 
-| Method | Median $I$ rel. error | Median $V_\mathrm{rev}$ abs. error (mV) | Median time (s) |
+**Task A (forward solve).** Equal-reservoir forward solve on 120 states; median relative current error and median wall time. Full SG/FV is the reference.
+
+| Method | Median $I$ rel. error | Median time (s) |
+|---|---|---|
+| Ohmic bulk | $8.06\times10^{-5}$ | $9.21\times10^{-6}$ |
+| Linearized PB | $3.21\times10^{-6}$ | $5.21\times10^{-4}$ |
+| POD--RBF | $3.56\times10^{-4}$ | $2.22\times10^{-3}$ |
+| PI-DeepONet (zero-shot) | $1.06\times10^{-3}$ | $1.42\times10^{-4}$ |
+| Ridge-calibrated operator baseline | $8.51\times10^{-4}$ | $1.09\times10^{-3}$ |
+| One-step Gummel | $1.80\times10^{-4}$ | $7.36\times10^{-3}$ |
+| Warm-started SG/FV (Pino warm start) | $5.08\times10^{-14}$ | $1.53\times10^{-1}$ |
+| Cold SG/FV | 0 | 0.235 |
+
+**Task B (reversal root).** Unequal-reservoir reversal root $I(V)=0$; median absolute reversal-potential error, median SG/FV current evaluations, and median wall time.
+
+| Method | Median $V_\mathrm{rev}$ abs. error (mV) | Median current evals | Median time (s) |
 |---|---|---|---|
-| Ohmic bulk | $8.06\times10^{-5}$ | 0.03907 | $9.21\times10^{-6}$ |
-| Linearized PB | $3.21\times10^{-6}$ | 0.03907 | $5.21\times10^{-4}$ |
-| POD--RBF | $3.56\times10^{-4}$ | 0.03907 | $2.22\times10^{-3}$ |
-| PI-DeepONet | $1.06\times10^{-3}$ | 0.03838 | $1.42\times10^{-4}$ |
-| Ridge-calibrated operator baseline | $8.51\times10^{-4}$ | 0.1384 | $1.09\times10^{-3}$ |
-| One-step Gummel | $1.80\times10^{-4}$ | 0.03838 | $7.36\times10^{-3}$ |
-| Full SG/FV | 0 | 0 | 0.235 |
-| Pino-Controller (warm SG/FV) | $3.03\times10^{-12}$ | 0.03838 | $1.53\times10^{-1}$ |
+| Operator surrogate (zero-shot) | 0.0365 | 0 | $2.15\times10^{-4}$ |
+| Warm secant (operator-initialized) | $5.03\times10^{-9}$ | 4 | 1.006 |
+| Cold Brent (reference) | 0 | 5 | 1.200 |
 
-| Protocol | Noise | median $q_w$ rel. | weak | trans. | strong | median $R$ rel. | median $\sigma$ rel. | cov. $q_w$ | cov. $R$ | cov. $\sigma$ | $n$ |
-|---|---|---|---|---|---|---|---|---|---|---|---|
-| single salt | 0.2% | 140.99% | 1234.97% | 489.72% | 73.81% | 0.35% | 145.66% | 100% | 100% | 100% | 75 |
-| single salt | 1% | 147.63% | 1820.52% | 486.24% | 80.03% | 0.30% | 145.66% | 100% | 100% | 100% | 75 |
-| single salt | 2% | 147.63% | 1606.88% | 344.16% | 67.66% | 0.42% | 145.66% | 100% | 100% | 100% | 75 |
-| reversal potential | 0.2% | 12.66% | 77.29% | 13.19% | 5.91% | 0.03% | 12.68% | 88% | 95% | 88% | 75 |
-| reversal potential | 1% | 11.11% | 84.57% | 18.39% | 5.01% | 0.17% | 11.24% | 88% | 95% | 88% | 75 |
-| reversal potential | 2% | 13.05% | 68.85% | 11.40% | 6.31% | 0.31% | 13.14% | 89% | 96% | 92% | 75 |
-| dual + selectivity | 0.2% | 1.36% | 1.40% | 1.33% | 1.35% | 0.04% | 1.36% | 1.3% | 96% | 2.7% | 75 |
-| dual + selectivity | 1% | 1.49% | 1.55% | 1.32% | 1.24% | 0.15% | 1.45% | 73% | 96% | 73% | 75 |
-| dual + selectivity | 2% | 1.89% | 2.28% | 1.76% | 1.85% | 0.44% | 1.93% | 91% | 93% | 92% | 75 |
+**Part B (blind inversion).** All attempted fits are included; coverage is not conditioned on convergence.
 
-**Supplementary Table S22 (continued).** Three-way bias diagnostic rows for part (C).
+| Protocol | Noise | median $q_w$ rel. | weak | trans. | strong | median $R$ rel. | median $\sigma$ rel. | cov. $q_w$ | cov. $R$ | cov. $\sigma$ | B conv. | B bound. | C conv. | $n$ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| single salt | 0.2% | 140.99% | 1234.97% | 489.72% | 73.81% | 0.35% | 145.66% | 100% | 100% | 100% | 0.0% | 41% | 0% | 75 |
+| single salt | 1% | 147.63% | 1820.52% | 486.24% | 80.03% | 0.30% | 145.66% | 100% | 100% | 100% | 0.0% | 32% | 0% | 75 |
+| single salt | 2% | 147.63% | 1606.88% | 344.16% | 67.66% | 0.42% | 145.66% | 100% | 100% | 100% | 0.0% | 20% | 0% | 75 |
+| reversal potential | 0.2% | 12.66% | 77.29% | 13.19% | 5.91% | 0.03% | 12.68% | 88% | 95% | 88% | 57% | 15% | 56% | 75 |
+| reversal potential | 1% | 11.11% | 84.57% | 18.39% | 5.01% | 0.17% | 11.24% | 88% | 95% | 88% | 64% | 11% | 63% | 75 |
+| reversal potential | 2% | 13.05% | 68.85% | 11.40% | 6.31% | 0.31% | 13.14% | 89% | 96% | 92% | 60% | 9% | 51% | 75 |
+| dual + selectivity | 0.2% | 1.36% | 1.40% | 1.33% | 1.35% | 0.04% | 1.36% | 1.3% | 96% | 2.7% | 100% | 7% | 65% | 75 |
+| dual + selectivity | 1% | 1.49% | 1.55% | 1.32% | 1.24% | 0.15% | 1.45% | 73% | 96% | 73% | 97% | 7% | 67% | 75 |
+| dual + selectivity | 2% | 1.89% | 2.28% | 1.76% | 1.85% | 0.44% | 1.93% | 91% | 93% | 92% | 99% | 7% | 65% | 75 |
+
+**Part C (bias diagnostic).** Three-way diagnostic rows.
 
 | Diagnostic | $n$ | median $q_w$ rel. | median $R$ rel. | median $\sigma$ rel. | converged |
 |---|---|---|---|---|---|
@@ -563,9 +575,9 @@ The split is a controlled extrapolation, not an adversarial stress test. It is i
 
 **States.** Fifteen held-out interpolation states selected to span the Debye-overlap range. Five of these are also used for the SG/FV-in-the-loop check in Supplementary Table S18.
 
-**Measurements.** Exact SG/FV currents at $V_\mathrm{app}=-50,-25,0,25,50$ mV. Single-salt uses the state's own $C_0$; multi-salt uses 10, 30, and 100 mol $m^{-3}$; dual adds the near-wall Donnan selectivity $S=(c_+-c_-)/(c_++c_-)|_{r=1}$ at the same biases. Each observation is perturbed by independent 0.2%, 1%, or 2% relative Gaussian noise; 5 realizations are used per state--protocol--noise cell.
+**Measurements.** Exact SG/FV currents at $V_\mathrm{app}=-50,-25,0,25,50$ mV. Single-salt uses the state's own $C_0$; multi-salt uses 10, 30, and 100 mol $m^{-3}$; dual adds the near-wall Donnan selectivity $S=(c_+-c_-)/(c_++c_-)|_{r=1}$ at the same biases. Each observation is perturbed by independent 0.2%, 1%, or 2% relative Gaussian noise; the Stage-20 study uses 5 realizations per state--protocol--noise cell (75 per protocol--noise condition; 675 total), whereas the earlier Stage-18 grid search uses 20 realizations per cell (300 per protocol--noise condition).
 
-**Search.** The Stage-18 estimator is a $61\times61$ candidate grid in $(q_w,R)$ over the dataset box, followed by quadratic refinement; the complete study is repeated on a $121\times121$ grid for the nesting check. The Stage-20 estimator is a blind, refreshed-Jacobian Gauss--Newton iteration in $m=(\ln R,\ln|\sigma|)$, with observations generated at $41\times121$ and inverted at $21\times61$. Its stopping rule is $\|\Delta m\|_\infty<10^{-3}$ or at most six iterations, and boundary hits and non-converged realizations are recorded. The final covariance is evaluated at the converged estimate; standard errors for $R$, $\sigma$, and $q_w$ are $\sqrt{C_{00}}$, $\sqrt{C_{11}}$, and $\sqrt{C_{00}+2C_{01}+C_{11}}$, respectively. We report medians, interquartile ranges, and separate 95% coverage for the three parameters over the 300 realizations per cell.
+**Search.** The Stage-18 estimator is a $61\times61$ candidate grid in $(q_w,R)$ over the dataset box, followed by quadratic refinement; the complete study is repeated on a $121\times121$ grid for the nesting check. The Stage-20 estimator is a blind, refreshed-Jacobian Gauss--Newton iteration in $m=(\ln R,\ln|\sigma|)$, with observations generated at $41\times121$ and inverted at $21\times61$. Its stopping rule is $\|\Delta m\|_\infty<10^{-3}$ or at most six iterations, and boundary hits and non-converged realizations are recorded. The final covariance is evaluated at the final estimate, converged or stopped; standard errors for $R$, $\sigma$, and $q_w$ are $\sqrt{C_{00}}$, $\sqrt{C_{11}}$, and $\sqrt{C_{00}+2C_{01}+C_{11}}$, respectively. Intervals from non-converged fits are provisional local intervals, not validated confidence intervals. We report medians, interquartile ranges, and separate 95% coverage for the three parameters over the 75 realizations per protocol--noise cell in the Stage-20 study; the Stage-18 grid search reports its 300 per-cell realizations separately.
 
 **Identifiability diagnostic.** The Fisher matrix uses $J=\partial\ln|I|/\partial\ln(R,|q_w|)$ at four non-zero biases, whitened by 1% relative noise, and $\mathcal{F}=J^\top J/\sigma^2$. The negative-$q_w$ plane covers $20\le C_0\le200$ mol $m^{-3}$ and $-0.05\le q_w<0$ at $R=5$ nm on an $18\times18$ grid.
 
