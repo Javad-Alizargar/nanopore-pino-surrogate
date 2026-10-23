@@ -342,7 +342,7 @@ The twenty-two display tables are collected here in strict order S1 through S22,
 
 
 
-**Supplementary Table S22.** Operator-warm-started SG/FV solver and blind unequal-reservoir reversal-potential benchmark. (A) Task A is the equal-reservoir forward solve on the $21\times61$ grid at tolerance $10^{-9}$; the table reports the median relative current error and median wall time for eight methods on 120 states (40 weak, 40 transitional, 40 strong), with full SG/FV as the reference. Task B is the unequal-reservoir reversal root $I(V)=0$; the table reports the median absolute reversal-potential error, the median number of SG/FV current evaluations, and the median wall time for the operator surrogate and the warm and cold root solvers. The Pino controller warm-starts the conservative SG/FV solve from the operator and is reference-free. (B) Blind Stage-20 inversion with shared noisy observations, 15 states, and 5 realizations per protocol and noise level (75 per protocol--noise cell; 675 total); B is the residual-controlled SG/FV Gauss--Newton estimator and C is a single-start cold SG/FV baseline. Errors are medians over all attempted fits, with no converged-only filtering, and coverage is the fraction of 95% intervals containing the truth for radius $R$, surface charge density $\sigma$, and wall charge $q_w\propto R\sigma$. The B conv., B bound., and C conv. columns give the convergence and boundary-hit fractions. Single-salt fits never satisfy the convergence criterion (0% at every noise level) and hit a parameter bound in 20--41% of attempts; at 1% noise all 75 single-salt B fits stop on line-search failure, the reversal fits stop on step tolerance (48), iteration limit (22), or line search (5), and the dual fits stop on step tolerance (73) or line search (2). Their reported intervals are provisional local intervals rather than validated confidence intervals, and the single-salt identifiability conclusion rests on the Fisher analysis rather than on these failed fits. The dual protocol reaches 1.5% median charge error at 1% noise but its intervals are undercovered (73% for $q_w$), while the reversal potential is strongly state dependent (85% weak-charge versus 5.0% strong-charge). (C) Three-way bias diagnostic at 1% noise with estimator B (dual protocol): D1---noise-free $21\times61$ observations inverted on $21\times61$ (pure optimization error); D2---noise-free $41\times121$ observations inverted on $21\times61$ (mesh discretization bias); D3---warm-started versus cold-started noisy $41\times121\to21\times61$ inversion (initialization dependence). The roughly 1.3% dual error floor is dominated by the $41\times121$ versus $21\times61$ mesh bias (D2: 1.29% median charge error), whereas same-grid noise-free inversion (D1) reaches $2.1\times10^{-7}$. Initialization changes the charge error only from 1.49% (warm B) to 1.55% (cold C), but it changes the convergence rate from 97.3% to 66.7%; warm starting is therefore more robust even though the median errors are similar.
+**Supplementary Table S22.** Operator-warm-started SG/FV solver and blind unequal-reservoir reversal-potential benchmark. (A) Task A is the equal-reservoir forward solve on the $21\times61$ grid at tolerance $10^{-9}$; the table reports the median relative current error and median wall time for eight methods on 120 states (40 weak, 40 transitional, 40 strong), with full SG/FV as the reference. Task B is the unequal-reservoir reversal root $I(V)=0$; the table reports the median absolute reversal-potential error, the median number of SG/FV current evaluations, and the median wall time for the operator surrogate and the warm and cold root solvers. The Pino controller warm-starts the conservative SG/FV solve from the operator and is reference-free. (B) Blind Stage-20 inversion with shared noisy observations, 15 states, and 5 realizations per protocol and noise level (75 per protocol--noise cell; 675 total); B is the residual-controlled SG/FV Gauss--Newton estimator and C is a single-start cold SG/FV baseline. Part B1 reports estimation errors as medians over all attempted fits, with no converged-only filtering; Part B2 reports coverage and the B conv., B bound., and C conv. convergence and boundary-hit diagnostics. Coverage is the fraction of 95% intervals containing the truth for radius $R$, surface charge density $\sigma$, and wall charge $q_w\propto R\sigma$. Single-salt fits never satisfy the convergence criterion (0% at every noise level) and hit a parameter bound in 20--41% of attempts; at 1% noise all 75 single-salt B fits stop on line-search failure, the reversal fits stop on step tolerance (48), iteration limit (22), or line search (5), and the dual fits stop on step tolerance (73) or line search (2). Their reported intervals are provisional local intervals rather than validated confidence intervals, and the single-salt identifiability conclusion rests on the Fisher analysis rather than on these failed fits. The dual protocol reaches 1.5% median charge error at 1% noise but its intervals are undercovered (73% for $q_w$), while the reversal potential is strongly state dependent (85% weak-charge versus 5.0% strong-charge). (C) Three-way bias diagnostic at 1% noise with estimator B (dual protocol): D1---noise-free $21\times61$ observations inverted on $21\times61$ (pure optimization error); D2---noise-free $41\times121$ observations inverted on $21\times61$ (mesh discretization bias); D3---warm-started versus cold-started noisy $41\times121\to21\times61$ inversion (initialization dependence). The roughly 1.3% dual error floor is dominated by the $41\times121$ versus $21\times61$ mesh bias (D2: 1.29% median charge error), whereas same-grid noise-free inversion (D1) reaches $2.1\times10^{-7}$. Initialization changes the charge error only from 1.49% (warm B) to 1.55% (cold C), but it changes the convergence rate from 97.3% to 66.7%; warm starting is therefore more robust even though the median errors are similar.
 
 **Task A (forward solve).** Equal-reservoir forward solve on 120 states; median relative current error and median wall time. Full SG/FV is the reference.
 
@@ -367,17 +367,33 @@ The twenty-two display tables are collected here in strict order S1 through S22,
 
 **Part B (blind inversion).** All attempted fits are included; coverage is not conditioned on convergence.
 
-| Protocol | Noise | median $q_w$ rel. | weak | trans. | strong | median $R$ rel. | median $\sigma$ rel. | cov. $q_w$ | cov. $R$ | cov. $\sigma$ | B conv. | B bound. | C conv. | $n$ |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| single salt | 0.2% | 140.99% | 1234.97% | 489.72% | 73.81% | 0.35% | 145.66% | 100% | 100% | 100% | 0.0% | 41% | 0% | 75 |
-| single salt | 1% | 147.63% | 1820.52% | 486.24% | 80.03% | 0.30% | 145.66% | 100% | 100% | 100% | 0.0% | 32% | 0% | 75 |
-| single salt | 2% | 147.63% | 1606.88% | 344.16% | 67.66% | 0.42% | 145.66% | 100% | 100% | 100% | 0.0% | 20% | 0% | 75 |
-| reversal potential | 0.2% | 12.66% | 77.29% | 13.19% | 5.91% | 0.03% | 12.68% | 88% | 95% | 88% | 57% | 15% | 56% | 75 |
-| reversal potential | 1% | 11.11% | 84.57% | 18.39% | 5.01% | 0.17% | 11.24% | 88% | 95% | 88% | 64% | 11% | 63% | 75 |
-| reversal potential | 2% | 13.05% | 68.85% | 11.40% | 6.31% | 0.31% | 13.14% | 89% | 96% | 92% | 60% | 9% | 51% | 75 |
-| dual + selectivity | 0.2% | 1.36% | 1.40% | 1.33% | 1.35% | 0.04% | 1.36% | 1.3% | 96% | 2.7% | 100% | 7% | 65% | 75 |
-| dual + selectivity | 1% | 1.49% | 1.55% | 1.32% | 1.24% | 0.15% | 1.45% | 73% | 96% | 73% | 97% | 7% | 67% | 75 |
-| dual + selectivity | 2% | 1.89% | 2.28% | 1.76% | 1.85% | 0.44% | 1.93% | 91% | 93% | 92% | 99% | 7% | 65% | 75 |
+**Part B1 (estimation errors).** Medians over all attempted fits; no converged-only filtering.
+
+| Protocol | Noise | median $q_w$ rel. | weak | trans. | strong | median $R$ rel. | median $\sigma$ rel. | $n$ |
+|---|---|---|---|---|---|---|---|---|
+| single salt | 0.2% | 140.99% | 1234.97% | 489.72% | 73.81% | 0.35% | 145.66% | 75 |
+| single salt | 1% | 147.63% | 1820.52% | 486.24% | 80.03% | 0.30% | 145.66% | 75 |
+| single salt | 2% | 147.63% | 1606.88% | 344.16% | 67.66% | 0.42% | 145.66% | 75 |
+| reversal potential | 0.2% | 12.66% | 77.29% | 13.19% | 5.91% | 0.03% | 12.68% | 75 |
+| reversal potential | 1% | 11.11% | 84.57% | 18.39% | 5.01% | 0.17% | 11.24% | 75 |
+| reversal potential | 2% | 13.05% | 68.85% | 11.40% | 6.31% | 0.31% | 13.14% | 75 |
+| dual + selectivity | 0.2% | 1.36% | 1.40% | 1.33% | 1.35% | 0.04% | 1.36% | 75 |
+| dual + selectivity | 1% | 1.49% | 1.55% | 1.32% | 1.24% | 0.15% | 1.45% | 75 |
+| dual + selectivity | 2% | 1.89% | 2.28% | 1.76% | 1.85% | 0.44% | 1.93% | 75 |
+
+**Part B2 (coverage and convergence).** Coverage is the fraction of 95% intervals containing the truth; intervals from non-converged fits are provisional local intervals.
+
+| Protocol | Noise | cov. $q_w$ | cov. $R$ | cov. $\sigma$ | B conv. | B bound. | C conv. | $n$ |
+|---|---|---|---|---|---|---|---|---|
+| single salt | 0.2% | 100% | 100% | 100% | 0.0% | 41% | 0.0% | 75 |
+| single salt | 1% | 100% | 100% | 100% | 0.0% | 32% | 0.0% | 75 |
+| single salt | 2% | 100% | 100% | 100% | 0.0% | 20% | 0.0% | 75 |
+| reversal potential | 0.2% | 88% | 95% | 88% | 57% | 15% | 56% | 75 |
+| reversal potential | 1% | 88% | 95% | 88% | 64% | 11% | 63% | 75 |
+| reversal potential | 2% | 89% | 96% | 92% | 60% | 9.3% | 51% | 75 |
+| dual + selectivity | 0.2% | 1.3% | 96% | 2.7% | 100% | 6.7% | 65% | 75 |
+| dual + selectivity | 1% | 73% | 96% | 73% | 97% | 6.7% | 67% | 75 |
+| dual + selectivity | 2% | 91% | 93% | 92% | 99% | 6.7% | 65% | 75 |
 
 **Part C (bias diagnostic).** Three-way diagnostic rows.
 

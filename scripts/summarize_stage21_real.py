@@ -118,25 +118,35 @@ def summarize(records):
 
 
 def table_rows(summary):
-    lines = [
-        "| Protocol | Noise | median $q_w$ rel. | weak | trans. | strong | median $R$ rel. | median $\\sigma$ rel. | cov. $q_w$ | cov. $R$ | cov. $\\sigma$ | B conv. | B bound. | C conv. | $n$ |",
-        "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|",
+    err = [
+        "**Part B1 (estimation errors).** Medians over all attempted fits; no converged-only filtering.",
+        "",
+        "| Protocol | Noise | median $q_w$ rel. | weak | trans. | strong | median $R$ rel. | median $\\sigma$ rel. | $n$ |",
+        "|---|---|---|---|---|---|---|---|---|",
+    ]
+    cov = [
+        "**Part B2 (coverage and convergence).** Coverage is the fraction of 95% intervals containing the truth; intervals from non-converged fits are provisional local intervals.",
+        "",
+        "| Protocol | Noise | cov. $q_w$ | cov. $R$ | cov. $\\sigma$ | B conv. | B bound. | C conv. | $n$ |",
+        "|---|---|---|---|---|---|---|---|---|",
     ]
     for proto in PROTOCOLS:
         for noise in NOISES:
             r = summary["by_condition"].get(f"{proto}_{noise:g}")
             if not r:
                 continue
-            lines.append(
+            err.append(
                 f"| {PROTO_LABEL[proto]} | {noise*100:g}% "
                 f"| {r['B_q_rel']*100:.2f}% | {r['B_q_rel_weak']*100:.2f}% "
                 f"| {r['B_q_rel_transitional']*100:.2f}% | {r['B_q_rel_strong']*100:.2f}% "
-                f"| {r['B_R_rel']*100:.2f}% | {r['B_sigma_rel']*100:.2f}% "
-                f"| {pct(r['B_q_cover'])} | {pct(r['B_R_cover'])} "
-                f"| {pct(r['B_sigma_cover'])} | {pct(r['B_converged'])} "
-                f"| {r['B_boundary_hit']*100:.0f}% | {r['C_converged']*100:.0f}% | {r['n']} |"
+                f"| {r['B_R_rel']*100:.2f}% | {r['B_sigma_rel']*100:.2f}% | {r['n']} |"
             )
-    return "\n".join(lines) + "\n"
+            cov.append(
+                f"| {PROTO_LABEL[proto]} | {noise*100:g}% "
+                f"| {pct(r['B_q_cover'])} | {pct(r['B_R_cover'])} | {pct(r['B_sigma_cover'])} "
+                f"| {pct(r['B_converged'])} | {pct(r['B_boundary_hit'])} | {pct(r['C_converged'])} | {r['n']} |"
+            )
+    return "\n".join(err + [""] + cov) + "\n"
 
 
 def main():

@@ -1,6 +1,6 @@
 # Final audit report
 
-Generated: 2026-10-23T03:33:02Z
+Generated: 2026-10-23T03:50:20Z
 
 Audited packages:
 - Public: 183 files, 24.3 MB
@@ -64,7 +64,7 @@ Audited packages:
 - Stage-11 upgrades: {"tables": true, "json_keys": {"fisher_sgfv_validation": true, "constraint_schemes_benchmark": true, "physics_weight_sweep": true}, "statistics_keys": true, "script": true}.
 - Prose bracket integrity: {"ok": true, "bad_brackets": [], "bad_count": 0, "typo_28_200": false}.
 - CPC template/test run: {"panels_ok": true, "panel_detail": {"fig1_workflow_and_architecture": {"expected": "ABCD", "found": "ABCD", "set_ok": true, "all_in_bounds": true, "min_gap_px": 24.9, "ok": true}, "fig2_benchmark_and_field_reconstruction": {"expected": "ABCDEF", "found": "ABCDEF", "set_ok": true, "all_in_bounds": true, "min_gap_px": 20.4, "ok": true}, "fig3_h3_charge_reparameterization_ablation": {"expected": "ABCDEF", "found": "ABCDEF", "set_ok": true, "all_in_bounds": true, "min_gap_px": 33.3, "ok": true}, "fig4_h1_h2_interp_vs_ood_regimes": {"expected": "ABCD", "found": "ABCD", "set_ok": true, "all_in_bounds": true, "min_gap_px": 15.0, "ok": true}, "fig5_parametric_physics_sweeps": {"expected": "ABC", "found": "ABC", "set_ok": true, "all_in_bounds": true, "min_gap_px": 17.0, "ok": true}, "fig6_h4_timing_and_amortization_breakeven": {"expected": "ABCD", "found": "ABCD", "set_ok": true, "all_in_bounds": true, "min_gap_px": 21.1, "ok": true}}, "cpc_ok": true, "files_ok": true, "test_ok": true, "test_output": "CPC TEST RUN PASSED \u2014 deeponet_reparam_seed42.onnx, mu=[50.0, 100.0, -0.009999999776482582, 5.0], 5 fields, max |delta| <= 1e-05"}.
-- DOCX: {"Manuscript_PINO_clean.docx": {"exists": true, "tables": 0, "omath": 357, "omathpara": 0, "media": 6, "equation_pngs": [], "n_drawings": 6, "figures_before_references": true, "raw_dollar": false, "latex_commands": false, "equation_or_latex_leak": false, "refs_61": true}, "Supplementary_Materials_PINO.docx": {"exists": true, "tables": 28, "omath": 521, "omathpara": 0, "media": 0, "equation_pngs": [], "n_drawings": 0, "figures_before_references": true, "raw_dollar": false, "latex_commands": false, "equation_or_latex_leak": false, "refs_61": false}}.
+- DOCX: {"Manuscript_PINO_clean.docx": {"exists": true, "tables": 0, "omath": 357, "omathpara": 0, "media": 6, "equation_pngs": [], "n_drawings": 6, "figures_before_references": true, "raw_dollar": false, "latex_commands": false, "equation_or_latex_leak": false, "refs_61": true}, "Supplementary_Materials_PINO.docx": {"exists": true, "tables": 29, "omath": 522, "omathpara": 0, "media": 0, "equation_pngs": [], "n_drawings": 0, "figures_before_references": true, "raw_dollar": false, "latex_commands": false, "equation_or_latex_leak": false, "refs_61": false}}.
 
 ## Scope and limitations
 
